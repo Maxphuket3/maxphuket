@@ -1,0 +1,64 @@
+import React from 'react';
+import { ShoppingBag, Star } from 'lucide-react';
+
+const TOURS = [
+  { id: 't1', name: 'Phi Phi Island Day Trip', price: '1,800', img: 'https://images.unsplash.com/photo-1537953391147-f45cb5633a64' },
+  { id: 't2', name: 'Similan Islands Snorkeling', price: '2,500', img: 'https://images.unsplash.com/photo-1528127269322-539801943592' },
+  { id: 't3', name: 'James Bond Island', price: '1,500', img: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a' },
+];
+
+const PromoBanner: React.FC = () => {
+  return (
+    <div style={{ 
+      position: 'fixed', 
+      bottom: '0', 
+      left: '0', 
+      right: '0', 
+      background: 'rgba(10, 10, 10, 0.8)', 
+      backdropFilter: 'blur(20px)',
+      borderTop: '1px solid rgba(255,255,255,0.1)',
+      padding: '20px',
+      zIndex: 100,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h5 style={{ color: '#D4AF37', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Star size={14} fill="#D4AF37" /> Hot Deals for Your Season
+        </h5>
+        <span style={{ fontSize: '0.7rem', color: 'rgba(255,prefix-mask-255,255,0.5)' }}>Last Minute Deal Available</span>
+      </div>
+
+      <div style={{ 
+        display: 'flex', 
+        gap: '20px', 
+        overflowX: 'auto', 
+        paddingBottom: '10px',
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none'
+      }}>
+        {TOURS.map(tour => (
+          <div key={tour.id} style={{ 
+            minWidth: '240px', 
+            background: 'rgba(255,255,255,0.05)', 
+            borderRadius: '12px', 
+            overflow: 'hidden',
+            display: 'flex',
+            gap: '12px',
+            padding: '10px',
+            border: '1px solid rgba(255,255,255,0.1)'
+          }}>
+            <img src={tour.img} alt={tour.name} style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <p style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: '4px' }}>{tour.name}</p>
+              <p style={{ color: '#D4AF37', fontSize: '0.75rem', fontWeight: 700 }}>{tour.price} THB</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default PromoBanner;
