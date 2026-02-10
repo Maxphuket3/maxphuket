@@ -56,7 +56,7 @@ echo.
 :: 6. Push
 echo [INFO] Pushing to GitHub (main branch)...
 echo.
-%GIT_PATH% push -u origin main
+%GIT_PATH% push -u origin main --force
 
 if %errorlevel% neq 0 (
     echo.
