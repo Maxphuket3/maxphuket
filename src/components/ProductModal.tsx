@@ -58,70 +58,93 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
     const calculateTotal = () => {
         if (!product.courses) return 0;
         const course = product.courses[selectedCourseIdx];
-
-        // Parse price string "2,475 바트" -> 2475
         const parsePrice = (str: string) => parseInt(str.replace(/[^0-9]/g, '')) || 0;
 
         const adultPrice = parsePrice(course.priceAdult);
         const childPrice = parsePrice(course.priceChild);
 
-        let total = (adultPrice * adultCount) + (childPrice * childCount);
+        let basePrice = (adultPrice * adultCount) + (childPrice * childCount);
+        let mandatoryFees = 0;
+        let pickupFee = 0;
+        let luggageTotalInfo = 0;
 
-        // Handle Pickup Costs
-        if (product.pickupOptions) {
-            if (selectedPickupOptionIdx !== -1) {
-                const pickupPrice = product.pickupOptions[selectedPickupOptionIdx].price;
-                total += pickupPrice * (adultCount + childCount);
-            }
-        } else if (product.category === 'SIMILAN') {
-            // Similan Special Logic
-            // Luggage Logic
-            const totalBags = luggageSmall + luggageMedium + luggageLarge;
-            let luggageFee = 0;
-
-            if (product.id === 'p_similan_wow') {
-                // Wow Andaman: 300B/pax if luggage/transfer involved
-                if (isMoveHotel || totalBags > 0) {
-                    luggageFee = (adultCount + childCount) * 300;
-                }
-            } else if (product.id === 'p_similan_once') {
-                // Once: 20" over = 200B, Small = Free? (Assume small free based on text "20 inch over 200B")
-                luggageFee = (luggageMedium + luggageLarge) * 200;
-            } else {
-                // Seastar, Love, Sawanu: 200B per bag
-                luggageFee = totalBags * 200;
-            }
-            total += luggageFee;
-
-            // Private Van / Remote Area Logic (Heuristic Validation)
-            // If dropoff is different and potentially remote, we warn. 
-            // Here we just add a manual checkbox logic or text-detection for estimation? 
-            // For now, only hard costs like luggage are added automatically. 
-            // Private Van cost is usually paid on site or added manually by agent, 
-            // but user asked to "show conditions". We won't auto-add 2000B unless we are sure, 
-            // to avoid scaring users with wrong high price. We will calculate only confirmable costs.
-        } else {
-            // Standard Car Pickup (Banana Beach style)
-            if (isPaidPickup) total += 2500;
-            // Standard Luggage
-            const luggagePrice = product.luggagePrice || 300;
-            total += (luggageCount * luggagePrice);
+        // 1. Mandatory On-site Fees
+        if (product.onSiteFees) {
+            mandatoryFees += (product.onSiteFees.entranceAdult * adultCount);
+            mandatoryFees += (product.onSiteFees.entranceChild * childCount);
+            mandatoryFees += (product.onSiteFees.guideTip * (adultCount + childCount));
         }
 
-        return total.toLocaleString();
+        // 2. Pickup Surcharge Logic
+        if (product.pickupZones) {
+            const totalPax = adultCount + childCount;
+            // Find matching zone
+            const location = pickupHotel.toLowerCase();
+            const matchedZone = product.pickupZones.find(z =>
+                z.zones.some(zoneName => location.includes(zoneName.toLowerCase()))
+            );
+
+            if (matchedZone) {
+                if (totalPax <= 3) pickupFee = matchedZone.priceCar;
+                else pickupFee = matchedZone.priceVan;
+            } else if (pickupHotel.trim().length > 2) {
+                // If hotel entered but no match found, warn or default? 
+                // Currently just 0, but user might need to know if it's outside.
+            }
+        } else if (product.pickupOptions) {
+            if (selectedPickupOptionIdx !== -1) {
+                const pPrice = product.pickupOptions[selectedPickupOptionIdx].price;
+                pickupFee += pPrice * (adultCount + childCount);
+            }
+        } else {
+            // Standard fallback
+            if (isPaidPickup) pickupFee += 2500;
+        }
+
+
+        // 3. Luggage Logic
+        if (product.category === 'SIMILAN') {
+            const totalBags = luggageSmall + luggageMedium + luggageLarge;
+            if (product.id === 'p_similan_wow') {
+                const pricePerBag = product.luggagePrice || 300;
+                luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
+            } else if (product.id === 'p_similan_once') {
+                const pricePerBag = product.luggagePrice || 200;
+                luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
+            } else {
+                const pricePerBag = product.luggagePrice || 200;
+                luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
+            }
+        } else {
+            const pricePerBag = product.luggagePrice || 300;
+            luggageTotalInfo = luggageCount * pricePerBag;
+        }
+
+        return (basePrice + mandatoryFees + pickupFee + luggageTotalInfo).toLocaleString();
     };
 
     const generateQuote = () => {
         const total = calculateTotal();
         const baseMsg = `[라스트테이 견적 문의]\n상품명: ${product.name}\n일정: ${timeSlot}\n인원: 성인${adultCount} 아동${childCount} 유아${infantCount}`;
 
+        // Pickup Info
+        let pickupMsg = `\n픽업: ${pickupHotel || '미정'}\n샌딩: ${dropoffHotel || pickupHotel || '(동일)'}`;
+
+        // Similan Logic
         if (product.category === 'SIMILAN') {
             const luggMsg = `수하물: 소${luggageSmall} 중${luggageMedium} 대${luggageLarge}`;
-            const hotelMsg = `픽업: ${pickupHotel || '미정'}\n드랍: ${isMoveHotel ? dropoffHotel : '(복귀)'}`;
-            return `${baseMsg}\n${hotelMsg}\n${luggMsg}\n----------------\n예상 견적: ${total} THB\n*지역에 따라 단독차량 비용이 추가될 수 있습니다.`;
+            return `${baseMsg}${pickupMsg}\n${luggMsg}\n----------------\n예상 견적: ${total} THB\n*지역에 따라 단독차량 비용이 추가될 수 있습니다.`;
         }
 
-        return `${baseMsg}\n----------------\n예상 견적: ${total} THB`;
+        // Standard Logic
+        let extraMsg = '';
+        if (product.onSiteFees) extraMsg += '\n(현장지불금/입장료 포함)';
+        if (product.pickupZones && pickupHotel) extraMsg += '\n(지역별 픽업추가금 적용됨)';
+        const standardLuggMsg = (product.luggagePrice && luggageCount > 0) ? `\n수하물: ${luggageCount}개` : '';
+
+        return `${baseMsg}${pickupMsg}${standardLuggMsg}${extraMsg}\n----------------\n예상 견적: ${total} THB`;
+
+        return `${baseMsg}${standardHotelMsg}${standardLuggMsg}\n----------------\n예상 견적: ${total} THB`;
     };
 
     const renderContent = () => {
@@ -460,37 +483,29 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         {/* SIMILAN SPECIAL UI */}
                                         {product.category === 'SIMILAN' ? (
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                                {/* Hotel Inputs */}
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="출발 호텔 (픽업 장소)"
-                                                        value={pickupHotel}
-                                                        onChange={(e) => setPickupHotel(e.target.value)}
-                                                        style={{ width: '100%', padding: '10px', background: '#2d3748', border: '1px solid #4a5568', borderRadius: '6px', color: '#fff', fontSize: '0.9rem' }}
-                                                    />
-
-                                                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.9rem', color: '#D4AF37' }}>
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={isMoveHotel}
-                                                            onChange={(e) => {
-                                                                setIsMoveHotel(e.target.checked);
-                                                                if (!e.target.checked) setDropoffHotel('');
-                                                            }}
-                                                        />
-                                                        호텔 이동 (투어 후 다른 호텔로)
-                                                    </label>
-
-                                                    {isMoveHotel && (
+                                                {/* Hotel Inputs - Always Visible & Separated */}
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                                    <div>
+                                                        <label style={{ display: 'block', color: '#cbd5e0', fontSize: '0.85rem', marginBottom: '4px' }}>픽업 호텔 (출발)</label>
                                                         <input
                                                             type="text"
-                                                            placeholder="도착 호텔 (드랍 장소)"
+                                                            placeholder="호텔 영문명 또는 한글명"
+                                                            value={pickupHotel}
+                                                            onChange={(e) => setPickupHotel(e.target.value)}
+                                                            style={{ width: '100%', padding: '10px', background: '#2d3748', border: '1px solid #4a5568', borderRadius: '6px', color: '#fff', fontSize: '0.9rem' }}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label style={{ display: 'block', color: '#cbd5e0', fontSize: '0.85rem', marginBottom: '4px' }}>샌딩 호텔 (드랍/이동)</label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="체크아웃 투어 시 필수 입력"
                                                             value={dropoffHotel}
                                                             onChange={(e) => setDropoffHotel(e.target.value)}
-                                                            style={{ width: '100%', padding: '10px', background: '#2d3748', border: '1px solid #F56565', borderRadius: '6px', color: '#fff', fontSize: '0.9rem', animation: 'fadeIn 0.3s' }}
+                                                            style={{ width: '100%', padding: '10px', background: '#2d3748', border: '1px solid #4a5568', borderRadius: '6px', color: '#fff', fontSize: '0.9rem' }}
                                                         />
-                                                    )}
+                                                    </div>
                                                 </div>
 
                                                 {/* Luggage Inputs */}
@@ -498,7 +513,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                                     <div style={{ fontSize: '0.85rem', color: '#a0aec0', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
                                                         <span>캐리어/수하물</span>
                                                         <span style={{ color: '#D4AF37' }}>
-                                                            {product.id === 'p_similan_wow' ? '1인 300B (가방포함)' : '개당 200B'}
+                                                            {product.luggagePrice ? `개당 ${product.luggagePrice}B (21인치↑)` : '개당 200B'}
                                                         </span>
                                                     </div>
                                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', textAlign: 'center' }}>
@@ -549,18 +564,49 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                                     </label>
                                                 )}
 
-                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
-                                                    <span style={{ color: '#cbd5e0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                                        <Briefcase size={16} /> 수하물 이동
-                                                    </span>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                        <input
-                                                            type="number" min="0" value={luggageCount} onChange={(e) => setLuggageCount(parseInt(e.target.value) || 0)}
-                                                            style={{ width: '50px', background: '#2d3748', color: '#fff', border: '1px solid #4a5568', padding: '6px', borderRadius: '6px', textAlign: 'center' }}
-                                                        />
-                                                        <span style={{ fontSize: '0.8rem', color: '#718096' }}>x {product.luggagePrice || 300}</span>
+                                                {/* Hotel Inputs for Standard Tours */}
+                                                <div style={{ marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '12px' }}>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                                        <div>
+                                                            <label style={{ display: 'block', color: '#cbd5e0', fontSize: '0.85rem', marginBottom: '4px' }}>픽업 호텔</label>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="픽업 장소 입력"
+                                                                value={pickupHotel}
+                                                                onChange={(e) => setPickupHotel(e.target.value)}
+                                                                style={{ width: '100%', padding: '10px', background: '#2d3748', border: '1px solid #4a5568', borderRadius: '6px', color: '#fff', fontSize: '0.9rem' }}
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label style={{ display: 'block', color: '#cbd5e0', fontSize: '0.85rem', marginBottom: '4px' }}>샌딩 호텔</label>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="드랍 장소 (미입력 시 픽업지와 동일)"
+                                                                value={dropoffHotel}
+                                                                onChange={(e) => setDropoffHotel(e.target.value)}
+                                                                style={{ width: '100%', padding: '10px', background: '#2d3748', border: '1px solid #4a5568', borderRadius: '6px', color: '#fff', fontSize: '0.9rem' }}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
+
+                                                {/* Baggage Input - Only if luggagePrice is set */}
+                                                {product.luggagePrice !== undefined && (
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '12px', background: 'rgba(255,255,255,0.05)', padding: '10px', borderRadius: '8px' }}>
+                                                        <span style={{ color: '#cbd5e0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                            <Briefcase size={16} /> 캐리어(수하물) 개수
+                                                        </span>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                            <input
+                                                                type="number" min="0" value={luggageCount} onChange={(e) => setLuggageCount(parseInt(e.target.value) || 0)}
+                                                                style={{ width: '60px', background: '#2d3748', color: '#fff', border: '1px solid #D4AF37', padding: '6px', borderRadius: '6px', textAlign: 'center', fontWeight: 'bold' }}
+                                                            />
+                                                            <span style={{ fontSize: '0.85rem', color: '#D4AF37' }}>
+                                                                (개당 {product.luggagePrice}B)
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         )}
                                     </div>

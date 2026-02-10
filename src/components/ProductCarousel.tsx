@@ -199,7 +199,8 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                         padding: '10px 10px 30px 10px', // Added horizontal padding for mobile scroll
                         scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
-                        touchAction: 'pan-x'
+                        touchAction: 'pan-x',
+                        scrollSnapType: 'x mandatory' // Enable scroll snapping
                     }}
                     className="hide-scrollbar"
                 >
@@ -210,7 +211,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                             key={`${product.id}-${index}`}
                             onClick={() => onProductClick(product)}
                             style={{
-                                minWidth: '300px', // Reduced slightly to ensure it fits better on small screens
+                                minWidth: '300px',
                                 maxWidth: '300px',
                                 height: '220px',
                                 cursor: 'pointer',
@@ -220,7 +221,8 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                                 position: 'relative',
                                 borderRadius: '24px',
                                 background: '#0a0a0a',
-                                flexShrink: 0
+                                flexShrink: 0,
+                                scrollSnapAlign: 'center' // Snap each card to center
                             }}
                             className="product-premium-card"
                             onMouseOver={(e) => {
