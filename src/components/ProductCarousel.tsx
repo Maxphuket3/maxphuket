@@ -131,6 +131,15 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                     .carousel-nav-btn {
                         display: none !important;
                     }
+                    .product-card {
+                        width: 88vw !important;
+                        min-width: 88vw !important;
+                        max-width: 90vw !important;
+                    }
+                }
+                .product-card {
+                    width: 320px;
+                    min-width: 320px;
                 }
             `}</style>
             <div style={{ textAlign: 'center', marginBottom: '30px', padding: '0 10px' }}>
@@ -208,11 +217,8 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
 
                     {infiniteProducts.map((product, index) => (
                         <div
-                            key={`${product.id}-${index}`}
                             onClick={() => onProductClick(product)}
                             style={{
-                                minWidth: '300px',
-                                maxWidth: '300px',
                                 height: '220px',
                                 cursor: 'pointer',
                                 transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)',
@@ -224,7 +230,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                                 flexShrink: 0,
                                 scrollSnapAlign: 'center' // Snap each card to center
                             }}
-                            className="product-premium-card"
+                            className="product-premium-card product-card"
                             onMouseOver={(e) => {
                                 e.currentTarget.style.transform = 'translateY(-10px)';
                                 e.currentTarget.style.boxShadow = '0 20px 40px rgba(212, 175, 55, 0.15)';
@@ -311,9 +317,9 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                             }}>
                                 <h4 style={{
                                     color: '#fff',
-                                    fontSize: '1.1rem',
+                                    fontSize: 'clamp(1.2rem, 4vw, 1.4rem)',
                                     fontWeight: '800',
-                                    marginBottom: '2px',
+                                    marginBottom: '4px',
                                     textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
@@ -327,7 +333,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                                         <p style={{
                                             color: '#D4AF37',
                                             fontWeight: '900',
-                                            fontSize: '1.4rem',
+                                            fontSize: 'clamp(1.4rem, 5vw, 1.8rem)',
                                             margin: 0,
                                             lineHeight: 1
                                         }}>

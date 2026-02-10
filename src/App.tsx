@@ -11,6 +11,8 @@ import DashboardScreen from './screens/DashboardScreen';
 import AdminDashboard from './screens/AdminDashboard';
 import DriverRegistration from './screens/DriverRegistration';
 
+import FloatingKakaoButton from './components/FloatingKakaoButton';
+
 const App: React.FC = () => {
   return (
     <JourneyProvider>
@@ -30,6 +32,7 @@ const App: React.FC = () => {
             {/* Catch all - Redirect to Start */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <FloatingKakaoButton />
         </div>
       </BrowserRouter>
     </JourneyProvider>

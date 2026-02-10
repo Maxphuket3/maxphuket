@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { X, Info, CheckCircle, XCircle, Car, AlertTriangle, CreditCard, MessageCircle, Calendar, Calculator, Clock, Briefcase, MapPin } from 'lucide-react';
 import { Product } from '../data/products';
 
@@ -55,9 +55,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
     if (!product) return null;
 
     // Price Calculation
-    const calculateTotal = () => {
-        if (!product.courses) return 0;
+    const totalAmount = useMemo(() => {
+        if (!product || !product.courses) return 0;
         const course = product.courses[selectedCourseIdx];
+        if (!course) return 0;
+
         const parsePrice = (str: string) => parseInt(str.replace(/[^0-9]/g, '')) || 0;
 
         const adultPrice = parsePrice(course.priceAdult);
@@ -79,20 +81,19 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
         if (product.pickupZones) {
             const totalPax = adultCount + childCount;
             // Find matching zone
-            const location = pickupHotel.toLowerCase();
-            const matchedZone = product.pickupZones.find(z =>
-                z.zones.some(zoneName => location.includes(zoneName.toLowerCase()))
-            );
+            const location = pickupHotel.toLowerCase().trim();
+            if (location) {
+                const matchedZone = product.pickupZones.find(z =>
+                    z.zones.some(zoneName => location.includes(zoneName.toLowerCase()))
+                );
 
-            if (matchedZone) {
-                if (totalPax <= 3) pickupFee = matchedZone.priceCar;
-                else pickupFee = matchedZone.priceVan;
-            } else if (pickupHotel.trim().length > 2) {
-                // If hotel entered but no match found, warn or default? 
-                // Currently just 0, but user might need to know if it's outside.
+                if (matchedZone) {
+                    if (totalPax <= 3) pickupFee = matchedZone.priceCar;
+                    else pickupFee = matchedZone.priceVan;
+                }
             }
         } else if (product.pickupOptions) {
-            if (selectedPickupOptionIdx !== -1) {
+            if (selectedPickupOptionIdx !== -1 && product.pickupOptions[selectedPickupOptionIdx]) {
                 const pPrice = product.pickupOptions[selectedPickupOptionIdx].price;
                 pickupFee += pPrice * (adultCount + childCount);
             }
@@ -101,27 +102,21 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             if (isPaidPickup) pickupFee += 2500;
         }
 
-
         // 3. Luggage Logic
         if (product.category === 'SIMILAN') {
             const totalBags = luggageSmall + luggageMedium + luggageLarge;
-            if (product.id === 'p_similan_wow') {
-                const pricePerBag = product.luggagePrice || 300;
-                luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
-            } else if (product.id === 'p_similan_once') {
-                const pricePerBag = product.luggagePrice || 200;
-                luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
-            } else {
-                const pricePerBag = product.luggagePrice || 200;
-                luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
-            }
+            const pricePerBag = product.luggagePrice || 200;
+            // Simplified logic as requested or standard
+            luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
         } else {
             const pricePerBag = product.luggagePrice || 300;
             luggageTotalInfo = luggageCount * pricePerBag;
         }
 
-        return (basePrice + mandatoryFees + pickupFee + luggageTotalInfo).toLocaleString();
-    };
+        return basePrice + mandatoryFees + pickupFee + luggageTotalInfo;
+    }, [product, selectedCourseIdx, adultCount, childCount, infantCount, pickupHotel, selectedPickupOptionIdx, isPaidPickup, luggageCount, luggageSmall, luggageMedium, luggageLarge]);
+
+    const calculateTotal = () => totalAmount.toLocaleString();
 
     const generateQuote = () => {
         const total = calculateTotal();
@@ -143,8 +138,6 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
         const standardLuggMsg = (product.luggagePrice && luggageCount > 0) ? `\n수하물: ${luggageCount}개` : '';
 
         return `${baseMsg}${pickupMsg}${standardLuggMsg}${extraMsg}\n----------------\n예상 견적: ${total} THB`;
-
-        return `${baseMsg}${standardHotelMsg}${standardLuggMsg}\n----------------\n예상 견적: ${total} THB`;
     };
 
     const renderContent = () => {
@@ -334,39 +327,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                 </div>
                             </div>
                         ) : (
-                            <div style={{
-                                marginTop: '20px',
-                                padding: '20px',
-                                background: 'rgba(6, 199, 85, 0.1)',
-                                borderRadius: '12px',
-                                border: '1px solid rgba(6, 199, 85, 0.3)'
-                            }}>
-                                <h4 style={{ color: '#06C755', fontSize: '1.1rem', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <MessageCircle size={18} /> 기사 미팅 비상 연락
-                                </h4>
-                                <p style={{ color: '#cbd5e0', fontSize: '0.9rem', marginBottom: '12px' }}>
-                                    픽업 차량을 찾기 어렵거나 기사님과 소통이 필요하신가요?
-                                </p>
-                                <a
-                                    href="https://line.me/ti/p/20KIvNskSv"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        background: '#06C755',
-                                        color: '#fff',
-                                        padding: '10px 20px',
-                                        borderRadius: '8px',
-                                        textDecoration: 'none',
-                                        fontWeight: 'bold',
-                                        fontSize: '0.9rem'
-                                    }}
-                                >
-                                    <MessageCircle size={16} /> 라인(LINE)으로 기사 소통하기
-                                </a>
-                            </div>
+                            // Removed Driver Line Contact for standard tours as requested
+                            null
                         )}
                     </div>
                 );
@@ -546,7 +508,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                                             <option value={-1}>픽업 없음 (개별 이동)</option>
                                                             {product.pickupOptions.map((opt, idx) => (
                                                                 <option key={idx} value={idx}>
-                                                                    {opt.area} (+{opt.price} THB)
+                                                                    {opt.name} (+{opt.price} THB)
                                                                 </option>
                                                             ))}
                                                         </select>

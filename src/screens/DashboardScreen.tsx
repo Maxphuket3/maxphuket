@@ -3,6 +3,13 @@ import { Itinerary, ItineraryItem, Spot } from '../types';
 import { Clock, ArrowRight, Plus, ChevronLeft, ChevronRight, Share2 } from 'lucide-react';
 import { RECOMMENDED_PLACES, CATEGORY_TABS } from '../data/recommendedPlaces';
 
+declare global {
+    interface Window {
+        google: any;
+        initPhuketMapEngine: any;
+    }
+}
+
 const DashboardScreen: React.FC<{
     itinerary: Itinerary;
     onSpotClick: (spot: Spot) => void;
@@ -242,16 +249,7 @@ const DashboardScreen: React.FC<{
                 </div>
             </div>
 
-            {/* 4. Footer Fixed */}
-            <div style={{ position: 'fixed', bottom: '0', left: '0', right: '0', background: 'rgba(5, 7, 10, 0.95)', backdropFilter: 'blur(30px)', padding: '25px 0', zIndex: 1000, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                <div style={{ textAlign: 'center' }}>
-                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '1.2rem', fontWeight: 800, marginBottom: '15px' }}>Need Help? KakaoTalk us!</p>
-                    <a href="#" style={{ display: 'inline-flex', alignItems: 'center', gap: '15px', background: '#FEE500', color: '#000', padding: '15px 50px', borderRadius: '100px', textDecoration: 'none', fontWeight: 950, fontSize: '1.2rem' }}>
-                        <div style={{ width: '30px', height: '30px', background: '#000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ color: '#FEE500', fontSize: '14px' }}>K</span></div>
-                        든든인 유? KakaoTalk us!
-                    </a>
-                </div>
-            </div>
+
 
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
