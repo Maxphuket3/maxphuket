@@ -63,7 +63,7 @@ if %errorlevel% neq 0 (
     echo [ERROR] Upload failed!
     echo Reasons could be:
     echo 1. The repository 'maxphuket' does not exist on your GitHub (Create it first!^).
-    echo 2. Permission denied (Check your login).
+    echo 2. Permission denied (Check your login^).
     echo 3. 'maxphuket3' is not the correct username.
 ) else (
     echo.
