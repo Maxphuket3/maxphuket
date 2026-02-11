@@ -13,14 +13,24 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
     const [isPaused, setIsPaused] = useState(false);
     const [touchStart, setTouchStart] = useState(0);
     const [touchEnd, setTouchEnd] = useState(0);
+    const [displayProducts, setDisplayProducts] = useState<Product[]>([]);
     const autoPlayTimeoutRef = useRef<number | null>(null);
 
-    const displayProducts = products || MAIN_PRODUCTS;
-    // 무한 루프를 위해 상품 배열을 3번 복제
-    const infiniteProducts = [...displayProducts, ...displayProducts, ...displayProducts];
+    // Force data sync on mount or prop change
+    useEffect(() => {
+        const data = products || MAIN_PRODUCTS;
+        if (data && data.length > 0) {
+            setDisplayProducts(data);
+        }
+    }, [products]);
+
+    // 무한 루프를 위해 상품 배열을 3번 복제 (데이터가 있을 때만)
+    const infiniteProducts = displayProducts.length > 0 ? [...displayProducts, ...displayProducts, ...displayProducts] : [];
 
     // 자동 슬라이드
     useEffect(() => {
+        if (displayProducts.length === 0) return;
+
         const interval = setInterval(() => {
             if (!isPaused && scrollRef.current) {
                 const cardWidth = 320 + 20; // 카드 너비 + 간격
