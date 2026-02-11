@@ -160,8 +160,19 @@ input {
   /* 모바일 부드러운 스크롤 */
 }
 
-/* 히트상품 하단 상담 섹션 숨기기 */
-.hit-products-footer-contact,
-.contact-banner-area {
+
+
+/* 히트상품 하단 중복 카톡 섹션 강제 숨김 */
+.contact-section,
+.kakao-banner-section {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 플로팅 원형 버튼도 방해된다면 함께 제거 */
+.kakao-float-button {
   display: none !important;
 }
