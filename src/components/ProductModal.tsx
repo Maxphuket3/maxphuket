@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Info, CheckCircle, XCircle, Car, AlertTriangle, CreditCard, MessageCircle, Calendar, Calculator, Clock, Briefcase, MapPin } from 'lucide-react';
 import { Product } from '../data/products';
 
@@ -699,7 +700,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
         }
     };
 
-    return (
+    return createPortal(
         <div
             style={{
                 position: 'fixed',
@@ -820,7 +821,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                 background: activeTab === tab.id ? 'rgba(212, 175, 55, 0.1)' : 'transparent',
                                 border: 'none',
                                 borderBottom: activeTab === tab.id ? '2px solid #D4AF37' : '2px solid transparent',
-                                color: activeTab === tab.id ? '#D4AF37' : '#a0aec0',
+                                color: activeTab === tab.id ? '#D4AF37' : 'rgba(255,255,255,0.7)',
                                 fontSize: '0.95rem',
                                 fontWeight: activeTab === tab.id ? 'bold' : 'normal',
                                 cursor: 'pointer',
@@ -829,15 +830,15 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                gap: '6px'
+                                gap: '8px'
                             }}
                         >
-                            <tab.icon size={16} /> {tab.label}
+                            <tab.icon size={18} /> {tab.label}
                         </button>
                     ))}
                 </div>
 
-                {/* Scrollable Content */}
+                {/* Content Body */}
                 <div
                     className="custom-scrollbar"
                     style={{
@@ -890,7 +891,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                     </a>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
