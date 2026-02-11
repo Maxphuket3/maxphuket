@@ -277,6 +277,7 @@ const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
         href="http://pf.kakao.com/_rxbHRX"
         target="_blank"
         rel="noreferrer"
+        className="kakao-float-button"
         style={{
           position: 'fixed',
           bottom: '30px',

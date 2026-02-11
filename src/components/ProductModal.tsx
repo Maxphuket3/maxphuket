@@ -659,6 +659,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                             alert(`견적이 복사되었습니다!\n카카오톡 상담창에 '붙여넣기' 해주세요.\n\n${quote}`);
                                             window.open('http://pf.kakao.com/_rxbHRX', '_blank');
                                         }}
+                                        className="kakao-banner-button"
                                         style={{
                                             width: '100%',
                                             background: '#FEE500',

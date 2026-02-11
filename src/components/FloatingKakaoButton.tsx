@@ -7,6 +7,7 @@ const FloatingKakaoButton: React.FC = () => {
             href="http://pf.kakao.com/_rxbHRX"
             target="_blank"
             rel="noreferrer"
+            className="kakao-float-button"
             style={{
                 position: 'fixed',
                 bottom: '24px',

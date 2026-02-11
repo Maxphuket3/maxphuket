@@ -172,7 +172,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                 </h3>
             </div>
 
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div className="hit-products-section" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <button
                     className="carousel-nav-btn"
                     onClick={() => scroll('left')}
@@ -221,7 +221,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                         touchAction: 'pan-x',
                         scrollSnapType: 'x mandatory' // Enable scroll snapping
                     }}
-                    className="hide-scrollbar"
+                    className="hide-scrollbar swiper-wrapper"
                 >
                     {/* Style block moved to top */}
 
@@ -241,7 +241,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                                 flexShrink: 0,
                                 scrollSnapAlign: 'center' // Snap each card to center
                             }}
-                            className="product-premium-card product-card"
+                            className="product-premium-card product-card swiper-slide"
                             onMouseOver={(e) => {
                                 e.currentTarget.style.transform = 'translateY(-10px)';
                                 e.currentTarget.style.boxShadow = '0 20px 40px rgba(212, 175, 55, 0.15)';

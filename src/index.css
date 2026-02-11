@@ -99,3 +99,42 @@ input {
   outline: none;
   font-size: 1rem;
 }
+
+/* 큰 사각형 버튼을 숨기는 코드 */
+.kakao-banner-button {
+  display: none !important;
+}
+
+/* 원형 플로팅 버튼은 유지 (기존 코드 확인) */
+.kakao-float-button {
+  display: block;
+}
+
+/* 히트상품 전체 컨테이너 */
+.hit-products-section {
+  width: 95%;
+  /* 90%보다 조금 더 넓게 설정 */
+  margin: 0 auto;
+  /* 가운데 정렬 */
+  overflow: visible;
+  /* 화살표가 잘리지 않도록 수정 (원래 hidden이었으나 화살표 위치 고려) */
+}
+
+/* 개별 상품 카드 사이의 간격 조정 */
+.swiper-slide {
+  width: auto;
+  /* 내용에 맞게 조절 */
+  padding: 0 10px;
+  /* 카드 사이 적당한 간격 */
+  box-sizing: border-box;
+  scroll-snap-align: center;
+  /* 카드가 중앙에 딱 멈춤 */
+}
+
+.swiper-wrapper {
+  display: flex;
+  scroll-snap-type: x mandatory;
+  /* 가로 방향 스냅 활성화 */
+  -webkit-overflow-scrolling: touch;
+  /* 모바일 부드러운 스크롤 */
+}
