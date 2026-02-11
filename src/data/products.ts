@@ -350,13 +350,13 @@ export const MAIN_PRODUCTS: Product[] = [
         importantNotes: ['사진 촬영 시 플래시 사용 금지', '조련사의 지시를 반드시 따라주세요.', '임산부 및 노약자 체험 제한될 수 있음']
     },
     {
-        id: 'p_fantasea',
-        name: '푸켓 환타씨 쇼 (Phuket FantaSea)',
-        price: '1,350 THB ~',
+        id: 'phuket-fantasea',
+        name: '푸켓 판타시 쇼 (Phuket FantaSea)',
+        price: '1,800 THB ~',
         thumbnail: '/images/fantasea.jpg',
         detailImage: '/images/fantasea.jpg',
         description: '푸켓 최대 규모의 문화 테마국! 웅장한 무대와 수십 마리의 코끼리가 출연하는 환상적인 쇼를 즐겨보세요. 화려한 뷔페 디너도 선택 가능합니다.',
-        category: 'TICKET',
+        category: 'HIT',
         badges: ['최대 규모 쇼', '코끼리 출연', '화/금/일 운영'],
         highlights: ['웅장한 스케일의 코끼리 공연', '다양한 볼거리의 테마파크', '세계 최대 규모 뷔페 식당'],
         courses: [
@@ -408,13 +408,13 @@ export const MAIN_PRODUCTS: Product[] = [
         importantNotes: ['공연장 내 촬영 금지 (휴대폰 보관 필수)', '화/금/일 주 3회 운영', '좌석은 당일 현장에서 배정됩니다.']
     },
     {
-        id: 'p_siam_niramit',
-        name: '푸켓 시암니라밋 쇼 (Siam Niramit Phuket)',
-        price: '1,530 THB ~',
-        thumbnail: '/images/siam_niramit.jpg',
-        detailImage: '/images/siam_niramit.jpg',
+        id: 'siam-niramit',
+        name: '시암 니라밋 공연 (Siam Niramit)',
+        price: '1,500 THB ~',
+        thumbnail: '/images/siam-niramit.jpg',
+        detailImage: '/images/siam-niramit.jpg',
         description: '기네스북에 등재된 세계 최대 규모의 무대! 태국의 역사와 문화를 웅장한 스케일로 풀어낸 대서사시를 경험하세요.',
-        category: 'TICKET',
+        category: 'HIT',
         badges: ['기네스북 무대', '화요일 휴무', '태국 역사 테마'],
         highlights: ['100명 이상의 출연진과 500여 벌의 의상', '실제 강이 흐르는 무대 연출', '다양한 전통 마을 체험'],
         courses: [
