@@ -100,126 +100,64 @@ input {
   font-size: 1rem;
 }
 
-/* 큰 사각형 버튼을 숨기는 코드 */
-/* 1. 화면 하단 동그란 카카오톡 플로팅 버튼 완전 제거 */
+/* 1. 카카오톡 상담창 완전 제거 (모든 기기) */
+/* 클래스명이 무엇이든 '고객님에게 문의하기'와 '노란 버튼'을 강제 삭제합니다 */
+.contact-section,
+.kakao-banner-section,
 .kakao-float-button,
 [class*="KakaoFloating"],
 [id*="kakao-talk-channel"] {
   display: none !important;
-}
-
-/* 2. '고객님에게 문의하기' 섹션 디자인 축소 */
-.contact-section {
-  padding: 10px 0 !important;
-}
-
-/* 3. 노란색 사각형 '빠른상담' 버튼 크기 대폭 축소 */
-.kakao-banner-button {
-  display: inline-flex !important;
-  /* 다시 보이게 설정 */
-  width: auto !important;
-  padding: 5px 15px !important;
-  font-size: 12px !important;
-  border-radius: 20px !important;
-  box-shadow: none !important;
-  /* 그림자 제거 (선택사항) */
-  margin-top: 5px !important;
-}
-
-/* 4. '고객님에게 문의하기' 텍스트 숨기기 (선택 사항) */
-.contact-title {
-  display: none !important;
-}
-
-/* 히트상품 전체 컨테이너 */
-.hit-products-section {
-  width: 95%;
-  /* 90%보다 조금 더 넓게 설정 */
-  margin: 0 auto;
-  /* 가운데 정렬 */
-  overflow: visible;
-  /* 화살표가 잘리지 않도록 수정 (원래 hidden이었으나 화살표 위치 고려) */
-}
-
-/* 개별 상품 카드 사이의 간격 조정 */
-.swiper-slide {
-  width: auto;
-  /* 내용에 맞게 조절 */
-  padding: 0 10px;
-  /* 카드 사이 적당한 간격 */
-  box-sizing: border-box;
-  scroll-snap-align: center;
-  /* 카드가 중앙에 딱 멈춤 */
-}
-
-.swiper-wrapper {
-  display: flex;
-  scroll-snap-type: x mandatory;
-  /* 가로 방향 스냅 활성화 */
-  -webkit-overflow-scrolling: touch;
-  /* 모바일 부드러운 스크롤 */
-}
-
-
-
-/* 히트상품 하단 중복 카톡 섹션 강제 숨김 */
-.contact-section,
-.kakao-banner-section {
-  display: none !important;
   visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
   height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-/* 플로팅 원형 버튼도 방해된다면 함께 제거 */
-.kakao-float-button {
-  display: none !important;
+/* 2. 데스크탑 화면: 기존 크기 유지 (수정 없음) */
+.hit-products-section {
+  max-width: 1200px;
+  /* 기존 데스크탑 표준 크기 */
+  margin: 0 auto;
+  width: 95%;
+  /* Desktop fallback */
+  position: relative;
 }
 
-/* =========================================
-   Mobile Carousel Enhancements
-   ========================================= */
-@media (max-width: 768px) {
-
-  /* 1. 슬라이드 전체 폭 확장 */
-  .hit-product-slider {
+/* 3. 모바일 화면만(768px 이하) 시원하게 확장 */
+@media screen and (max-width: 768px) {
+  .hit-products-section {
     width: 100% !important;
-    /* 전체 폭 사용 */
-    padding: 0 15px !important;
-    /* 양옆 최소 여백만 남김 */
+    max-width: none !important;
+    padding: 0 !important;
     margin: 0 !important;
   }
 
   .swiper-container {
     overflow: visible !important;
-    /* 다음 상품이 살짝 보이게 하여 시원한 느낌 부여 */
     padding-bottom: 20px;
-    /* 그림자 잘림 방지 */
   }
 
-  /* 2. 자석 스냅(Snap) 기능 및 부드러운 정지 */
   .swiper-wrapper {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     padding: 10px 0 30px 0 !important;
-    /* 상하 여백 조정 */
   }
 
   .swiper-slide {
-    width: 85vw !important;
-    /* 상품 카드가 화면의 85%를 차지 (시원하게) */
-    min-width: 85vw !important;
+    width: 88vw !important;
+    /* 모바일에서만 상품 카드를 크게 확장 */
+    min-width: 88vw !important;
     scroll-snap-align: center;
-    /* 정지 시 화면 중앙에 고정 */
+    margin-right: 10px;
     transition: transform 0.3s;
     transform: scale(0.95);
     /* 기본 상태는 약간 작게 */
     opacity: 0.8;
-    /* 비활성 상태 투명도 */
   }
 
-  /* 현재 중앙에 있거나 포커스된 슬라이드 강조 (사용자 요청 부분 구현) */
   .swiper-slide-active,
   .swiper-slide:hover,
   .swiper-slide:focus-within {
