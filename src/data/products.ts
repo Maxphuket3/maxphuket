@@ -526,5 +526,86 @@ export const MAIN_PRODUCTS: Product[] = [
         ],
         provider: 'HANUMAN',
         luggagePrice: 0 // No luggage info provided, assume 0 or handle manually
+    },
+    {
+        id: "pp-khai",
+        name: "피피섬 + 카이섬 투어",
+        price: "1,600 THB ~",
+        thumbnail: "/images/phiphi-representative.jpg",
+        detailImage: "/images/phiphi-representative.jpg",
+        description: "피피섬과 카이섬을 하루에 돌아보는 알찬 일정! 스피드보트로 빠르게 이동하여 맑은 바다에서 스노클링을 즐겨보세요.",
+        category: "HIT",
+        badges: ["인기 투어", "피피+카이", "스피드보트"],
+        highlights: ["카이섬의 맑은 바다", "피피섬 점심 식사", "스노클링 2회 포인트"],
+        courses: [
+            {
+                name: "스피드보트 (성인/아동)",
+                priceAdult: "1,600 바트",
+                priceChild: "1,400 바트",
+                features: ["기본 스피드보트", "점심 식사 포함"]
+            },
+            {
+                name: "카타마란 (성인/아동)",
+                priceAdult: "2,400 바트",
+                priceChild: "2,000 바트",
+                features: ["안정적인 카타마란 보트", "넓은 공간"]
+            }
+        ],
+        vehicleInfo: "스피드보트 (카타마란 선택 시 2,400바트)\n08:00 호텔 픽업 → 09:30 카이섬 출발 → 12:00 피피섬 중식 → 17:30 호텔 귀환\n왕복 픽업 포함 (무료 구역)",
+        inclusions: ["왕복 차량", "보트", "영어 가이드", "국립공원 입장료", "점심식사", "스노클링 장비"],
+        exclusions: ["개인 경비", "매너팁"],
+        importantNotes: ["스노클링 장비 분실 시 비용 청구될 수 있습니다.", "임산부는 투어 참여가 제한됩니다."]
+    },
+    {
+        id: "pp-khai-maithon",
+        name: "피피섬 + 카이 + 마이톤섬 투어",
+        price: "2,300 THB ~",
+        thumbnail: "/images/phiphi-representative.jpg",
+        detailImage: "/images/phiphi-representative.jpg",
+        description: "럭셔리 카타마란을 타고 피피, 카이, 마이톤 3개 섬을 모두 즐기는 프리미엄 투어입니다. 워터 슬라이드와 투명 카약도 이용 가능합니다.",
+        category: "HIT",
+        badges: ["3개 섬 투어", "카타마란", "워터슬라이드"],
+        highlights: ["마이톤섬 스노클링", "피레 라군 감상", "워터 슬라이드 & 투명 카약"],
+        courses: [
+            {
+                name: "카타마란 (성인/아동)",
+                priceAdult: "2,300 바트",
+                priceChild: "2,000 바트",
+                features: ["카타마란 이용", "워터 슬라이드 보유", "투명 카약 무료"]
+            }
+        ],
+        vehicleInfo: "카타마란 보트 (워터 슬라이드 포함)\n08:00 호텔 픽업 → 12:00 피피섬 중식 → 14:30 피레 라군 → 17:00 마이톤섬 스노클링 → 18:30 귀환",
+        inclusions: ["투명 카약", "패들 보트", "2층형 카타마란 이용", "국립공원 입장료 포함", "왕복 픽업", "점심 식사"],
+        exclusions: ["개인 경비", "매너팁"],
+        importantNotes: ["날씨에 따라 마이톤섬 방문이 어려울 수 있습니다.", "수영복은 미리 착용하고 오세요."]
+    },
+    {
+        id: "pp-bamboo",
+        name: "피피섬 + 뱀부섬 투어",
+        price: "2,400 THB ~",
+        thumbnail: "/images/phiphi-representative.jpg",
+        detailImage: "/images/phiphi-representative.jpg",
+        description: "에메랄드빛 바다로 유명한 뱀부섬과 피피섬을 함께! 인생 인생샷을 남길 수 있는 최고의 코스입니다.",
+        category: "HIT",
+        badges: ["뱀부섬 포함", "인생샷 명소", "스피드보트"],
+        highlights: ["뱀부섬의 백사장", "피피섬 관광", "스노클링 체험"],
+        courses: [
+            {
+                name: "스피드보트 (성인/아동)",
+                priceAdult: "2,400 바트",
+                priceChild: "2,000 바트",
+                features: ["빠른 이동", "뱀부섬 입장료 포함"]
+            },
+            {
+                name: "카타마란 (성인/아동)",
+                priceAdult: "2,700 바트",
+                priceChild: "2,300 바트",
+                features: ["여유로운 이동", "넓은 좌석"]
+            }
+        ],
+        vehicleInfo: "스피드보트 (카타마란 선택 시 2,700바트)\n07:30 호텔 픽업 → 09:30 피피섬 출발 → 13:30 피피섬 중식 → 14:40 뱀부섬 자유시간 → 17:30 귀환",
+        inclusions: ["뱀부섬 국립공원 입장료 포함", "스노클링 장비 제공", "점심 식사", "왕복 픽업"],
+        exclusions: ["개인 경비", "매너팁"],
+        importantNotes: ["국립공원 입장권은 투어비에 포함되어 있습니다.", "현지 사정에 따라 일정이 변경될 수 있습니다."]
     }
 ];
