@@ -111,8 +111,8 @@ export const MAIN_PRODUCTS: Product[] = [
         id: 'p1',
         name: '라차섬 투어 (Racha Island Tour)',
         price: '1,200 THB ~',
-        thumbnail: 'https://images.unsplash.com/photo-1589394815804-c10427c3e34b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', // Racha Island placeholder
-        detailImage: 'https://images.unsplash.com/photo-1589394815804-c10427c3e34b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        thumbnail: '/images/racha_island.jpg',
+        detailImage: '/images/racha_island.jpg',
         description: '에메랄드 빛 바다와 백사장이 펼쳐진 라차섬(Racha Yai)으로 떠나는 힐링 투어입니다. 스노클링 포인트가 환상적이에요.',
         highlights: [
             '맑고 투명한 바다에서의 스노클링',
@@ -140,8 +140,8 @@ export const MAIN_PRODUCTS: Product[] = [
         id: 'p_simon',
         name: '사이먼 캬바레 쇼 (Simon Cabaret)',
         price: '800 THB',
-        thumbnail: '/images/simon_cabaret.jpg',
-        detailImage: '/images/simon_cabaret.jpg',
+        thumbnail: '/images/simon_cabaret.png',
+        detailImage: '/images/simon_cabaret.png',
         description: '푸켓 3대 쇼 중 하나로 꼽히는 화려한 트랜스젠더 쇼! 웅장한 무대와 화려한 의상, 다채로운 퍼포먼스를 즐겨보세요.',
         highlights: [
             '화려한 의상과 무대 연출',
@@ -325,8 +325,8 @@ export const MAIN_PRODUCTS: Product[] = [
         id: 'p_tiger_park',
         name: '타이거 파크 빅부다 푸켓 (Tiger Park)',
         price: '900 THB ~',
-        thumbnail: 'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', // Tiger Park placeholder
-        detailImage: 'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        thumbnail: '/images/tiger_park.jpg',
+        detailImage: '/images/tiger_park.jpg',
         description: '빅부다 근처 찰롱 지역에 위치한 호랑이 공원입니다. 다양한 크기의 호랑이들과 가까이에서 교감하고 사진을 찍을 수 있는 특별한 경험을 제공합니다.',
         category: 'TICKET',
         badges: ['빅부다 근처', '인생샷 명소', '호랑이 교감'],
@@ -353,8 +353,8 @@ export const MAIN_PRODUCTS: Product[] = [
         id: 'p_fantasea',
         name: '푸켓 환타씨 쇼 (Phuket FantaSea)',
         price: '1,350 THB ~',
-        thumbnail: 'https://images.unsplash.com/photo-1598193955431-d095c31b9131?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', // Fantasea placeholder
-        detailImage: 'https://images.unsplash.com/photo-1598193955431-d095c31b9131?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        thumbnail: '/images/fantasea.jpg',
+        detailImage: '/images/fantasea.jpg',
         description: '푸켓 최대 규모의 문화 테마국! 웅장한 무대와 수십 마리의 코끼리가 출연하는 환상적인 쇼를 즐겨보세요. 화려한 뷔페 디너도 선택 가능합니다.',
         category: 'TICKET',
         badges: ['최대 규모 쇼', '코끼리 출연', '화/금/일 운영'],
@@ -411,8 +411,8 @@ export const MAIN_PRODUCTS: Product[] = [
         id: 'p_siam_niramit',
         name: '푸켓 시암니라밋 쇼 (Siam Niramit Phuket)',
         price: '1,530 THB ~',
-        thumbnail: 'https://plus.unsplash.com/premium_photo-1661919210043-fd847a58522d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', // Siam Niramit placeholder
-        detailImage: 'https://plus.unsplash.com/premium_photo-1661919210043-fd847a58522d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        thumbnail: '/images/siam_niramit.jpg',
+        detailImage: '/images/siam_niramit.jpg',
         description: '기네스북에 등재된 세계 최대 규모의 무대! 태국의 역사와 문화를 웅장한 스케일로 풀어낸 대서사시를 경험하세요.',
         category: 'TICKET',
         badges: ['기네스북 무대', '화요일 휴무', '태국 역사 테마'],
@@ -470,8 +470,8 @@ export const MAIN_PRODUCTS: Product[] = [
         id: 'p_hanuman_world',
         name: '하누만 월드 짚라인 투어 (Hanuman World)',
         price: '1,325 THB ~',
-        thumbnail: 'https://images.unsplash.com/photo-1621244249243-436b79b5eea8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', // Hanuman World placeholder
-        detailImage: 'https://images.unsplash.com/photo-1621244249243-436b79b5eea8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        thumbnail: '/images/hanuman_world.jpg',
+        detailImage: '/images/hanuman_world.jpg',
         description: '푸켓의 열대우림을 날아다니는 짜릿한 경험! 최신 안전 장비와 함께 즐기는 다이내믹한 짚라인 어드벤처입니다. 다양한 코스와 롤러 짚라인을 즐겨보세요.',
         category: 'TOUR',
         badges: ['액티비티', '스릴 만점', '숲속 힐링'],
