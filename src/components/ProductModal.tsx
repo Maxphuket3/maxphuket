@@ -644,7 +644,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                     }}>
                                         <div>
                                             {/* Hide title if needed via class or simplify */}
-                                            <div className="contact-title" style={{ color: '#a0aec0', fontSize: '0.9rem', marginBottom: '4px' }}>최종 결제 예정 금액</div>
+                                            {/* <div className="contact-title" style={{ color: '#a0aec0', fontSize: '0.9rem', marginBottom: '4px' }}>최종 결제 예정 금액</div> */}
                                             <div style={{ color: '#D4AF37', fontSize: '1.4rem', fontWeight: '900' }}>{calculateTotal()} THB</div>
                                         </div>
                                         {/* Removed footer note */}
