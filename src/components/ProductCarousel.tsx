@@ -172,7 +172,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                 </h3>
             </div>
 
-            <div className="hit-products-section" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div className="hit-products-section hit-product-slider swiper-container" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <button
                     className="carousel-nav-btn"
                     onClick={() => scroll('left')}

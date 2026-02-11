@@ -176,3 +176,55 @@ input {
 .kakao-float-button {
   display: none !important;
 }
+
+/* =========================================
+   Mobile Carousel Enhancements
+   ========================================= */
+@media (max-width: 768px) {
+
+  /* 1. 슬라이드 전체 폭 확장 */
+  .hit-product-slider {
+    width: 100% !important;
+    /* 전체 폭 사용 */
+    padding: 0 15px !important;
+    /* 양옆 최소 여백만 남김 */
+    margin: 0 !important;
+  }
+
+  .swiper-container {
+    overflow: visible !important;
+    /* 다음 상품이 살짝 보이게 하여 시원한 느낌 부여 */
+    padding-bottom: 20px;
+    /* 그림자 잘림 방지 */
+  }
+
+  /* 2. 자석 스냅(Snap) 기능 및 부드러운 정지 */
+  .swiper-wrapper {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 0 30px 0 !important;
+    /* 상하 여백 조정 */
+  }
+
+  .swiper-slide {
+    width: 85vw !important;
+    /* 상품 카드가 화면의 85%를 차지 (시원하게) */
+    min-width: 85vw !important;
+    scroll-snap-align: center;
+    /* 정지 시 화면 중앙에 고정 */
+    transition: transform 0.3s;
+    transform: scale(0.95);
+    /* 기본 상태는 약간 작게 */
+    opacity: 0.8;
+    /* 비활성 상태 투명도 */
+  }
+
+  /* 현재 중앙에 있거나 포커스된 슬라이드 강조 (사용자 요청 부분 구현) */
+  .swiper-slide-active,
+  .swiper-slide:hover,
+  .swiper-slide:focus-within {
+    transform: scale(1) !important;
+    opacity: 1 !important;
+    z-index: 10;
+  }
+}
