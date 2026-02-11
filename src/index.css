@@ -101,13 +101,34 @@ input {
 }
 
 /* 큰 사각형 버튼을 숨기는 코드 */
-.kakao-banner-button {
+/* 1. 화면 하단 동그란 카카오톡 플로팅 버튼 완전 제거 */
+.kakao-float-button,
+[class*="KakaoFloating"],
+[id*="kakao-talk-channel"] {
   display: none !important;
 }
 
-/* 원형 플로팅 버튼은 유지 (기존 코드 확인) */
-.kakao-float-button {
-  display: block;
+/* 2. '고객님에게 문의하기' 섹션 디자인 축소 */
+.contact-section {
+  padding: 10px 0 !important;
+}
+
+/* 3. 노란색 사각형 '빠른상담' 버튼 크기 대폭 축소 */
+.kakao-banner-button {
+  display: inline-flex !important;
+  /* 다시 보이게 설정 */
+  width: auto !important;
+  padding: 5px 15px !important;
+  font-size: 12px !important;
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  /* 그림자 제거 (선택사항) */
+  margin-top: 5px !important;
+}
+
+/* 4. '고객님에게 문의하기' 텍스트 숨기기 (선택 사항) */
+.contact-title {
+  display: none !important;
 }
 
 /* 히트상품 전체 컨테이너 */

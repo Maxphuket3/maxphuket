@@ -633,23 +633,21 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
                                 {/* Total Price */}
                                 <div>
-                                    <div style={{
-                                        marginTop: '20px',
-                                        padding: '24px',
-                                        background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(0,0,0,0) 100%)',
-                                        borderRadius: '16px',
-                                        border: '1px solid rgba(212, 175, 55, 0.3)',
+                                    <div className="contact-section" style={{
+                                        marginTop: '10px',
+                                        padding: '10px 0', /* reduced padding */
+                                        background: 'transparent',
+                                        /* Removed heavy border/bg */
                                         display: 'flex',
-                                        justifyContent: 'space-between',
+                                        flexDirection: 'column',
                                         alignItems: 'center'
                                     }}>
                                         <div>
-                                            <div style={{ color: '#a0aec0', fontSize: '0.9rem' }}>최종 결제 예정 금액</div>
-                                            <div style={{ color: '#D4AF37', fontSize: '1.8rem', fontWeight: '900' }}>{calculateTotal()} THB</div>
+                                            {/* Hide title if needed via class or simplify */}
+                                            <div className="contact-title" style={{ color: '#a0aec0', fontSize: '0.9rem', marginBottom: '4px' }}>최종 결제 예정 금액</div>
+                                            <div style={{ color: '#D4AF37', fontSize: '1.4rem', fontWeight: '900' }}>{calculateTotal()} THB</div>
                                         </div>
-                                        <div style={{ textAlign: 'right', fontSize: '0.8rem', color: '#718096' }}>
-                                            * 현장/추가 지불 금액 포함 예상 견적
-                                        </div>
+                                        {/* Removed footer note */}
                                     </div>
 
                                     <button
@@ -661,32 +659,32 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         }}
                                         className="kakao-banner-button"
                                         style={{
-                                            width: '100%',
+                                            /* width: '100%', REMOVED: CSS handles this to be auto */
                                             background: '#FEE500',
                                             color: '#000',
-                                            padding: '16px',
-                                            borderRadius: '16px',
+                                            /* padding: '16px', REMOVED: handled by CSS */
+                                            /* borderRadius: '16px', REMOVED: handled by CSS */
                                             textDecoration: 'none',
                                             fontWeight: 'bold',
-                                            display: 'flex',
+                                            display: 'inline-flex', /* Changed to inline-flex */
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            gap: '10px',
-                                            marginTop: '16px',
-                                            boxShadow: '0 4px 12px rgba(254, 229, 0, 0.3)',
+                                            gap: '6px', /* Reduced gap */
+                                            marginTop: '10px',
+                                            /* boxShadow: '0 4px 12px rgba(254, 229, 0, 0.3)', REMOVED: CSS box-shadow: none */
                                             transition: 'all 0.2s',
-                                            fontSize: '1.1rem',
+                                            /* fontSize: '1.1rem', REMOVED: handled by CSS */
                                             border: 'none',
                                             cursor: 'pointer'
                                         }}
                                         onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
                                         onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                                     >
-                                        <MessageCircle size={24} />
-                                        카카오톡으로 예약 상담하기
+                                        <MessageCircle size={16} /> {/* Resized icon */}
+                                        카카오톡 채팅 상담
                                     </button>
-                                    <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '0.9rem', color: '#a0aec0' }}>
-                                        버튼을 누르면 내용을 자동으로 복사하고 이동합니다.
+                                    <div style={{ textAlign: 'center', marginTop: '6px', fontSize: '0.8rem', color: '#718096' }}>
+                                        견적 내용이 자동으로 복사됩니다.
                                     </div>
                                 </div>
                             </div>

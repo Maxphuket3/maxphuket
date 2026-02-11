@@ -272,7 +272,7 @@ const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
         />
       )}
 
-      {/* Floating Action Button - KakaoTalk */}
+      {/* Floating Action Button - KakaoTalk
       <a
         href="http://pf.kakao.com/_rxbHRX"
         target="_blank"
@@ -301,6 +301,7 @@ const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
       >
         <MessageCircle size={32} fill="#000" />
       </a>
+      */}
     </div>
   );
 };

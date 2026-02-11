@@ -34,7 +34,7 @@ const App: React.FC = () => {
             {/* Catch all - Redirect to Start */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-          <FloatingKakaoButton />
+          {/* <FloatingKakaoButton /> */}
         </div>
       </BrowserRouter>
     </JourneyProvider>
