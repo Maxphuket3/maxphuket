@@ -240,6 +240,37 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                 {product.vehicleInfo || '차량 정보가 없습니다.'}
                             </p>
                         </div>
+
+                        {/* Explicitly show Pickup Costs if available */}
+                        {(product.pickupZones || product.pickupOptions) && (
+                            <div style={{ marginBottom: '30px', background: 'rgba(255,255,255,0.05)', padding: '16px', borderRadius: '12px' }}>
+                                <h4 style={{ color: '#90cdf4', fontSize: '1rem', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <MapPin size={16} /> 지역별 픽업 추가 비용
+                                </h4>
+                                {product.pickupZones ? (
+                                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '8px' }}>
+                                        {product.pickupZones.map((zone, idx) => (
+                                            <li key={idx} style={{ display: 'flex', justifyContent: 'space-between', color: '#e2e8f0', fontSize: '0.9rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '4px' }}>
+                                                <span style={{ maxWidth: '60%' }}>{zone.zones.join(', ')}</span>
+                                                <span style={{ color: '#D4AF37', whiteSpace: 'nowrap' }}>
+                                                    {zone.priceCar > 0 ? `승용차 ${zone.priceCar}B / 밴 ${zone.priceVan}B` : '무료'}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : product.pickupOptions ? (
+                                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '8px' }}>
+                                        {product.pickupOptions.map((opt, idx) => (
+                                            <li key={idx} style={{ display: 'flex', justifyContent: 'space-between', color: '#e2e8f0', fontSize: '0.9rem' }}>
+                                                <span>{opt.name}</span>
+                                                <span style={{ color: '#D4AF37' }}>+{opt.price} THB</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : null}
+                            </div>
+                        )}
+
                         <div style={{ marginBottom: '30px' }}>
                             <h3 style={{ color: '#D4AF37', fontSize: '1.2rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <CreditCard size={20} /> 추가 비용 안내

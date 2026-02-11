@@ -265,10 +265,12 @@ const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
       </div>
 
       {/* Product Detail Modal */}
-      <ProductModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
 
       {/* Floating Action Button - KakaoTalk */}
       <a
