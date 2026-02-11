@@ -217,6 +217,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
 
                     {infiniteProducts.map((product, index) => (
                         <div
+                            key={`${product.id}-${index}`}
                             onClick={() => onProductClick(product)}
                             style={{
                                 height: '220px',
