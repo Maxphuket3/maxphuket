@@ -11,6 +11,7 @@ import DashboardScreen from './screens/DashboardScreen';
 import AdminDashboard from './screens/AdminDashboard';
 import DriverRegistration from './screens/DriverRegistration';
 
+import TourDetailScreen from './screens/TourDetailScreen';
 import FloatingKakaoButton from './components/FloatingKakaoButton';
 
 const App: React.FC = () => {
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             <Route path="/" element={<JourneyStartScreen />} />
             <Route path="/select" element={<JourneySelectScreen />} />
             <Route path="/result" element={<LastDayScreen />} />
+            <Route path="/tour-detail/:id" element={<TourDetailScreen />} />
 
             {/* Legacy Routes / Hidden */}
             <Route path="/old-main" element={<MainScreen onNext={() => { }} />} />

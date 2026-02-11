@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useJourney } from '../context/JourneyContext';
 import { Plane, Users, MapPin, Hotel as HotelIcon, Star } from 'lucide-react';
 import ProductCarousel from '../components/ProductCarousel';
-import ProductModal from '../components/ProductModal';
 import { Product } from '../data/products';
 import { PHUKET_HOTELS, Hotel } from '../data/hotels';
 
@@ -11,7 +10,6 @@ const JourneyStartScreen: React.FC = () => {
     const navigate = useNavigate();
     const { userInfo, setUserInfo } = useJourney();
     const [localInfo, setLocalInfo] = useState(userInfo);
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     // Hotel Autocomplete State
     const [hotelQuery, setHotelQuery] = useState(userInfo.resort || '');
@@ -75,6 +73,18 @@ const JourneyStartScreen: React.FC = () => {
         e.preventDefault();
         setUserInfo(localInfo);
         navigate('/select');
+    };
+
+    const handleProductClick = (product: Product) => {
+        // 1. Check path (console log)
+        console.log("이동할 상품 ID:", product.id);
+
+        // 2. Navigate
+        if (product.id) {
+            navigate(`/tour-detail/${product.id}`);
+        } else {
+            alert("상품 정보를 불러올 수 없습니다.");
+        }
     };
 
     return (
@@ -284,11 +294,11 @@ const JourneyStartScreen: React.FC = () => {
                             }
                             .custom-scrollbar::-webkit-scrollbar-track {
                                 background: rgba(0,0,0,0.3);
-                                border-radius: 3px;
+                                borderRadius: 3px;
                             }
                             .custom-scrollbar::-webkit-scrollbar-thumb {
                                 background: #D4AF37;
-                                border-radius: 3px;
+                                borderRadius: 3px;
                             }
                             .custom-scrollbar::-webkit-scrollbar-thumb:hover {
                                 background: #FDC700;
@@ -411,11 +421,9 @@ const JourneyStartScreen: React.FC = () => {
 
             {/* Products Section */}
             <div style={{ width: '100%', maxWidth: '1200px', margin: '60px auto 40px', padding: '0 40px', boxSizing: 'border-box' }}>
-
-                <ProductCarousel onProductClick={setSelectedProduct} />
+                <ProductCarousel onProductClick={handleProductClick} />
             </div>
 
-            <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
         </div>
     );
 };
