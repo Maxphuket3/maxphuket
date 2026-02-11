@@ -654,7 +654,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
                                 {/* Total Price */}
                                 <div>
-                                    <div className="contact-section" style={{
+                                    <div className="price-summary-section" style={{
                                         marginTop: '10px',
                                         padding: '10px 0', /* reduced padding */
                                         background: 'transparent',
@@ -670,6 +670,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         </div>
                                         {/* Removed footer note */}
                                     </div>
+
+                                    {/* 
+                                    <section className="contact-box">
+                                      <h3>고객님에게 문의하기</h3>
+                                      <button className="kakao-btn">카카오톡으로 빠른상담</button>
+                                    </section> 
+                                    */}
 
                                     {/* <button
                                         onClick={() => {
