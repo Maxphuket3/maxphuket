@@ -110,7 +110,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             // Simplified logic as requested or standard
             luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
         } else {
-            const pricePerBag = product.luggagePrice || 300;
+            const pricePerBag = product.carrierFeePerUnit || product.luggagePrice || 300;
             luggageTotalInfo = luggageCount * pricePerBag;
         }
 
@@ -136,7 +136,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
         let extraMsg = '';
         if (product.onSiteFees) extraMsg += '\n(현장지불금/입장료 포함)';
         if (product.pickupZones && pickupHotel) extraMsg += '\n(지역별 픽업추가금 적용됨)';
-        const standardLuggMsg = (product.luggagePrice && luggageCount > 0) ? `\n수하물: ${luggageCount}개` : '';
+        const standardLuggMsg = ((product.luggagePrice || product.hasCarrierOption) && luggageCount > 0) ? `\n수하물: ${luggageCount}개` : '';
 
         return `${baseMsg}${pickupMsg}${standardLuggMsg}${extraMsg}\n----------------\n예상 견적: ${total} THB`;
     };
@@ -584,21 +584,42 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                                     </div>
                                                 </div>
 
-                                                {/* Baggage Input - Only if luggagePrice is set */}
-                                                {product.luggagePrice !== undefined && (
-                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '12px', background: 'rgba(255,255,255,0.05)', padding: '10px', borderRadius: '8px' }}>
-                                                        <span style={{ color: '#cbd5e0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                                            <Briefcase size={16} /> 캐리어(수하물) 개수
-                                                        </span>
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                            <input
-                                                                type="number" min="0" value={luggageCount} onChange={(e) => setLuggageCount(parseInt(e.target.value) || 0)}
-                                                                style={{ width: '60px', background: '#2d3748', color: '#fff', border: '1px solid #D4AF37', padding: '6px', borderRadius: '6px', textAlign: 'center', fontWeight: 'bold' }}
-                                                            />
-                                                            <span style={{ fontSize: '0.85rem', color: '#D4AF37' }}>
-                                                                (개당 {product.luggagePrice}B)
-                                                            </span>
+                                                {/* Baggage Input - Only if luggagePrice is set OR hasCarrierOption is true */}
+                                                {/* Baggage / Carrier Option Input */}
+                                                {(product.luggagePrice !== undefined || product.hasCarrierOption) && (
+                                                    <div className="carrier-option-box" style={{
+                                                        marginTop: '12px',
+                                                        background: 'rgba(255,255,255,0.05)',
+                                                        padding: '16px',
+                                                        borderRadius: '12px',
+                                                        border: '1px solid rgba(255,255,255,0.1)'
+                                                    }}>
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                                            <label style={{ color: '#cbd5e0', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem' }}>
+                                                                <Briefcase size={18} />
+                                                                {product.hasCarrierOption ? '캐리어 보관 (개당 200바트)' : `수하물 개수 (개당 ${product.luggagePrice}B)`}
+                                                            </label>
                                                         </div>
+
+                                                        <div className="counter-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', background: '#2d3748', padding: '8px', borderRadius: '8px' }}>
+                                                            <button
+                                                                onClick={() => setLuggageCount(prev => Math.max(0, prev - 1))}
+                                                                style={{ width: '32px', height: '32px', borderRadius: '50%', border: '1px solid #4a5568', background: 'transparent', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}
+                                                            >
+                                                                -
+                                                            </button>
+                                                            <span style={{ fontSize: '1.1rem', fontWeight: 'bold', minWidth: '40px', textAlign: 'center', color: '#fff' }}>{luggageCount} 개</span>
+                                                            <button
+                                                                onClick={() => setLuggageCount(prev => prev + 1)}
+                                                                style={{ width: '32px', height: '32px', borderRadius: '50%', border: '1px solid #D4AF37', background: '#D4AF37', color: '#000', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', fontWeight: 'bold' }}
+                                                            >
+                                                                +
+                                                            </button>
+                                                        </div>
+
+                                                        <p className="fee-notice" style={{ textAlign: 'right', marginTop: '12px', color: '#D4AF37', fontSize: '0.9rem', margin: '12px 0 0 0' }}>
+                                                            추가 비용: {(luggageCount * (product.carrierFeePerUnit || product.luggagePrice || 0)).toLocaleString()} 바트
+                                                        </p>
                                                     </div>
                                                 )}
                                             </div>
@@ -650,7 +671,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         {/* Removed footer note */}
                                     </div>
 
-                                    <button
+                                    {/* <button
                                         onClick={() => {
                                             const quote = generateQuote();
                                             navigator.clipboard.writeText(quote);
@@ -659,30 +680,25 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         }}
                                         className="kakao-banner-button"
                                         style={{
-                                            /* width: '100%', REMOVED: CSS handles this to be auto */
                                             background: '#FEE500',
                                             color: '#000',
-                                            /* padding: '16px', REMOVED: handled by CSS */
-                                            /* borderRadius: '16px', REMOVED: handled by CSS */
                                             textDecoration: 'none',
                                             fontWeight: 'bold',
-                                            display: 'inline-flex', /* Changed to inline-flex */
+                                            display: 'inline-flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            gap: '6px', /* Reduced gap */
+                                            gap: '6px',
                                             marginTop: '10px',
-                                            /* boxShadow: '0 4px 12px rgba(254, 229, 0, 0.3)', REMOVED: CSS box-shadow: none */
                                             transition: 'all 0.2s',
-                                            /* fontSize: '1.1rem', REMOVED: handled by CSS */
                                             border: 'none',
                                             cursor: 'pointer'
                                         }}
                                         onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
                                         onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                                     >
-                                        <MessageCircle size={16} /> {/* Resized icon */}
+                                        <MessageCircle size={16} />
                                         카카오톡 채팅 상담
-                                    </button>
+                                    </button> */}
                                     <div style={{ textAlign: 'center', marginTop: '6px', fontSize: '0.8rem', color: '#718096' }}>
                                         견적 내용이 자동으로 복사됩니다.
                                     </div>

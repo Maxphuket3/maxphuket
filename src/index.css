@@ -159,3 +159,9 @@ input {
   -webkit-overflow-scrolling: touch;
   /* 모바일 부드러운 스크롤 */
 }
+
+/* 히트상품 하단 상담 섹션 숨기기 */
+.hit-products-footer-contact,
+.contact-banner-area {
+  display: none !important;
+}

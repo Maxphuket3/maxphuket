@@ -36,6 +36,8 @@ export interface Product {
         priceCar: number;
         priceVan: number;
     }[];
+    carrierFeePerUnit?: number;
+    hasCarrierOption?: boolean;
 }
 
 export const MAIN_PRODUCTS: Product[] = [
@@ -351,8 +353,8 @@ export const MAIN_PRODUCTS: Product[] = [
     },
     {
         id: 'phuket-fantasea',
-        name: '푸켓 판타시 쇼 (Phuket FantaSea)',
-        price: '1,800 THB ~',
+        name: '푸켓 환타시 쇼 (Phuket FantaSea)',
+        price: '1,350 THB ~',
         thumbnail: '/images/fantasea.jpg',
         detailImage: '/images/fantasea.jpg',
         description: '푸켓 최대 규모의 문화 테마국! 웅장한 무대와 수십 마리의 코끼리가 출연하는 환상적인 쇼를 즐겨보세요. 화려한 뷔페 디너도 선택 가능합니다.',
@@ -383,18 +385,6 @@ export const MAIN_PRODUCTS: Product[] = [
                 priceAdult: '1,800 바트',
                 priceChild: '1,650 바트',
                 features: ['쇼 관람권', '인터내셔널 뷔페', '골드석(중앙)']
-            },
-            {
-                name: '쇼 + 씨푸드 디너 (일반석)',
-                priceAdult: '2,600 바트',
-                priceChild: '2,450 바트',
-                features: ['쇼 관람권', '씨푸드 뷔페 업그레이드', '일반석']
-            },
-            {
-                name: '쇼 + 씨푸드 디너 (골드석)',
-                priceAdult: '2,850 바트',
-                priceChild: '2,700 바트',
-                features: ['쇼 관람권', '씨푸드 뷔페 업그레이드', '골드석(중앙)']
             }
         ],
         pickupOptions: [
@@ -402,15 +392,15 @@ export const MAIN_PRODUCTS: Product[] = [
         ],
         inclusions: ['선택한 쇼/디너 티켓', '테마파크 입장료'],
         exclusions: ['개인 경비', '매너팁', '이동 서비스 (옵션 구매)'],
-        vehicleInfo: '픽업 서비스 신청 시 호텔 로비 픽업\n운영일: 화, 금, 일\n게이트 오픈: 17:30 / 쇼 시작: 21:00\n디너 식사: 18:00 - 21:00',
+        vehicleInfo: '픽업 서비스 신청 시 호텔 로비 픽업\n운영일: 화, 금, 일\n개장 18:00 / 공연 21:00 ~ 22:10\n디너 식사: 18:00 - 21:00',
         pricePolicy: '성인/아동 구분 없음 (좌석 점유 시 동일 요금)\n만 4세 미만 & 키 100cm 미만 무료 (좌석 없음)\n키 101cm ~ 140cm 아동 요금 적용 (디너 이용 시)',
         cancellationPolicy: '공연 당일 환불 불가',
         importantNotes: ['공연장 내 촬영 금지 (휴대폰 보관 필수)', '화/금/일 주 3회 운영', '좌석은 당일 현장에서 배정됩니다.']
     },
     {
-        id: 'siam-niramit',
-        name: '시암 니라밋 공연 (Siam Niramit)',
-        price: '1,500 THB ~',
+        id: 'siam-niramit-phuket',
+        name: '시암 니라밋 (Siam Niramit)',
+        price: '1,530 THB ~',
         thumbnail: '/images/siam-niramit.jpg',
         detailImage: '/images/siam-niramit.jpg',
         description: '기네스북에 등재된 세계 최대 규모의 무대! 태국의 역사와 문화를 웅장한 스케일로 풀어낸 대서사시를 경험하세요.',
@@ -428,7 +418,7 @@ export const MAIN_PRODUCTS: Product[] = [
                 name: '실버석 + 디너 뷔페',
                 priceAdult: '1,870 바트',
                 priceChild: '1,530 바트',
-                features: ['쇼 관람권', '실버석', '인터내셔널 뷔페']
+                features: ['쇼 관람권', '실버석', '인터내셔널 뷔페 포함']
             },
             {
                 name: '골드석 (Show Only)',
@@ -440,7 +430,7 @@ export const MAIN_PRODUCTS: Product[] = [
                 name: '골드석 + 디너 뷔페',
                 priceAdult: '2,040 바트',
                 priceChild: '1,700 바트',
-                features: ['쇼 관람권', '골드석', '인터내셔널 뷔페']
+                features: ['쇼 관람권', '골드석', '인터내셔널 뷔페 포함']
             },
             {
                 name: '플래티넘석 (Show Only)',
@@ -452,7 +442,7 @@ export const MAIN_PRODUCTS: Product[] = [
                 name: '플래티넘석 + 디너 뷔페',
                 priceAdult: '2,210 바트',
                 priceChild: '1,870 바트',
-                features: ['쇼 관람권', '플래티넘석', '인터내셔널 뷔페']
+                features: ['쇼 관람권', '플래티넘석', '인터내셔널 뷔페 포함']
             }
         ],
         pickupOptions: [
@@ -462,7 +452,7 @@ export const MAIN_PRODUCTS: Product[] = [
         inclusions: ['선택한 좌석 쇼 관람권', '테마파크 입장 및 사전 공연', '디너 포함 시 뷔페 식사'],
         exclusions: ['개인 경비', '매너팁', '전통 의상 대여 (250바트)', '이동 서비스 (옵션 구매)'],
         vehicleInfo: '픽업 서비스 신청 시 호텔 로비 픽업\n운영일: 수, 목, 금, 토, 일, 월 (화요일 휴무)\n게이트 오픈: 17:30 / 쇼 시작: 20:30',
-        pricePolicy: '성인: 키 141cm 이상\n아동: 만 4세~11세 & 키 100cm~140cm\n유아: 만 4세 미만 & 키 100cm 미만 무료 (좌석 없음)',
+        pricePolicy: '성인: 키 141cm 이상\n아동: 만 4세~11세 & 키 100cm~140cm\n유아: 만 4세 미만 & 키 100cm 미만 무료 (좌석 없음)\n디너 뷔페 추가 시 성인 +340 / 아동 +170',
         cancellationPolicy: '공연 당일 환불 불가',
         importantNotes: ['공연장 내 촬영 금지 (카메라 보관)', '디너 시간: 18:00 - 20:00', '쇼 시작 30분 전 입장 권장']
     },
@@ -531,8 +521,8 @@ export const MAIN_PRODUCTS: Product[] = [
         id: "pp-khai",
         name: "피피섬 + 카이섬 투어",
         price: "1,600 THB ~",
-        thumbnail: "/images/phiphi-representative.jpg",
-        detailImage: "/images/phiphi-representative.jpg",
+        thumbnail: "/images/phiphi-turtle.jpg",
+        detailImage: "/images/phiphi-turtle.jpg",
         description: "피피섬과 카이섬을 하루에 돌아보는 알찬 일정! 스피드보트로 빠르게 이동하여 맑은 바다에서 스노클링을 즐겨보세요.",
         category: "HIT",
         badges: ["인기 투어", "피피+카이", "스피드보트"],
@@ -551,17 +541,19 @@ export const MAIN_PRODUCTS: Product[] = [
                 features: ["안정적인 카타마란 보트", "넓은 공간"]
             }
         ],
-        vehicleInfo: "스피드보트 (카타마란 선택 시 2,400바트)\n08:00 호텔 픽업 → 09:30 카이섬 출발 → 12:00 피피섬 중식 → 17:30 호텔 귀환\n왕복 픽업 포함 (무료 구역)",
+        vehicleInfo: "빠통, 카론, 카타 무료 / 그 외 지역 유료(100~200바트)\n스피드보트 (카타마란 선택 시 2,400바트)\n08:00 호텔 픽업 → 09:30 카이섬 출발 → 12:00 피피섬 중식 → 17:30 호텔 귀환",
         inclusions: ["왕복 차량", "보트", "영어 가이드", "국립공원 입장료", "점심식사", "스노클링 장비"],
         exclusions: ["개인 경비", "매너팁"],
-        importantNotes: ["스노클링 장비 분실 시 비용 청구될 수 있습니다.", "임산부는 투어 참여가 제한됩니다."]
+        importantNotes: ["스노클링 장비 분실 시 비용 청구될 수 있습니다.", "임산부는 투어 참여가 제한됩니다."],
+        carrierFeePerUnit: 200,
+        hasCarrierOption: true
     },
     {
         id: "pp-khai-maithon",
-        name: "피피섬 + 카이 + 마이톤섬 투어",
+        name: "피피섬 + 카이 + 마이톤섬 투어 (카타마란)",
         price: "2,300 THB ~",
-        thumbnail: "/images/phiphi-representative.jpg",
-        detailImage: "/images/phiphi-representative.jpg",
+        thumbnail: "/images/phiphi-turtle.jpg",
+        detailImage: "/images/phiphi-turtle.jpg",
         description: "럭셔리 카타마란을 타고 피피, 카이, 마이톤 3개 섬을 모두 즐기는 프리미엄 투어입니다. 워터 슬라이드와 투명 카약도 이용 가능합니다.",
         category: "HIT",
         badges: ["3개 섬 투어", "카타마란", "워터슬라이드"],
@@ -571,7 +563,7 @@ export const MAIN_PRODUCTS: Product[] = [
                 name: "카타마란 (성인/아동)",
                 priceAdult: "2,300 바트",
                 priceChild: "2,000 바트",
-                features: ["카타마란 이용", "워터 슬라이드 보유", "투명 카약 무료"]
+                features: ["워터 슬라이드, 투명 카약, 패들 보트 포함", "카타마란 이용"]
             }
         ],
         vehicleInfo: "카타마란 보트 (워터 슬라이드 포함)\n08:00 호텔 픽업 → 12:00 피피섬 중식 → 14:30 피레 라군 → 17:00 마이톤섬 스노클링 → 18:30 귀환",
@@ -583,8 +575,8 @@ export const MAIN_PRODUCTS: Product[] = [
         id: "pp-bamboo",
         name: "피피섬 + 뱀부섬 투어",
         price: "2,400 THB ~",
-        thumbnail: "/images/phiphi-representative.jpg",
-        detailImage: "/images/phiphi-representative.jpg",
+        thumbnail: "/images/phiphi-turtle.jpg",
+        detailImage: "/images/phiphi-turtle.jpg",
         description: "에메랄드빛 바다로 유명한 뱀부섬과 피피섬을 함께! 인생 인생샷을 남길 수 있는 최고의 코스입니다.",
         category: "HIT",
         badges: ["뱀부섬 포함", "인생샷 명소", "스피드보트"],
@@ -607,5 +599,5 @@ export const MAIN_PRODUCTS: Product[] = [
         inclusions: ["뱀부섬 국립공원 입장료 포함", "스노클링 장비 제공", "점심 식사", "왕복 픽업"],
         exclusions: ["개인 경비", "매너팁"],
         importantNotes: ["국립공원 입장권은 투어비에 포함되어 있습니다.", "현지 사정에 따라 일정이 변경될 수 있습니다."]
-    }
+    },
 ];
