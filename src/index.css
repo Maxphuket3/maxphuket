@@ -214,47 +214,75 @@ div:has(> button:contains("카카오톡으로 빠른 상담")) {
 }
 
 /* 8. 데스크탑 화면: 히트상품 영역을 조금 더 작고 깔끔하게 축소 */
+/* 데스크탑(컴퓨터) 화면 설정 - 크기 추가 축소 */
 @media screen and (min-width: 769px) {
   .hit-products-section {
-    max-width: 1000px !important;
-    /* 기존 1200px에서 1000px로 축소 */
+    max-width: 950px;
     margin: 0 auto;
-    padding: 30px 0;
+    padding: 20px 0;
   }
 
   .hit-product-card {
-    transform: scale(0.95);
-    /* 카드 전체 크기를 5% 살짝 줄임 */
+    transform: scale(0.92) !important;
+    transition: transform 0.3s ease;
+  }
+
+  .hit-product-card:hover {
+    transform: scale(0.95) !important;
   }
 }
 
 /* 9. 모바일 화면: 슬라이드 좌우 너비 최대 확장 */
+/* 9. 모바일 화면: 슬라이드 좌우 너비 최대 확장 및 자석 효과 */
+/* 9. 모바일 화면: 히트상품 슬라이드 광폭 확장 */
 @media screen and (max-width: 768px) {
   .hit-products-section {
     width: 100% !important;
-    max-width: none !important;
     padding: 0 !important;
-    /* 좌우 여백 완전 제거 */
+    /* 양옆 여백 완전 제거 */
+    overflow: hidden;
   }
 
+  /* 슬라이드 컨테이너가 화면 끝까지 닿도록 설정 */
   .swiper-container {
-    padding: 0 !important;
+    width: 100vw !important;
+    padding: 0 5% !important;
+    /* 다음 상품이 살짝 보이게 설정 */
   }
 
   .swiper-slide {
-    width: 92% !important;
-    /* 모바일 화면을 거의 꽉 채우도록 확장 */
-    margin: 0 4% !important;
-    /* 중앙 정렬 느낌을 위해 미세 조정 */
+    /* 상품 카드가 모바일 화면의 90%를 차지하게 확장 */
+    width: 90% !important;
+    transition: transform 0.3s ease;
     scroll-snap-align: center;
+    /* 자석 정지 기능 */
+
+    display: flex;
+    justify-content: center;
+  }
+
+  /* 중앙에 온 상품만 더 강조 */
+  .swiper-slide-active {
+    transform: scale(1.0);
+    opacity: 1;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* 강조 효과 추가 */
+  }
+
+  .swiper-slide-next,
+  .swiper-slide-prev {
+    opacity: 0.6;
+    transform: scale(0.9);
+    /* 주변 상품은 작게 */
   }
 
   /* 상품명 크기 및 배열 최적화 for Mobile */
   .hit-product-card .product-name {
-    font-size: 1.3rem !important;
+    font-size: 1.35rem !important;
     font-weight: 800;
     word-break: keep-all;
-    padding: 0 10px;
+    padding: 0 5px;
   }
 }
 
@@ -275,10 +303,52 @@ section:has(h3:contains("견적 문의하기")) {
 }
 
 /* 12. 기존 견적/예약 입력창(Booking Section)은 강제로 보이게 설정 */
+/* 12. 기존 견적/예약 입력창(Booking Section)은 강제로 보이게 설정 */
 .booking-section,
 .estimate-input-container,
+.contact-section,
 #booking-form {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+/* 13. 히트상품 카드 내부 텍스트 정렬 및 스타일링 Update */
+.hit-product-card .card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* 모든 요소를 왼쪽 시작점에 맞춤 */
+  padding: 15px;
+  text-align: left;
+}
+
+/* 2. 제목 스타일: 가격보다 확실히 강조되도록 */
+.hit-product-card .product-name {
+  order: 1;
+  /* 제목을 첫 번째로 배치 */
+  font-size: 1.4rem !important;
+  font-weight: 800;
+  margin-bottom: 5px;
+  /* 제목과 가격 사이의 적당한 간격 */
+  margin-left: 0 !important;
+  /* 앞으로 튀어나가지 않게 여백 제거 */
+  word-break: keep-all;
+
+  /* 텍스트 그림자 유지 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* 3. 가격 스타일: 제목 아래에 차분하게 배치 */
+.hit-product-card .product-price {
+  order: 2;
+  /* 가격을 제목 다음으로 배치 */
+  font-size: 1.2rem !important;
+  font-weight: 600;
+  color: #ffcc00;
+  /* 가격을 돋보이게 하는 색상 (노란색 계열) */
+  margin-left: 0 !important;
+  /* 제목과 왼쪽 라인을 맞춤 */
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }

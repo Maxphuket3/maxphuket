@@ -38,6 +38,11 @@ export interface Product {
     }[];
     carrierFeePerUnit?: number;
     hasCarrierOption?: boolean;
+    options?: {
+        name: string;
+        price: number;
+    }[];
+    maxOptionSelection?: number;
 }
 
 export const MAIN_PRODUCTS: Product[] = [
@@ -326,30 +331,37 @@ export const MAIN_PRODUCTS: Product[] = [
     {
         id: 'p_tiger_park',
         name: '타이거 파크 빅부다 푸켓 (Tiger Park)',
-        price: '900 THB ~',
+        price: '1,600 THB ~',
         thumbnail: '/images/tiger_park.jpg',
         detailImage: '/images/tiger_park.jpg',
-        description: '빅부다 근처 찰롱 지역에 위치한 호랑이 공원입니다. 다양한 크기의 호랑이들과 가까이에서 교감하고 사진을 찍을 수 있는 특별한 경험을 제공합니다.',
+        description: '원하는 크기의 호랑이 2종류를 선택하여 교감하는 패키지입니다. 빅부다 근처 찰롱 지역에 위치해 있습니다.',
         category: 'TICKET',
-        badges: ['빅부다 근처', '인생샷 명소', '호랑이 교감'],
+        badges: ['2가지 선택', '빅부다 근처', '인생샷 명소'],
         highlights: ['다양한 크기의 호랑이 체험', '전문 조련사 동행', '빅부다 관광 연계 가능'],
         courses: [
-            { name: 'New Born (1-2개월, Smallest)', priceAdult: '1,300 바트', priceChild: '1,300 바트', features: ['가장 작은 아기 호랑이', '전연령 가능 (160cm 미만만)'] },
-            { name: 'Smallest (3-5개월)', priceAdult: '1,000 바트', priceChild: '1,000 바트', features: ['작은 호랑이', '전연령 가능 (160cm 미만만)'] },
-            { name: 'Small (6-12개월)', priceAdult: '900 바트', priceChild: '900 바트', features: ['중소형 호랑이', '청소년/성인 추천'] },
-            { name: 'Medium (13-18개월)', priceAdult: '900 바트', priceChild: '900 바트', features: ['중형 호랑이', '청소년/성인 추천'] },
-            { name: 'Big (19-48개월)', priceAdult: '1,000 바트', priceChild: '1,000 바트', features: ['대형 호랑이', '만 18세 이상/160cm 이상 필수'] },
-            { name: 'Giant (49개월+)', priceAdult: '1,300 바트', priceChild: '1,300 바트', features: ['초대형 호랑이', '만 18세 이상/160cm 이상 필수'] },
-            { name: 'Package 2 (2가지 선택)', priceAdult: '1,700 바트', priceChild: '1,700 바트', features: ['Big/Smallest 중 1 + Medium/Small 중 1'] },
-            { name: 'Package 3 (3가지 선택)', priceAdult: '2,500 바트', priceChild: '2,500 바트', features: ['Big + Smallest + Medium/Small 중 1'] },
-            { name: 'Package 4 (4가지 선택)', priceAdult: '3,300 바트', priceChild: '3,300 바트', features: ['Big + Medium + Small + Smallest'] }
+            {
+                name: '2가지 선택 패키지 (1인)',
+                priceAdult: '1,600 바트',
+                priceChild: '1,600 바트',
+                features: ['원하는 호랑이 2종류 선택', '모든 연령/신장 가능']
+            }
         ],
-        inclusions: ['선택한 호랑이 체험', '전문 조련사', '보험'],
+        options: [
+            { name: "Big Tiger (19-48개월/160cm↑)", price: 0 },
+            { name: "Medium Tiger (13-18개월)", price: 0 },
+            { name: "Small Tiger (6-12개월)", price: 0 },
+            { name: "Smallest Tiger (3-5개월)", price: 0 },
+            { name: "New Born (1-2개월/160cm↓)", price: 0 }
+        ],
+        maxOptionSelection: 2,
+        inclusions: ['선택한 호랑이 2종류 체험', '전문 조련사', '보험'],
         exclusions: ['픽업/샌딩 (개별 이동)', '사진 촬영 기사 (별도 구매)', '음료/식사'],
         vehicleInfo: '개별 이동 필수 (픽업 불포함)\n위치: Chalong, Phuket (Near Big Buddha)\n운영시간: 09:00 - 18:00',
-        pricePolicy: '만 15세 미만 & 160cm 미만: New Born, Smallest만 이용 가능\n만 18세 이상 & 160cm 이상: Giant, Big 이용 가능\n무료 입장: 24개월 미만 & 110cm 미만',
+        pricePolicy: '만 15세 미만 & 160cm 미만: New Born, Smallest만 이용 가능\n만 18세 이상 & 160cm 이상: Giant, Big 이용 가능\n규정에 맞게 2가지를 선택해주세요.',
         cancellationPolicy: '방문 1일 전 무료 취소 가능',
-        importantNotes: ['사진 촬영 시 플래시 사용 금지', '조련사의 지시를 반드시 따라주세요.', '임산부 및 노약자 체험 제한될 수 있음']
+        importantNotes: ['사진 촬영 시 플래시 사용 금지', '조련사의 지시를 반드시 따라주세요.', '임산부 및 노약자 체험 제한될 수 있음'],
+        provider: 'TIGERPARK',
+        luggagePrice: 0
     },
     {
         id: 'phuket-fantasea',
@@ -599,5 +611,36 @@ export const MAIN_PRODUCTS: Product[] = [
         inclusions: ["뱀부섬 국립공원 입장료 포함", "스노클링 장비 제공", "점심 식사", "왕복 픽업"],
         exclusions: ["개인 경비", "매너팁"],
         importantNotes: ["국립공원 입장권은 투어비에 포함되어 있습니다.", "현지 사정에 따라 일정이 변경될 수 있습니다."]
+    },
+    {
+        id: "racha-banana-beach",
+        name: "라차섬 + 바나나비치 투어",
+        price: "2,000 THB ~",
+        thumbnail: "/images/racha-dolphin.jpg",
+        detailImage: "/images/racha-dolphin.jpg",
+        description: "라차섬의 맑은 바다와 바나나비치의 휴양을 동시에 즐기는 투어",
+        category: "HIT",
+        badges: ["인기 투어", "라차+바나나", "한국인 전용"],
+        highlights: ["라차섬 스노클링", "바나나비치 휴양", "돌고래 출몰 지역"],
+        courses: [
+            {
+                name: "기본 투어 (성인/아동)",
+                priceAdult: "2,000 바트",
+                priceChild: "1,800 바트",
+                features: ["라차섬 스노클링", "바나나비치 자유시간", "점심 뷔페", "전용 요트"]
+            }
+        ],
+        options: [
+            { name: "체험 다이빙 (1회)", price: 1500 },
+            { name: "씨워커 (Sea Walker)", price: 1200 },
+            { name: "파라세일링", price: 800 },
+            { name: "바나나보트", price: 600 }
+        ],
+        vehicleInfo: "빠통, 카론, 카타 무료 픽업\n그 외 지역 추가 요금 발생 (100~300바트)\n08:00 호텔 픽업 -> 09:00 찰롱 부두 출발 -> 16:30 부두 도착",
+        inclusions: ["호텔 왕복 픽업", "스피드보트/요트", "점심식사", "스노클링 장비", "보험", "한국어/영어 가이드"],
+        exclusions: ["개인 경비", "매너팁", "해양 스포츠 (옵션)"],
+        carrierFeePerUnit: 200,
+        hasCarrierOption: true,
+        importantNotes: ["임산부는 투어 참여가 제한됩니다.", "바나나비치에서는 비치체어 무료 제공"]
     },
 ];

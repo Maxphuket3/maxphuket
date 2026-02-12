@@ -76,19 +76,34 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
             <div className="hit-products-section hit-product-slider" style={{ position: 'relative' }}>
                 <Swiper
                     modules={[Autoplay, Navigation]}
-                    spaceBetween={20}
-                    slidesPerView={'auto'}
-                    centeredSlides={true}
+                    className="mySwiper"
+                    style={{ padding: '10px 0 40px 0' }}
+
+                    // Essential functionality
                     loop={true}
-                    grabCursor={true}
                     navigation={true}
                     autoplay={{
                         delay: 3000,
                         disableOnInteraction: false,
                         pauseOnMouseEnter: true
                     }}
-                    className="mySwiper"
-                    style={{ padding: '10px 0 40px 0' }}
+                    grabCursor={true}
+
+                    // Mobile Layout & Snapping Configuration
+                    centeredSlides={true}
+                    slidesPerView={'auto'}
+                    spaceBetween={12}
+                    freeMode={false}
+                    touchRatio={1.5}
+                    resistanceRatio={0}
+
+                    breakpoints={{
+                        769: {
+                            centeredSlides: false,
+                            slidesPerView: 3,
+                            spaceBetween: 20
+                        }
+                    }}
                 >
                     {displayProducts.map((product, index) => (
                         <SwiperSlide key={`${product.id}-${index}`} className="product-card hit-product-card">
@@ -181,52 +196,19 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                                     zIndex: 1
                                 }}></div>
 
-                                <div style={{
+                                <div className="card-content" style={{
                                     position: 'absolute',
                                     bottom: '0',
                                     left: '0',
                                     right: '0',
-                                    padding: '20px',
-                                    zIndex: 2,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: '6px'
+                                    zIndex: 2
                                 }}>
-                                    <h4 className="product-name" style={{
-                                        color: '#fff',
-                                        // fontSize removed to let CSS control it
-                                        fontWeight: '800',
-                                        marginBottom: '4px',
-                                        textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
-                                        // whiteSpace, overflow, textOverflow removed for multi-line support
-                                    }}>
+                                    <h4 className="product-name">
                                         {product.name}
                                     </h4>
-
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                            <p style={{
-                                                color: '#D4AF37',
-                                                fontWeight: '900',
-                                                fontSize: 'clamp(1.4rem, 5vw, 1.8rem)',
-                                                margin: 0,
-                                                lineHeight: 1
-                                            }}>
-                                                {product.price}
-                                            </p>
-                                        </div>
-
-                                        <span style={{
-                                            fontSize: '0.7rem',
-                                            color: '#000',
-                                            background: '#D4AF37',
-                                            padding: '6px 12px',
-                                            borderRadius: '100px',
-                                            fontWeight: '800'
-                                        }}>
-                                            RESERVE
-                                        </span>
-                                    </div>
+                                    <p className="product-price">
+                                        {product.price}
+                                    </p>
                                 </div>
                             </div>
                         </SwiperSlide>

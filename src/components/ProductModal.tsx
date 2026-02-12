@@ -28,6 +28,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
     const [luggageSmall, setLuggageSmall] = useState(0); // 20" ↓
     const [luggageMedium, setLuggageMedium] = useState(0); // 21-29"
     const [luggageLarge, setLuggageLarge] = useState(0); // 30" ↑
+    const [selectedOptions, setSelectedOptions] = useState<{ [key: number]: number }>({});
 
     // Reset state when product changes
     React.useEffect(() => {
@@ -45,7 +46,10 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             setIsMoveHotel(false);
             setLuggageSmall(0);
             setLuggageMedium(0);
+            setLuggageSmall(0);
+            setLuggageMedium(0);
             setLuggageLarge(0);
+            setSelectedOptions({});
 
             // Set default time based on product type
             if (product.id === 'p_simon') setTimeSlot('18:00');
@@ -114,8 +118,19 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             luggageTotalInfo = luggageCount * pricePerBag;
         }
 
-        return basePrice + mandatoryFees + pickupFee + luggageTotalInfo;
-    }, [product, selectedCourseIdx, adultCount, childCount, infantCount, pickupHotel, selectedPickupOptionIdx, isPaidPickup, luggageCount, luggageSmall, luggageMedium, luggageLarge]);
+        // 4. Options Logic
+        let optionsTotal = 0;
+        if (product.options) {
+            Object.entries(selectedOptions).forEach(([idx, count]) => {
+                const opt = product.options![parseInt(idx)];
+                if (opt && count > 0) {
+                    optionsTotal += opt.price * count;
+                }
+            });
+        }
+
+        return basePrice + mandatoryFees + pickupFee + luggageTotalInfo + optionsTotal;
+    }, [product, selectedCourseIdx, adultCount, childCount, infantCount, pickupHotel, selectedPickupOptionIdx, isPaidPickup, luggageCount, luggageSmall, luggageMedium, luggageLarge, selectedOptions]);
 
     const calculateTotal = () => totalAmount.toLocaleString();
 
@@ -626,151 +641,218 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         )}
                                     </div>
                                 </div>
+                            </div>
 
-                                {/* Private Van Warning for SIMILAN */}
-                                {product.category === 'SIMILAN' && (isMoveHotel || dropoffHotel) && (
-                                    <div style={{
-                                        padding: '16px',
-                                        background: 'rgba(255, 165, 0, 0.1)',
-                                        borderRadius: '12px',
-                                        border: '1px solid rgba(255, 165, 0, 0.3)',
-                                        display: 'flex',
-                                        gap: '12px',
-                                        alignItems: 'start'
-                                    }}>
-                                        <AlertTriangle color="#F6E05E" size={24} style={{ flexShrink: 0, marginTop: '2px' }} />
-                                        <div>
-                                            <p style={{ color: '#F6E05E', fontWeight: 'bold', fontSize: '0.95rem', margin: '0 0 4px 0' }}>
-                                                지역 변경 / 외곽 지역 안내
-                                            </p>
-                                            <p style={{ color: '#cbd5e0', fontSize: '0.85rem', margin: 0, lineHeight: 1.5 }}>
-                                                픽업 및 드랍 장소가 다르거나 공항/북부 지역(나이양, 마이카오 등) 이동 시,
-                                                업체 규정에 따라 <span style={{ color: '#fff', fontWeight: 'bold' }}>단독 차량(전용 밴)</span> 이용이 필수일 수 있습니다.
-                                                <br />(예상 비용: +2,000 ~ 2,500 THB / 현장 지불 가능)
-                                            </p>
+                                {/* Additional Activity Options (New) */}
+                        {product.options && product.options.length > 0 && (
+                            <div>
+                                <h3 style={{ color: '#D4AF37', fontSize: '1.1rem', marginBottom: '12px', display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>투어 추가 옵션</span>
+                                    {product.maxOptionSelection && (
+                                        <span style={{ fontSize: '0.85rem', color: '#fc8181' }}>
+                                            * 최대 {product.maxOptionSelection}개 선택 가능
+                                        </span>
+                                    )}
+                                </h3>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    {product.options.map((opt, idx) => (
+                                        <div key={idx} style={{
+                                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                            background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px',
+                                            border: selectedOptions[idx] > 0 ? '1px solid #D4AF37' : '1px solid rgba(255,255,255,0.1)'
+                                        }}>
+                                            <div>
+                                                <div style={{ color: '#fff', fontWeight: 'bold', fontSize: '0.95rem' }}>{opt.name}</div>
+                                                <div style={{ color: '#D4AF37', fontSize: '0.85rem' }}>+{opt.price.toLocaleString()} THB</div>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                <button
+                                                    onClick={() => setSelectedOptions(prev => ({ ...prev, [idx]: Math.max(0, (prev[idx] || 0) - 1) }))}
+                                                    style={{ width: '28px', height: '28px', borderRadius: '50%', border: '1px solid #4a5568', background: 'transparent', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                >
+                                                    -
+                                                </button>
+                                                <span style={{ color: '#fff', minWidth: '20px', textAlign: 'center' }}>{selectedOptions[idx] || 0}</span>
+                                                <button
+                                                    onClick={() => {
+                                                        if (product.maxOptionSelection) {
+                                                            const currentTotal = Object.values(selectedOptions).reduce((a, b) => a + b, 0);
+                                                            if (currentTotal >= product.maxOptionSelection) {
+                                                                alert(`최대 ${product.maxOptionSelection}개까지만 선택 가능합니다.`);
+                                                                return;
+                                                            }
+                                                        }
+                                                        setSelectedOptions(prev => ({ ...prev, [idx]: (prev[idx] || 0) + 1 }))
+                                                    }}
+                                                    style={{ width: '28px', height: '28px', borderRadius: '50%', border: '1px solid #D4AF37', background: '#D4AF37', color: '#000', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
-                                {/* Total Price */}
+                        {/* Private Van Warning for SIMILAN */}
+                        {product.category === 'SIMILAN' && (isMoveHotel || dropoffHotel) && (
+                            <div style={{
+                                padding: '16px',
+                                background: 'rgba(255, 165, 0, 0.1)',
+                                borderRadius: '12px',
+                                border: '1px solid rgba(255, 165, 0, 0.3)',
+                                display: 'flex',
+                                gap: '12px',
+                                alignItems: 'start'
+                            }}>
+                                <AlertTriangle color="#F6E05E" size={24} style={{ flexShrink: 0, marginTop: '2px' }} />
                                 <div>
-                                    <div className="price-summary-section" style={{
-                                        marginTop: '10px',
-                                        padding: '10px 0', /* reduced padding */
-                                        background: 'transparent',
-                                        /* Removed heavy border/bg */
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center'
-                                    }}>
-                                        <div>
-                                            {/* Hide title if needed via class or simplify */}
-                                            {/* <div className="contact-title" style={{ color: '#a0aec0', fontSize: '0.9rem', marginBottom: '4px' }}>최종 결제 예정 금액</div> */}
-                                            <div style={{ color: '#D4AF37', fontSize: '1.4rem', fontWeight: '900' }}>{calculateTotal()} THB</div>
-                                        </div>
-                                        {/* Removed footer note */}
-                                    </div>
+                                    <p style={{ color: '#F6E05E', fontWeight: 'bold', fontSize: '0.95rem', margin: '0 0 4px 0' }}>
+                                        지역 변경 / 외곽 지역 안내
+                                    </p>
+                                    <p style={{ color: '#cbd5e0', fontSize: '0.85rem', margin: 0, lineHeight: 1.5 }}>
+                                        픽업 및 드랍 장소가 다르거나 공항/북부 지역(나이양, 마이카오 등) 이동 시,
+                                        업체 규정에 따라 <span style={{ color: '#fff', fontWeight: 'bold' }}>단독 차량(전용 밴)</span> 이용이 필수일 수 있습니다.
+                                        <br />(예상 비용: +2,000 ~ 2,500 THB / 현장 지불 가능)
+                                    </p>
+                                </div>
+                            </div>
+                        )}
 
-                                    {/* 
+                        {/* Total Price */}
+                        <div>
+                            <div className="price-summary-section" style={{
+                                marginTop: '10px',
+                                padding: '10px 0', /* reduced padding */
+                                background: 'transparent',
+                                /* Removed heavy border/bg */
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center'
+                            }}>
+                                <div>
+                                    {/* Hide title if needed via class or simplify */}
+                                    {/* <div className="contact-title" style={{ color: '#a0aec0', fontSize: '0.9rem', marginBottom: '4px' }}>최종 결제 예정 금액</div> */}
+                                    <div style={{ color: '#D4AF37', fontSize: '1.4rem', fontWeight: '900' }}>{calculateTotal()} THB</div>
+                                </div>
+                                {/* Removed footer note */}
+                            </div>
+
+                            {/* 
                                     <section className="contact-box">
                                       <h3>고객님에게 문의하기</h3>
                                       <button className="kakao-btn">카카오톡으로 빠른상담</button>
                                     </section> 
                                     */}
 
-                                    <button
-                                        onClick={() => {
-                                            const total = calculateTotal();
-                                            const courseName = product.courses?.[selectedCourseIdx].name || '기본';
-                                            const pickupDisplay = product.category === 'SIMILAN'
-                                                ? (isMoveHotel ? `이동: ${pickupHotel} -> ${dropoffHotel}` : `왕복: ${pickupHotel}`)
-                                                : (selectedPickupOptionIdx >= 0 ? product.pickupOptions?.[selectedPickupOptionIdx].name : pickupHotel);
+                            <button
+                                onClick={() => {
+                                    const total = calculateTotal();
+                                    const courseName = product.courses?.[selectedCourseIdx].name || '기본';
+                                    const pickupDisplay = product.category === 'SIMILAN'
+                                        ? (isMoveHotel ? `이동: ${pickupHotel} -> ${dropoffHotel}` : `왕복: ${pickupHotel}`)
+                                        : (selectedPickupOptionIdx >= 0 ? product.pickupOptions?.[selectedPickupOptionIdx].name : pickupHotel);
 
-                                            const message = `[푸켓 라스트데이 견적 문의]
+                                    let optionsMsg = '';
+                                    if (product.options && Object.keys(selectedOptions).length > 0) {
+                                        const selectedOpts = Object.entries(selectedOptions)
+                                            .filter(([_, count]) => count > 0)
+                                            .map(([idx, count]) => {
+                                                const opt = product.options![parseInt(idx)];
+                                                return `- ${opt.name} x ${count}명`;
+                                            });
+                                        if (selectedOpts.length > 0) {
+                                            optionsMsg = `\n✨ 추가옵션:\n${selectedOpts.join('\n')}`;
+                                        }
+                                    }
+
+                                    const message = `[푸켓 라스트데이 견적 문의]
 📍 투어명: ${product.name} (${courseName})
 📅 이용일/시간: ${timeSlot}
 👥 인원: 성인 ${adultCount}명 / 아동 ${childCount}명
 🚗 픽업: ${pickupDisplay || '미정'}
-🧳 캐리어: ${product.category === 'SIMILAN' ? `소${luggageSmall}/중${luggageMedium}/대${luggageLarge}` : luggageCount}개
+🧳 캐리어: ${product.category === 'SIMILAN' ? `소${luggageSmall}/중${luggageMedium}/대${luggageLarge}` : luggageCount}개${optionsMsg}
 -------------------------
 💰 총 합계: ${total} THB
 -------------------------
 상담원님, 위 내용으로 예약 상담 부탁드립니다!`;
 
-                                            const encodedMessage = encodeURIComponent(message);
-                                            // Using the previously seen Kakao channel ID: _rxbHRX
-                                            // The URL format for starting a chat with text is usually: http://pf.kakao.com/_ID/chat?body=...
-                                            // However, user provided: `https://pf.kakao.com/_xxxxxx/chat?extra=${encodedMessage}`
-                                            // Standard deep link often used is `http://pf.kakao.com/_rxbHRX/chat` and pasting, but we can try to pre-fill if supported or just copy to clipboard as fallback.
-                                            // Given user request structure, let's try to simulate the intent. 
-                                            // Actually, the user asked to open a specific URL. Let's stick to the user's logic but with the correct ID.
-                                            // Note: KakaoTalk Channel chat links often don't support pre-filling message text via URL parameter in a standard way publicly documented for all account types, 
-                                            // but we will follow the requested format.
+                                    const encodedMessage = encodeURIComponent(message);
+                                    // Using the previously seen Kakao channel ID: _rxbHRX
+                                    // The URL format for starting a chat with text is usually: http://pf.kakao.com/_ID/chat?body=...
+                                    // However, user provided: `https://pf.kakao.com/_xxxxxx/chat?extra=${encodedMessage}`
+                                    // Standard deep link often used is `http://pf.kakao.com/_rxbHRX/chat` and pasting, but we can try to pre-fill if supported or just copy to clipboard as fallback.
+                                    // Given user request structure, let's try to simulate the intent. 
+                                    // Actually, the user asked to open a specific URL. Let's stick to the user's logic but with the correct ID.
+                                    // Note: KakaoTalk Channel chat links often don't support pre-filling message text via URL parameter in a standard way publicly documented for all account types, 
+                                    // but we will follow the requested format.
 
-                                            // Fallback: Copy to clipboard first to be safe
-                                            navigator.clipboard.writeText(message);
-                                            alert("견적 내용이 복사되었습니다! 상담창에 붙여넣기 해주세요.");
+                                    // Fallback: Copy to clipboard first to be safe
+                                    navigator.clipboard.writeText(message);
+                                    alert("견적 내용이 복사되었습니다! 상담창에 붙여넣기 해주세요.");
 
-                                            const kakaoChannelUrl = `http://pf.kakao.com/_rxbHRX/chat`;
-                                            window.open(kakaoChannelUrl, '_blank');
-                                        }}
-                                        className="kakao-banner-button"
-                                        style={{
-                                            background: '#FEE500',
-                                            color: '#000',
-                                            textDecoration: 'none',
-                                            fontWeight: 'bold',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            gap: '8px',
-                                            width: '100%',
-                                            padding: '16px',
-                                            borderRadius: '12px',
-                                            marginTop: '16px',
-                                            fontSize: '1.1rem',
-                                            border: 'none',
-                                            cursor: 'pointer',
-                                            boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
-                                        }}
-                                        onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                                        onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                                    >
-                                        <MessageCircle size={20} fill="#000" />
-                                        카카오톡으로 예약 상담하기
-                                    </button>
-                                    <div style={{ textAlign: 'center', marginTop: '8px', fontSize: '0.85rem', color: '#a0aec0' }}>
-                                        버튼을 누르면 견적이 복사되고 상담창이 열립니다.
-                                    </div>
-                                </div>
+                                    const kakaoChannelUrl = `http://pf.kakao.com/_rxbHRX/chat`;
+                                    window.open(kakaoChannelUrl, '_blank');
+                                }}
+                                className="kakao-banner-button"
+                                style={{
+                                    background: '#FEE500',
+                                    color: '#000',
+                                    textDecoration: 'none',
+                                    fontWeight: 'bold',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px',
+                                    width: '100%',
+                                    padding: '16px',
+                                    borderRadius: '12px',
+                                    marginTop: '16px',
+                                    fontSize: '1.1rem',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                            >
+                                <MessageCircle size={20} fill="#000" />
+                                카카오톡으로 예약 상담하기
+                            </button>
+                            <div style={{ textAlign: 'center', marginTop: '8px', fontSize: '0.85rem', color: '#a0aec0' }}>
+                                버튼을 누르면 견적이 복사되고 상담창이 열립니다.
                             </div>
-                        ) : (
-                            <div style={{ padding: '40px', textAlign: 'center', color: '#a0aec0' }}>
-                                이 상품은 견적 계산기를 지원하지 않습니다.
-                                <br />카카오톡으로 문의해주세요.
-                            </div>
-                        )}
+                        </div>
                     </div>
+                ) : (
+                    <div style={{ padding: '40px', textAlign: 'center', color: '#a0aec0' }}>
+                        이 상품은 견적 계산기를 지원하지 않습니다.
+                        <br />카카오톡으로 문의해주세요.
+                    </div>
+                )
+        }
+                    </div >
                 );
         }
     };
 
-    return createPortal(
-        <div
-            style={{
-                position: 'fixed',
-                inset: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                backdropFilter: 'blur(8px)',
-                zIndex: 2000,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center', // Center vertically for better desktop view
-                padding: '20px'
-            }}
-            onClick={onClose}
-        >
-            <style>{`
+return createPortal(
+    <div
+        style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(8px)',
+            zIndex: 2000,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center', // Center vertically for better desktop view
+            padding: '20px'
+        }}
+        onClick={onClose}
+    >
+        <style>{`
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(10px); }
                     to { opacity: 1; transform: translateY(0); }
@@ -790,124 +872,124 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                 }
             `}</style>
 
-            <div
+        <div
+            style={{
+                width: '100%',
+                maxWidth: '900px',
+                backgroundColor: '#1a202c',
+                borderRadius: '24px',
+                overflow: 'hidden', // Contain content
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                flexDirection: 'column',
+                maxHeight: '90vh', // Limit height
+                position: 'relative',
+                border: '1px solid rgba(255,255,255,0.1)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+        >
+            {/* Close Button */}
+            <button
+                onClick={onClose}
                 style={{
-                    width: '100%',
-                    maxWidth: '900px',
-                    backgroundColor: '#1a202c',
-                    borderRadius: '24px',
-                    overflow: 'hidden', // Contain content
-                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    maxHeight: '90vh', // Limit height
-                    position: 'relative',
-                    border: '1px solid rgba(255,255,255,0.1)'
+                    position: 'absolute',
+                    top: '20px',
+                    right: '20px',
+                    background: 'rgba(0, 0, 0, 0.5)',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    borderRadius: '50%',
+                    padding: '8px',
+                    cursor: 'pointer',
+                    color: '#fff',
+                    zIndex: 10,
+                    transition: 'all 0.2s'
                 }}
-                onClick={(e) => e.stopPropagation()}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.8)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
             >
-                {/* Close Button */}
-                <button
-                    onClick={onClose}
-                    style={{
-                        position: 'absolute',
-                        top: '20px',
-                        right: '20px',
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        borderRadius: '50%',
-                        padding: '8px',
-                        cursor: 'pointer',
-                        color: '#fff',
-                        zIndex: 10,
-                        transition: 'all 0.2s'
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.8)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
-                >
-                    <X size={24} />
-                </button>
+                <X size={24} />
+            </button>
 
-                {/* Header Image Area */}
-                <div style={{ height: '250px', position: 'relative', flexShrink: 0 }}>
-                    <img
-                        src={product.detailImage || product.thumbnail}
-                        alt={product.name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #1a202c 0%, transparent 100%)' }} />
-                    <div style={{ position: 'absolute', bottom: '20px', left: '24px', right: '24px' }}>
-                        <div style={{
-                            background: '#D4AF37', color: '#000', padding: '4px 12px', borderRadius: '4px',
-                            display: 'inline-block', fontSize: '0.8rem', fontWeight: 'bold', marginBottom: '8px'
-                        }}>
-                            BEST CHOICE
-                        </div>
-                        <h2 style={{ color: '#fff', fontSize: '2rem', margin: '0 0 8px 0', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-                            {product.name}
-                        </h2>
-                        <p style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 'bold', margin: 0 }}>
-                            {product.price}
-                        </p>
+            {/* Header Image Area */}
+            <div style={{ height: '250px', position: 'relative', flexShrink: 0 }}>
+                <img
+                    src={product.detailImage || product.thumbnail}
+                    alt={product.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #1a202c 0%, transparent 100%)' }} />
+                <div style={{ position: 'absolute', bottom: '20px', left: '24px', right: '24px' }}>
+                    <div style={{
+                        background: '#D4AF37', color: '#000', padding: '4px 12px', borderRadius: '4px',
+                        display: 'inline-block', fontSize: '0.8rem', fontWeight: 'bold', marginBottom: '8px'
+                    }}>
+                        BEST CHOICE
                     </div>
+                    <h2 style={{ color: '#fff', fontSize: '2rem', margin: '0 0 8px 0', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+                        {product.name}
+                    </h2>
+                    <p style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 'bold', margin: 0 }}>
+                        {product.price}
+                    </p>
                 </div>
+            </div>
 
-                {/* Tabs */}
-                <div style={{
-                    display: 'flex',
-                    borderBottom: '1px solid rgba(255,255,255,0.1)',
-                    background: '#232d3f',
-                    flexShrink: 0,
-                    overflowX: 'auto'
-                }}>
-                    {[
-                        { id: 'INTRO', label: '상품 소개', icon: Info },
-                        { id: 'INCLUSION', label: '포함/불포함', icon: CheckCircle },
-                        { id: 'VEHICLE', label: '차량/비용', icon: Car },
-                        { id: 'REFUND', label: '취소 규정', icon: AlertTriangle },
-                        { id: 'ESTIMATE', label: '견적 계산', icon: Calculator }
-                    ].map((tab) => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id as any)}
-                            style={{
-                                flex: 1,
-                                padding: '16px',
-                                background: activeTab === tab.id ? 'rgba(212, 175, 55, 0.1)' : 'transparent',
-                                border: 'none',
-                                borderBottom: activeTab === tab.id ? '2px solid #D4AF37' : '2px solid transparent',
-                                color: activeTab === tab.id ? '#D4AF37' : 'rgba(255,255,255,0.7)',
-                                fontSize: '0.95rem',
-                                fontWeight: activeTab === tab.id ? 'bold' : 'normal',
-                                cursor: 'pointer',
-                                whiteSpace: 'nowrap',
-                                transition: 'all 0.2s',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '8px'
-                            }}
-                        >
-                            <tab.icon size={18} /> {tab.label}
-                        </button>
-                    ))}
-                </div>
+            {/* Tabs */}
+            <div style={{
+                display: 'flex',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                background: '#232d3f',
+                flexShrink: 0,
+                overflowX: 'auto'
+            }}>
+                {[
+                    { id: 'INTRO', label: '상품 소개', icon: Info },
+                    { id: 'INCLUSION', label: '포함/불포함', icon: CheckCircle },
+                    { id: 'VEHICLE', label: '차량/비용', icon: Car },
+                    { id: 'REFUND', label: '취소 규정', icon: AlertTriangle },
+                    { id: 'ESTIMATE', label: '견적 계산', icon: Calculator }
+                ].map((tab) => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id as any)}
+                        style={{
+                            flex: 1,
+                            padding: '16px',
+                            background: activeTab === tab.id ? 'rgba(212, 175, 55, 0.1)' : 'transparent',
+                            border: 'none',
+                            borderBottom: activeTab === tab.id ? '2px solid #D4AF37' : '2px solid transparent',
+                            color: activeTab === tab.id ? '#D4AF37' : 'rgba(255,255,255,0.7)',
+                            fontSize: '0.95rem',
+                            fontWeight: activeTab === tab.id ? 'bold' : 'normal',
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                            transition: 'all 0.2s',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px'
+                        }}
+                    >
+                        <tab.icon size={18} /> {tab.label}
+                    </button>
+                ))}
+            </div>
 
-                {/* Content Body */}
-                <div
-                    className="custom-scrollbar"
-                    style={{
-                        flex: 1,
-                        overflowY: 'auto',
-                        padding: '30px',
-                        background: '#1a202c'
-                    }}
-                >
-                    {renderContent()}
-                </div>
+            {/* Content Body */}
+            <div
+                className="custom-scrollbar"
+                style={{
+                    flex: 1,
+                    overflowY: 'auto',
+                    padding: '30px',
+                    background: '#1a202c'
+                }}
+            >
+                {renderContent()}
+            </div>
 
-                {/* Fixed Footer (Hidden as requested) */}
-                {/* <div className="product-detail-footer-contact" style={{
+            {/* Fixed Footer (Hidden as requested) */}
+            {/* <div className="product-detail-footer-contact" style={{
                     padding: '20px',
                     background: '#232d3f',
                     borderTop: '1px solid rgba(255,255,255,0.1)',
@@ -945,10 +1027,10 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                         카카오톡으로 빠른 상담
                     </a>
                 </div> */}
-            </div>
-        </div>,
-        document.body
-    );
+        </div>
+    </div>,
+    document.body
+);
 };
 
 export default ProductModal;
