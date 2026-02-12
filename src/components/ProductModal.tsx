@@ -873,8 +873,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                     {renderContent()}
                 </div>
 
-                {/* Fixed Footer */}
-                <div className="product-detail-footer-contact" style={{
+                {/* Fixed Footer (Hidden as requested) */}
+                {/* <div className="product-detail-footer-contact" style={{
                     padding: '20px',
                     background: '#232d3f',
                     borderTop: '1px solid rgba(255,255,255,0.1)',
@@ -911,7 +911,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                         <MessageCircle size={20} fill="#000" />
                         카카오톡으로 빠른 상담
                     </a>
-                </div>
+                </div> */}
             </div>
         </div>,
         document.body
