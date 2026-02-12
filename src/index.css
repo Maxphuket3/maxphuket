@@ -212,3 +212,56 @@ div:has(> button:contains("카카오톡으로 빠른 상담")) {
     /* 좌우 여백을 살짝 주어 시원하게 */
   }
 }
+
+/* 8. 데스크탑 화면: 히트상품 영역을 조금 더 작고 깔끔하게 축소 */
+@media screen and (min-width: 769px) {
+  .hit-products-section {
+    max-width: 1000px !important;
+    /* 기존 1200px에서 1000px로 축소 */
+    margin: 0 auto;
+    padding: 30px 0;
+  }
+
+  .hit-product-card {
+    transform: scale(0.95);
+    /* 카드 전체 크기를 5% 살짝 줄임 */
+  }
+}
+
+/* 9. 모바일 화면: 슬라이드 좌우 너비 최대 확장 */
+@media screen and (max-width: 768px) {
+  .hit-products-section {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    /* 좌우 여백 완전 제거 */
+  }
+
+  .swiper-container {
+    padding: 0 !important;
+  }
+
+  .swiper-slide {
+    width: 92% !important;
+    /* 모바일 화면을 거의 꽉 채우도록 확장 */
+    margin: 0 4% !important;
+    /* 중앙 정렬 느낌을 위해 미세 조정 */
+    scroll-snap-align: center;
+  }
+
+  /* 상품명 크기 및 배열 최적화 for Mobile */
+  .hit-product-card .product-name {
+    font-size: 1.3rem !important;
+    font-weight: 800;
+    word-break: keep-all;
+    padding: 0 10px;
+  }
+}
+
+/* 10. 시암니라밋 쇼 전용 사진 강제 지정 */
+/* 클래스명을 확인하여 배경이나 이미지 태그에 강제 적용 */
+div[data-id="siam-niramit-phuket"] .product-image,
+.product-card[data-id="siam-niramit-phuket"] .product-image,
+#siam-niramit-img {
+  content: url('/images/1000037627.jpg') !important;
+}

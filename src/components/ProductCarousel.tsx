@@ -94,6 +94,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                         <SwiperSlide key={`${product.id}-${index}`} className="product-card hit-product-card">
                             <div
                                 onClick={() => onProductClick(product)}
+                                data-id={product.id}
                                 style={{
                                     height: '220px',
                                     cursor: 'pointer',
@@ -118,6 +119,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                                 }}
                             >
                                 <img
+                                    className="product-image"
                                     src={product.thumbnail || product.detailImage || 'https://images.unsplash.com/photo-1589394815804-c10427c3e34b'}
                                     alt={product.name}
                                     style={{
