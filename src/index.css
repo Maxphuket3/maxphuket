@@ -100,41 +100,69 @@ input {
   font-size: 1rem;
 }
 
-/* 1. 메인 화면의 중복된 카카오 섹션만 제거 */
-/* 히트상품 리스트 바로 아래에 있는 배너형 상담창을 타겟팅합니다. */
-.hit-products-section+.contact-section,
-.main-page .kakao-banner-section {
-  display: none !important;
+/* 1. 히트상품 카드 크기 동일화 및 데스크탑 규격 복구 */
+.hit-products-section {
+  max-width: 1200px;
+  /* 처음 만들었던 적당한 크기 */
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  width: 95%;
+  /* Fallback */
 }
 
-/* 2. 견적 계산기(최종 단계) 내 상담 버튼은 보이도록 보장 */
-/* 견적 완료 페이지나 폼 안에 있는 버튼은 절대 숨기지 않습니다. */
-.estimate-result-page .kakao-connect-button,
-.final-step .kakao-btn {
-  display: block !important;
+.hit-product-slider,
+.product-card {
+  height: auto !important;
 }
 
-/* 3. 모바일에서만 히트상품 슬라이드 확장 (데스크탑은 유지) */
+/* 2. 모바일 전용: 슬라이드 너비 확장 및 스냅 */
 @media screen and (max-width: 768px) {
   .hit-products-section {
     width: 100% !important;
-    padding: 0 !important;
+    padding: 20px 0 !important;
+    /* 좌우 여백 제거 */
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  .swiper-container {
+    padding: 0 20px !important;
+    /* 슬라이드 시작 부분만 살짝 여백 */
+    overflow: visible !important;
   }
 
   .swiper-slide {
-    width: 90% !important;
-    /* 모바일에서 시원하게 */
-    height: auto;
+    width: 88vw !important;
+    /* 모바일에서만 너비를 꽉 차게 조절 */
+    min-width: 88vw !important;
     scroll-snap-align: center;
     margin-right: 15px;
-    /* 약간의 여백 추가 */
   }
 }
 
-/* 4. 데스크탑 기존 크기 고정 */
-@media screen and (min-width: 769px) {
-  .hit-products-section {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+/* 3. 메인 화면 빠른상담창(노란 배너) 완전 제거 */
+/* 특정 클래스나 텍스트를 포함하는 섹션을 강제로 숨깁니다 */
+.contact-section,
+.kakao-banner-section,
+.main-page-kakao-banner,
+.hit-products-section+div>.kakao-banner-section {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 4. 견적 계산기(최종 단계) 내 상담 버튼은 보이도록 보장 (예외 처리) */
+.estimate-result-page .kakao-connect-button,
+.estimate-result-page .contact-section {
+  display: block !important;
+  height: auto !important;
+  margin: initial !important;
+  padding: initial !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
