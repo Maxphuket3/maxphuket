@@ -166,3 +166,14 @@ input {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
+
+/* 5. 상품 상세 페이지 하단의 '견적 문의하기' 노란 배너 제거 */
+.product-detail-footer-contact,
+section:has(h3:contains("견적 문의하기")),
+div:has(> button:contains("카카오톡으로 빠른 상담")) {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}

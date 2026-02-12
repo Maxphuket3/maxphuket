@@ -874,7 +874,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                 </div>
 
                 {/* Fixed Footer */}
-                <div style={{
+                <div className="product-detail-footer-contact" style={{
                     padding: '20px',
                     background: '#232d3f',
                     borderTop: '1px solid rgba(255,255,255,0.1)',
