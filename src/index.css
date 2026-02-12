@@ -100,69 +100,41 @@ input {
   font-size: 1rem;
 }
 
-/* 1. 카카오톡 상담창 완전 제거 (모든 기기) */
-/* 클래스명이 무엇이든 '고객님에게 문의하기'와 '노란 버튼'을 강제 삭제합니다 */
-.contact-section,
-.kakao-banner-section,
-.kakao-float-button,
-[class*="KakaoFloating"],
-[id*="kakao-talk-channel"] {
+/* 1. 메인 화면의 중복된 카카오 섹션만 제거 */
+/* 히트상품 리스트 바로 아래에 있는 배너형 상담창을 타겟팅합니다. */
+.hit-products-section+.contact-section,
+.main-page .kakao-banner-section {
   display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
-/* 2. 데스크탑 화면: 기존 크기 유지 (수정 없음) */
-.hit-products-section {
-  max-width: 1200px;
-  /* 기존 데스크탑 표준 크기 */
-  margin: 0 auto;
-  width: 95%;
-  /* Desktop fallback */
-  position: relative;
+/* 2. 견적 계산기(최종 단계) 내 상담 버튼은 보이도록 보장 */
+/* 견적 완료 페이지나 폼 안에 있는 버튼은 절대 숨기지 않습니다. */
+.estimate-result-page .kakao-connect-button,
+.final-step .kakao-btn {
+  display: block !important;
 }
 
-/* 3. 모바일 화면만(768px 이하) 시원하게 확장 */
+/* 3. 모바일에서만 히트상품 슬라이드 확장 (데스크탑은 유지) */
 @media screen and (max-width: 768px) {
   .hit-products-section {
     width: 100% !important;
-    max-width: none !important;
     padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .swiper-container {
-    overflow: visible !important;
-    padding-bottom: 20px;
-  }
-
-  .swiper-wrapper {
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 10px 0 30px 0 !important;
   }
 
   .swiper-slide {
-    width: 88vw !important;
-    /* 모바일에서만 상품 카드를 크게 확장 */
-    min-width: 88vw !important;
+    width: 90% !important;
+    /* 모바일에서 시원하게 */
+    height: auto;
     scroll-snap-align: center;
-    margin-right: 10px;
-    transition: transform 0.3s;
-    transform: scale(0.95);
-    /* 기본 상태는 약간 작게 */
-    opacity: 0.8;
+    margin-right: 15px;
+    /* 약간의 여백 추가 */
   }
+}
 
-  .swiper-slide-active,
-  .swiper-slide:hover,
-  .swiper-slide:focus-within {
-    transform: scale(1) !important;
-    opacity: 1 !important;
-    z-index: 10;
+/* 4. 데스크탑 기존 크기 고정 */
+@media screen and (min-width: 769px) {
+  .hit-products-section {
+    max-width: 1200px;
+    margin: 0 auto;
   }
 }

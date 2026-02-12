@@ -217,7 +217,7 @@ const LastDayScreen: React.FC = () => {
 
     // --- Render ---
     return (
-        <div style={{
+        <div className="estimate-result-page" style={{
             minHeight: '100vh',
             background: 'linear-gradient(180deg, #1a202c 0%, #2d3748 100%)',
             color: '#fff',
@@ -409,6 +409,7 @@ const LastDayScreen: React.FC = () => {
             {!isOverTime ? (
                 <div style={{ position: 'fixed', bottom: '20px', left: '0', right: '0', padding: '20px', textAlign: 'center', zIndex: 100 }}>
                     <button
+                        className="kakao-connect-button"
                         onClick={() => {
                             const message = `[Phuket Last Day Plan]\nRoute: ${calculatedRoute.map(i => i.name).join(' -> ')}\nTotal Est. Time: ${calculatedRoute[calculatedRoute.length - 1].arrivalTime}`;
                             navigator.clipboard.writeText(message);

@@ -88,7 +88,7 @@ const JourneyStartScreen: React.FC = () => {
     };
 
     return (
-        <div style={{
+        <div className="main-page" style={{
             minHeight: '100vh',
             background: 'linear-gradient(180deg, #1a202c 0%, #2d3748 100%)',
             display: 'flex',
