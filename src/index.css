@@ -265,3 +265,20 @@ div[data-id="siam-niramit-phuket"] .product-image,
 #siam-niramit-img {
   content: url('/images/1000037627.jpg') !important;
 }
+
+/* 11. 상품 상세페이지 하단 '노란색 상담 배너'만 콕 집어서 제거 */
+/* 견적 입력란(Booking Form)은 건드리지 않고, 상담 문구와 버튼이 있는 섹션만 숨깁니다. */
+.product-detail-footer-contact,
+section:has(p:contains("합리적인 가격")),
+section:has(h3:contains("견적 문의하기")) {
+  display: none !important;
+}
+
+/* 12. 기존 견적/예약 입력창(Booking Section)은 강제로 보이게 설정 */
+.booking-section,
+.estimate-input-container,
+#booking-form {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}

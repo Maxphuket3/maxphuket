@@ -385,7 +385,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                 return (
                     <div style={{ animation: 'fadeIn 0.3s ease-in-out' }}>
                         {product.courses ? (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                            <div className="booking-section estimate-input-container" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                                 {/* Course Selection */}
                                 <div>
                                     <h3 style={{ color: '#D4AF37', fontSize: '1.1rem', marginBottom: '12px' }}>
