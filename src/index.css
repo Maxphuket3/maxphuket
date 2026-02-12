@@ -168,6 +168,7 @@ input {
 }
 
 /* 5. 상품 상세 페이지 하단의 '견적 문의하기' 노란 배너 제거 */
+/* 5. 상품 상세 페이지 하단의 '견적 문의하기' 노란 배너 제거 */
 .product-detail-footer-contact,
 section:has(h3:contains("견적 문의하기")),
 div:has(> button:contains("카카오톡으로 빠른 상담")) {
@@ -176,4 +177,38 @@ div:has(> button:contains("카카오톡으로 빠른 상담")) {
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
+}
+
+/* 6. 히트상품 제목 크기 확장 및 강조 */
+.hit-product-card .product-name {
+  font-size: 1.4rem !important;
+  /* 기존보다 약 20% 크게 */
+  font-weight: 800 !important;
+  /* 아주 굵게 강조 */
+  line-height: 1.3;
+  /* 두 줄이 되어도 보기 좋게 간격 조정 */
+  color: #ffffff;
+  /* 어두운 배경에서 잘 보이도록 흰색 */
+  margin-bottom: 8px;
+
+  /* 2. 글자 배열 최적화 */
+  word-break: keep-all;
+  /* 단어 단위로 줄바꿈하여 가독성 향상 */
+  text-align: left;
+  /* 왼쪽 정렬로 깔끔하게 배치 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* 제목이 너무 길면 최대 2줄까지만 표시 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 7. 모바일 화면에서 더욱 최적화된 배열 */
+@media screen and (max-width: 768px) {
+  .hit-product-card .product-name {
+    font-size: 1.25rem !important;
+    /* 모바일 기기에 맞춘 최적 크기 */
+    padding: 0 5px;
+    /* 좌우 여백을 살짝 주어 시원하게 */
+  }
 }

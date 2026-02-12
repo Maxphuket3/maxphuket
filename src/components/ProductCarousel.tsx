@@ -91,7 +91,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                     style={{ padding: '10px 0 40px 0' }}
                 >
                     {displayProducts.map((product, index) => (
-                        <SwiperSlide key={`${product.id}-${index}`} className="product-card">
+                        <SwiperSlide key={`${product.id}-${index}`} className="product-card hit-product-card">
                             <div
                                 onClick={() => onProductClick(product)}
                                 style={{
@@ -190,15 +190,13 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onProductClick, produ
                                     flexDirection: 'column',
                                     gap: '6px'
                                 }}>
-                                    <h4 style={{
+                                    <h4 className="product-name" style={{
                                         color: '#fff',
-                                        fontSize: 'clamp(1.2rem, 4vw, 1.4rem)',
+                                        // fontSize removed to let CSS control it
                                         fontWeight: '800',
                                         marginBottom: '4px',
                                         textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
-                                        whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis'
+                                        // whiteSpace, overflow, textOverflow removed for multi-line support
                                     }}>
                                         {product.name}
                                     </h4>
