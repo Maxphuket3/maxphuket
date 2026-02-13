@@ -427,8 +427,52 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
                 {/* 최종 견적 및 카톡 연결 (위아래 배열) */}
                 <div className="total-box" style={{ width: '100%', marginTop: '30px', padding: '20px', backgroundColor: '#f9f9f9', borderTop: '1px solid #eee' }}>
-                    <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '15px', color: '#000', textAlign: 'center' }}>총 합계: {totalPrice} 바트</p>
-                    <button className="kakao-btn" onClick={handleKakaoLink} style={{ width: '100%', padding: '16px', backgroundColor: '#FEE500', color: '#000', border: 'none', borderRadius: '12px', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
+
+                    {/* 금액 상세 내역 추가 */}
+                    <div style={{ width: '100%', textAlign: 'left', marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px dashed #ddd' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '0.95rem' }}>
+                            <span>인원 기본 요금:</span>
+                            <span>{(() => {
+                                const course = product.courses?.[selectedCourseIdx];
+                                if (!course) return 0;
+                                const p = (s: string) => parseInt(s.replace(/[^0-9]/g, '')) || 0;
+                                return (p(course.priceAdult) * adultCount + p(course.priceChild) * childCount).toLocaleString();
+                            })()} THB</span>
+                        </div>
+
+                        {/* 캐리어 비용 상세 */}
+                        {((product.category === 'SIMILAN' ? (luggageMedium + luggageLarge) : luggageCount) > 0) && (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '0.95rem', color: '#e67e22' }}>
+                                <span>캐리어 추가 요금 ({product.category === 'SIMILAN' ? (luggageMedium + luggageLarge) : luggageCount}개):</span>
+                                <span>+{(() => {
+                                    const carriers = product.category === 'SIMILAN' ? (luggageMedium + luggageLarge) : luggageCount;
+                                    const pricePerBag = product.category === 'SIMILAN' ? (product.luggagePrice || 200) : (product.carrierFeePerUnit || product.luggagePrice || 200);
+                                    return (carriers * pricePerBag).toLocaleString();
+                                })()} THB</span>
+                            </div>
+                        )}
+
+                        {/* 옵션 비용 상세 (있을 경우) */}
+                        {Object.values(selectedOptions).some(v => v > 0) && (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '0.95rem', color: '#27ae60' }}>
+                                <span>추가 옵션 합계:</span>
+                                <span>+{(() => {
+                                    let total = 0;
+                                    Object.entries(selectedOptions).forEach(([idx, count]) => {
+                                        const opt = product.options?.[parseInt(idx)];
+                                        if (opt) total += opt.price * count;
+                                    });
+                                    return total.toLocaleString();
+                                })()} THB</span>
+                            </div>
+                        )}
+                    </div>
+
+                    <p style={{ fontSize: '1.4rem', fontWeight: 'bold', marginBottom: '15px', color: '#000', textAlign: 'center' }}>
+                        총 합계: <span style={{ color: '#e74c3c' }}>{totalPrice}</span> 바트
+                    </p>
+
+                    <button className="kakao-btn" onClick={handleKakaoLink} style={{ width: '100%', padding: '16px', backgroundColor: '#FEE500', color: '#000', border: 'none', borderRadius: '12px', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', transition: 'transform 0.1s' }} onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'} onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}>
                         카카오톡으로 견적 상담하기
                     </button>
                 </div>
