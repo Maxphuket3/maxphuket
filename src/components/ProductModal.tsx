@@ -108,10 +108,10 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             if (isPaidPickup) pickupFee += 2500;
         }
 
-        // 3. Luggage/Carrier Logic (수정된 부분: 기본 개당 200바트)
+        // 3. Luggage/Carrier Logic (수정된 부분: 기본 개당 300바트)
         const pricePerBag = product.category === 'SIMILAN'
-            ? (product.luggagePrice || 200)
-            : (product.carrierFeePerUnit || product.luggagePrice || 200);
+            ? (product.luggagePrice || 300)
+            : (product.carrierFeePerUnit || product.luggagePrice || 300);
 
         if (product.category === 'SIMILAN') {
             luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
@@ -183,7 +183,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
         // Calculate Carrier Price
         let carrierMsg = '';
         if (carrierCount > 0) {
-            const pricePerBag = product.category === 'SIMILAN' ? (product.luggagePrice || 200) : (product.carrierFeePerUnit || product.luggagePrice || 200);
+            const pricePerBag = product.category === 'SIMILAN' ? (product.luggagePrice || 300) : (product.carrierFeePerUnit || product.luggagePrice || 300);
             const cTotal = carrierCount * pricePerBag;
             carrierMsg = `\n🧳 캐리어: ${carrierCount}개 (+${cTotal.toLocaleString()}바트)`;
         }
@@ -489,7 +489,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             {['phi-phi', 'similan', 'racha', 'bamboo', 'khai'].some(id => product.id.includes(id)) && (
                                 <div className="input-group" style={{ width: '100%', textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                                     <label style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '8px' }}>
-                                        🧳 캐리어 보관 (개당 200바트)
+                                        🧳 캐리어 보관 (개당 300바트)
                                     </label>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                         <button
@@ -563,7 +563,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                 <span>캐리어 추가 요금 ({product.category === 'SIMILAN' ? (luggageMedium + luggageLarge) : luggageCount}개):</span>
                                 <span>+{(() => {
                                     const carriers = product.category === 'SIMILAN' ? (luggageMedium + luggageLarge) : luggageCount;
-                                    const pricePerBag = product.category === 'SIMILAN' ? (product.luggagePrice || 200) : (product.carrierFeePerUnit || product.luggagePrice || 200);
+                                    const pricePerBag = product.category === 'SIMILAN' ? (product.luggagePrice || 300) : (product.carrierFeePerUnit || product.luggagePrice || 300);
                                     return (carriers * pricePerBag).toLocaleString();
                                 })()} THB</span>
                             </div>

@@ -203,7 +203,7 @@ export const MAIN_PRODUCTS: Product[] = [
         description: '시밀란 투어의 절대 강자! 뷰포인트를 마지막에 방문하여 인파를 피하고, 전용 부두와 쾌적한 서비스를 제공합니다.',
         category: 'SIMILAN',
         badges: ['뷰포인트 마지막', '오리발 무료', '전연령 보험(74세)'],
-        luggagePrice: 200,
+        luggagePrice: 300,
         provider: 'SEASTAR',
         highlights: ['전용 부두 출발', '4번섬 점심', '가장 대중적인 투어'],
         courses: [
@@ -236,7 +236,7 @@ export const MAIN_PRODUCTS: Product[] = [
         description: '최상급 2층 카타마란으로 즐기는 럭셔리 투어. 8번섬 뷰포인트를 가장 먼저 방문하여 인생샷을 남기세요.',
         category: 'SIMILAN',
         badges: ['뷰포인트 1순위', '2층 카타마란 최상', '푸켓/카오락 교차 불가'],
-        luggagePrice: 200,
+        luggagePrice: 300,
         provider: 'SAWANU',
         highlights: ['8번섬 가장 먼저 도착', '최신형 카타마란', '대형 요트'],
         courses: [
@@ -247,12 +247,12 @@ export const MAIN_PRODUCTS: Product[] = [
                 features: ['2층 구조 (최상)', '편안한 좌석', '흔들림 적음']
             }
         ],
-        inclusions: ['프리미엄 조/중/석식', '스노클링 장비', '오리발(렌탈 200B)', '비치타올'],
+        inclusions: ['프리미엄 조/중/석식', '스노클링 장비', '오리발(렌탈 300B)', '비치타올'],
         exclusions: ['오리발 대여료', '개인 경비', '매너팁'],
-        vehicleInfo: '빠통 05:30 / 공항 06:30 / 카오락 07:00 픽업\n부두 도착 16:30\n*카오락 왕복 시 1인 200바트 할인',
+        vehicleInfo: '빠통 05:30 / 공항 06:30 / 카오락 07:00 픽업\n부두 도착 16:30\n*카오락 왕복 시 1인 300바트 할인',
         pricePolicy: '성인: 만 12세 이상 / 아동: 만 4-11세',
         cancellationPolicy: '투어 2일 전 100% 환불 가능',
-        importantNotes: ['만 2세 ~ 74세 보험 적용', '푸켓 픽업 -> 카오락 드랍 불가', '임산부 탑승 불가']
+        importantNotes: ['만 2세 ~ 74세 보험 적용', '푸켓 픽업 -> 카오락 드랍 불가', '임산부 탑승 불가'],
     },
     {
         id: 'p_similan_once',
@@ -263,7 +263,7 @@ export const MAIN_PRODUCTS: Product[] = [
         description: '아침잠이 많다면 원스! 비교적 늦은 7시 출발로 여유롭게, 2층 카타마란으로 편안하게 즐기세요.',
         category: 'SIMILAN',
         badges: ['늦은 출발(07:00)', '뷰포인트 1순위', '2층 카타마란'],
-        luggagePrice: 200,
+        luggagePrice: 300,
         provider: 'ONCE',
         highlights: ['상대적으로 여유로운 일정', '사진 촬영에 진심', '4번섬 점심'],
         courses: [
@@ -290,7 +290,7 @@ export const MAIN_PRODUCTS: Product[] = [
         description: '풀파티 분위기의 젊은 감성! 트렌디한 굿즈와 전용 라운지, 뷰포인트를 1순위로 방문하는 힙한 투어.',
         category: 'SIMILAN',
         badges: ['뷰포인트 1순위', '풀파티 분위기', '젊은 감성'],
-        luggagePrice: 200,
+        luggagePrice: 300,
         provider: 'LOVE_ANDAMAN',
         highlights: ['트렌디한 굿즈 / 라운지', '4번섬 점심', '1층형 대형 카타마란'],
         courses: [
@@ -546,7 +546,7 @@ export const MAIN_PRODUCTS: Product[] = [
         inclusions: ["왕복 차량", "보트", "영어 가이드", "국립공원 입장료", "점심식사", "스노클링 장비"],
         exclusions: ["개인 경비", "매너팁"],
         importantNotes: ["스노클링 장비 분실 시 비용 청구될 수 있습니다.", "임산부는 투어 참여가 제한됩니다."],
-        carrierFeePerUnit: 200,
+        carrierFeePerUnit: 300,
         hasCarrierOption: true
     },
     {
@@ -571,7 +571,7 @@ export const MAIN_PRODUCTS: Product[] = [
         inclusions: ["투명 카약", "패들 보트", "2층형 카타마란 이용", "국립공원 입장료 포함", "왕복 픽업", "점심 식사"],
         exclusions: ["개인 경비", "매너팁"],
         importantNotes: ["날씨에 따라 마이톤섬 방문이 어려울 수 있습니다.", "수영복은 미리 착용하고 오세요."],
-        carrierFeePerUnit: 200,
+        carrierFeePerUnit: 300,
         hasCarrierOption: true
     },
     {
@@ -602,7 +602,7 @@ export const MAIN_PRODUCTS: Product[] = [
         inclusions: ["뱀부섬 국립공원 입장료 포함", "스노클링 장비 제공", "점심 식사", "왕복 픽업"],
         exclusions: ["개인 경비", "매너팁"],
         importantNotes: ["국립공원 입장권은 투어비에 포함되어 있습니다.", "현지 사정에 따라 일정이 변경될 수 있습니다."],
-        carrierFeePerUnit: 200,
+        carrierFeePerUnit: 300,
         hasCarrierOption: true
     },
     {
@@ -632,7 +632,7 @@ export const MAIN_PRODUCTS: Product[] = [
         vehicleInfo: "빠통, 카론, 카타 무료 픽업\n그 외 지역 추가 요금 발생 (100~300바트)\n08:00 호텔 픽업 -> 09:00 찰롱 부두 출발 -> 16:30 부두 도착",
         inclusions: ["왕복 픽업", "스노클링 장비", "현지인 가이드", "점심 식사", "상해 보험"],
         exclusions: ["개인 경비", "매너 팁", "주류 및 음료"],
-        carrierFeePerUnit: 200,
+        carrierFeePerUnit: 300,
         hasCarrierOption: true,
         importantNotes: ["임산부는 투어 참여가 제한됩니다.", "바나나비치에서는 비치체어 무료 제공"]
     },
