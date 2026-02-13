@@ -329,24 +329,24 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', alignItems: 'flex-start', marginTop: '10px' }}>
 
                             {/* 3. 호텔 정보 (픽업/드랍) */}
-                            <div className="hotel-info-section" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                            <div className="hotel-info-section" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'flex-start' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
-                                    <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>🏨 픽업 호텔명</label>
+                                    <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>🏨 픽업 호텔명 (로비 상세 기재)</label>
                                     <input
                                         type="text"
                                         value={pickupHotel}
                                         onChange={(e) => setPickupHotel(e.target.value)}
-                                        placeholder="예: 그랜드 머큐어 푸켓 (로비)"
+                                        placeholder="예: 그랜드 머큐어 로비"
                                         style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
                                     />
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
-                                    <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>🚗 드랍 호텔명</label>
+                                    <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>🚗 드랍 호텔명 (공항 또는 다음 숙소)</label>
                                     <input
                                         type="text"
                                         value={dropoffHotel}
                                         onChange={(e) => setDropoffHotel(e.target.value)}
-                                        placeholder="예: 푸켓 국제공항 또는 다음 호텔명"
+                                        placeholder="예: 푸켓 공항 2층"
                                         style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
                                     />
                                 </div>
