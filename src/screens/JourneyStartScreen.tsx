@@ -2,14 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useJourney } from '../context/JourneyContext';
 import { Plane, Users, MapPin, Hotel as HotelIcon, Star } from 'lucide-react';
-import ProductCarousel from '../components/ProductCarousel';
-import { Product } from '../data/products';
+import { Product, MAIN_PRODUCTS } from '../data/products';
+import ProductModal from '../components/ProductModal';
 import { PHUKET_HOTELS, Hotel } from '../data/hotels';
 
 const JourneyStartScreen: React.FC = () => {
     const navigate = useNavigate();
     const { userInfo, setUserInfo } = useJourney();
     const [localInfo, setLocalInfo] = useState(userInfo);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     // Hotel Autocomplete State
     const [hotelQuery, setHotelQuery] = useState(userInfo.resort || '');
@@ -419,10 +420,48 @@ const JourneyStartScreen: React.FC = () => {
                 </a>
             </div>
 
-            {/* Products Section */}
-            <div style={{ width: '100%', maxWidth: '1200px', margin: '60px auto 40px', padding: '0 40px', boxSizing: 'border-box' }}>
-                <ProductCarousel onProductClick={handleProductClick} />
+            {/* Products Section - Replaced Slider with List Feed */}
+            <div style={{ width: '100%', maxWidth: '1200px', margin: '60px auto 40px', boxSizing: 'border-box' }}>
+                <h3 style={{
+                    textAlign: 'center',
+                    fontSize: '1.8rem',
+                    fontWeight: 800,
+                    color: '#D4AF37',
+                    marginBottom: '30px',
+                    textTransform: 'uppercase'
+                }}>
+                    🔥 Phuket Hit Products 🔥
+                </h3>
+
+                <div className="hit-products-grid">
+                    {MAIN_PRODUCTS.map((product) => (
+                        <div
+                            key={product.id}
+                            className="hit-product-card-new"
+                            onClick={() => setSelectedProduct(product)}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <img
+                                src={product.thumbnail}
+                                alt={product.name}
+                                className="hit-product-image"
+                            />
+                            <div className="hit-product-info">
+                                <h4 className="hit-product-name">{product.name}</h4>
+                                <p className="hit-product-price">{product.price}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
+
+            {/* Product Modal */}
+            {selectedProduct && (
+                <ProductModal
+                    product={selectedProduct}
+                    onClose={() => setSelectedProduct(null)}
+                />
+            )}
 
         </div>
     );
