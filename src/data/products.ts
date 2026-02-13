@@ -41,6 +41,7 @@ export interface Product {
     carrierFeePerUnit?: number;
     hasCarrierOption?: boolean;
     options?: {
+        id?: string;
         name: string;
         price: number;
     }[];
@@ -638,11 +639,11 @@ export const MAIN_PRODUCTS: Product[] = [
     },
     {
         id: 'tiger-park',
-        name: '푸켓 타이거 파크 (Tiger Park) - [개별 이동]',
+        name: '푸켓 타이거 파크 (Tiger Park) - [개별 이동 상품]',
         price: '700 THB ~',
         thumbnail: '/images/tiger-park.jpg',
         detailImage: '/images/tiger-park.jpg',
-        description: "본 상품은 전용 픽업이 포함되지 않은 '현장 집결' 상품입니다. 호랑이와 직접 교감하며 잊지 못할 사진을 남겨보세요. 전 세계 유일하게 호랑이와 함께 시간을 보낼 수 있는 특별한 체험입니다.",
+        description: "본 상품은 전용 픽업이 포함되지 않은 '현장 집결' 상품입니다. 호랑이와 직접 교감하며 잊지 못할 사진을 남겨보세요.",
         category: 'TICKET',
         courses: [
             {
@@ -653,11 +654,11 @@ export const MAIN_PRODUCTS: Product[] = [
             }
         ],
         options: [
-            { name: "싱글: Big Tiger", price: 1000 },
-            { name: "싱글: Medium Tiger", price: 900 },
-            { name: "싱글: Small Tiger", price: 800 },
-            { name: "싱글: Smallest Tiger", price: 700 },
-            { name: "패키지: 2가지 선택 (Any 2)", price: 1500 }
+            { id: "single-big", name: "싱글: Big Tiger", price: 1000 },
+            { id: "single-med", name: "싱글: Medium Tiger", price: 900 },
+            { id: "single-small", name: "싱글: Small Tiger", price: 800 },
+            { id: "single-smallest", name: "싱글: Smallest Tiger", price: 700 },
+            { id: "pkg-2-any", name: "패키지: 2가지 선택 (Any 2)", price: 1500 }
         ],
         importantNotes: [
             "📍 본 상품은 픽업 서비스가 없으며, 직접 개별 이동하셔야 합니다.",

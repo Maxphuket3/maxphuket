@@ -29,7 +29,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
     const [luggageSmall, setLuggageSmall] = useState(0); // 20" â†“
     const [luggageMedium, setLuggageMedium] = useState(0); // 21-29"
     const [luggageLarge, setLuggageLarge] = useState(0); // 30" â†‘
-    const [selectedOptions, setSelectedOptions] = useState<{ [key: number]: number }>({});
+    const [isTigerAgreed, setIsTigerAgreed] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState<Record<number, number>>({});
 
     // Reset state when product changes
     React.useEffect(() => {
@@ -350,6 +351,44 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                     </div>
                                 </div>
                             </div>
+                        ) : product.id === 'tiger-park' ? (
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                {/* 1. 패키지 유형 선택 */}
+                                <div className="input-group">
+                                    <label style={{ fontWeight: 'bold' }}>🐯 패키지 상품 선택 (개별 이동)</label>
+                                    <select
+                                        style={{ width: '100%', padding: '12px', marginTop: '8px', borderRadius: '8px', border: '1px solid #ddd', backgroundColor: '#fff' }}
+                                        value={Object.entries(selectedOptions).find(([_, count]) => count > 0)?.[0] || ""}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setSelectedOptions(val ? { [parseInt(val)]: 1 } : {});
+                                        }}
+                                    >
+                                        <option value="">패키지를 선택하세요</option>
+                                        {product.options?.map((opt, idx) => (
+                                            <option key={idx} value={idx}>{opt.name} - {opt.price.toLocaleString()}바트</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* 2. 필수 주의사항 및 입장 제한 (붉은색 강조) */}
+                                <div style={{ backgroundColor: '#fff5f5', padding: '15px', borderRadius: '10px', border: '1px solid #feb2b2', textAlign: 'left' }}>
+                                    <h4 style={{ margin: '0 0 10px 0', color: '#c53030' }}>🚨 입장 필수 규정</h4>
+                                    <ul style={{ paddingLeft: '20px', fontSize: '0.9rem', color: '#4a5568', lineHeight: '1.6', margin: 0 }}>
+                                        <li><strong>신장 제한:</strong> 160cm 미만은 'Smallest'만 선택 가능합니다.</li>
+                                        <li><strong>연령 제한:</strong> 15세 미만은 보호자 동반 시에만 입장 가능합니다.</li>
+                                        <li><strong>이동 수단:</strong> 이 상품은 픽업 서비스가 없으며 개별 이동 상품입니다.</li>
+                                    </ul>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.9rem' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={isTigerAgreed}
+                                            onChange={(e) => setIsTigerAgreed(e.target.checked)}
+                                            style={{ width: '18px', height: '18px' }}
+                                        /> 위 규정을 모두 확인하였으며 이에 동의합니다.
+                                    </label>
+                                </div>
+                            </div>
                         ) : product.id === 'siam-niramit' ? (
                             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                 <div className="option-item">
@@ -427,14 +466,14 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             <div style={{ width: '100%', marginTop: '20px', padding: '15px', backgroundColor: '#fff9e6', borderRadius: '10px' }}>
                                 <h4 style={{ margin: '0 0 10px 0', color: '#e67e22' }}>⚠️ 필독 주의사항</h4>
                                 <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: '#555', whiteSpace: 'pre-wrap' }}>
-                                    {product.id === 'tiger-park'
-                                        ? "• 본 상품은 픽업 서비스가 없는 '현장 집결' 상품입니다.\n• 신장 160cm 미만 고객은 'Smallest Tiger'만 이용 가능합니다.\n• 만 15세 미만은 보호자 동반 필수입니다."
-                                        : ['phuket-fantasea', 'siam-niramit'].includes(product.id)
-                                            ? "• 공연장 내 촬영 절대 금지 (입구 보관)\n• 에어컨이 강하니 얇은 겉옷 준비\n• 아동 기준: 신장 101~140cm (100cm 이하 무료)"
-                                            : "• 임산부 및 노약자 탑승 제한\n• 준비물: 수영복, 수건, 선크림\n• 아동 기준: 만 4세~11세 미만"
+                                    {['phuket-fantasea', 'siam-niramit'].includes(product.id)
+                                        ? "• 공연장 내 촬영 절대 금지 (입구 보관)\n• 에어컨이 강하니 얇은 겉옷 준비\n• 아동 기준: 신장 101~140cm (100cm 이하 무료)"
+                                        : (product.category === 'SIMILAN' || ['phi-phi', 'racha', 'khai'].some(kw => product.id.includes(kw)))
+                                            ? "• 임산부 및 노약자 탑승 제한\n• 준비물: 수영복, 수건, 선크림\n• 아동 기준: 만 4세~11세 미만"
+                                            : "• 본 상품은 예약 후 바우처가 발송되는 예약 상품입니다.\n• 상품별 성격에 맞는 복장과 준비물을 준비해 주세요."
                                     }
                                     {product.caution && `\n• ${product.caution}`}
-                                    {product.importantNotes && product.importantNotes.map((note, i) => `\n${note}`).join('')}
+                                    {product.importantNotes && product.importantNotes.map((note) => `\n${note}`).join('')}
                                 </p>
                             </div>
 
@@ -450,8 +489,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                 </div>
                             )}
 
-                            {/* 4. 기타 옵션 (있을 경우 표시) */}
-                            {product.options && product.options.length > 0 && product.id !== 'phuket-fantasea' && product.id !== 'siam-niramit' && (
+                            {/* 4. 기타 옵션 */}
+                            {product.options && product.options.length > 0 && product.id !== 'phuket-fantasea' && product.id !== 'siam-niramit' && product.id !== 'tiger-park' && (
                                 <div style={{ width: '100%', borderTop: '1px solid #eee', paddingTop: '15px' }}>
                                     <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>➕ 추가 옵션 선택</label>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
