@@ -466,15 +466,26 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
                             {/* 4. 상품 상세 및 주의사항 섹션 */}
                             <div style={{ textAlign: 'left', width: '100%', marginTop: '20px' }}>
-                                <h4 style={{ color: '#2c3e50', borderLeft: '4px solid #FEE500', paddingLeft: '10px', fontWeight: 'bold' }}>✨ 상품 상세 설명</h4>
-                                <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: '#555', backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '8px', margin: '10px 0 20px 0' }}>
+                                <h4 style={{ color: product.category === 'HIT' ? '#005aab' : '#2c3e50', borderLeft: `4px solid ${product.category === 'HIT' ? '#005aab' : '#FEE500'}`, paddingLeft: '10px', fontWeight: 'bold' }}>
+                                    {product.category === 'HIT' ? '🎪' : '✨'} 상품 상세 설명
+                                </h4>
+                                <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: '#555', backgroundColor: product.category === 'HIT' ? '#f0f4f8' : '#f9f9f9', padding: '15px', borderRadius: '8px', margin: '10px 0 20px 0' }}>
                                     {product.description}
                                 </p>
 
-                                <h4 style={{ color: '#e74c3c', borderLeft: '4px solid #e74c3c', paddingLeft: '10px', fontWeight: 'bold' }}>⚠️ 주의 사항</h4>
-                                <ul style={{ fontSize: '0.9rem', color: '#666', paddingLeft: '20px', lineHeight: '1.6', marginTop: '10px' }}>
-                                    <li>준비물: 수영복, 아쿠아슈즈, 비치타월, 선크림, 개인 경비(팁 등)</li>
-                                    <li>바우처에 기재된 픽업 시간 10분 전 로비 대기 부탁드립니다.</li>
+                                <h4 style={{ color: product.category === 'HIT' ? '#d35400' : '#e74c3c', borderLeft: `4px solid ${product.category === 'HIT' ? '#d35400' : '#e74c3c'}`, paddingLeft: '10px', fontWeight: 'bold', marginTop: '20px' }}>⚠️ 주의 사항</h4>
+                                <ul style={{ fontSize: '0.9rem', color: '#666', paddingLeft: '20px', lineHeight: '1.8', marginTop: '10px' }}>
+                                    {product.category === 'HIT' ? (
+                                        <>
+                                            <li>아동 기준: 신장 90cm ~ 140cm (90cm 미만 무료, 좌석 없음)</li>
+                                            <li>공연장 내 촬영 불가 (입구에서 휴대폰/카메라 보관 필요)</li>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <li>준비물: 수영복, 아쿠아슈즈, 비치타월, 선크림, 개인 경비(팁 등)</li>
+                                            <li>바우처에 기재된 픽업 시간 10분 전 로비 대기 부탁드립니다.</li>
+                                        </>
+                                    )}
                                     {product.caution && <li>{product.caution}</li>}
                                 </ul>
                             </div>
