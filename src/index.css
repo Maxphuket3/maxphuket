@@ -534,3 +534,35 @@ section:has(h3:contains("견적 문의하기")) {
   /* Dark mode text */
   width: 100%;
 }
+
+/* 1. 모든 수하물 및 예약창: 왼쪽 밀착 및 상하 정렬 */
+.booking-form-wrapper,
+.estimate-section {
+  display: flex !important;
+  flex-direction: column !important;
+  /* 위아래로 */
+  align-items: flex-start !important;
+  /* 무조건 왼쪽 정렬 */
+  width: 100% !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  /* 옆으로 벗어남 방지 */
+}
+
+/* 2. 각 입력 항목 박스 */
+.input-item {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  /* 라벨 아래에 입력창 배치 */
+  margin-bottom: 15px !important;
+}
+
+/* 3. 캐리어 숫자 입력칸 왼쪽 정렬 */
+.carrier-input-group {
+  display: flex !important;
+  justify-content: flex-start !important;
+  gap: 15px;
+  margin-top: 5px;
+}
