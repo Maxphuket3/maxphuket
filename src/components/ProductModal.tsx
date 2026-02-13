@@ -108,14 +108,14 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             if (isPaidPickup) pickupFee += 2500;
         }
 
-        // 3. Luggage Logic
+        // 3. Luggage/Carrier Logic (수정된 부분: 기본 개당 200바트)
+        const pricePerBag = product.category === 'SIMILAN'
+            ? (product.luggagePrice || 200)
+            : (product.carrierFeePerUnit || product.luggagePrice || 200);
+
         if (product.category === 'SIMILAN') {
-            const totalBags = luggageSmall + luggageMedium + luggageLarge;
-            const pricePerBag = product.luggagePrice || 200;
-            // Simplified logic as requested or standard
             luggageTotalInfo = (luggageMedium + luggageLarge) * pricePerBag;
         } else {
-            const pricePerBag = product.carrierFeePerUnit || product.luggagePrice || 300;
             luggageTotalInfo = luggageCount * pricePerBag;
         }
 
@@ -130,6 +130,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             });
         }
 
+        // 최종 합계 계산 (Base + Carrier + Fees + Options)
         return basePrice + mandatoryFees + pickupFee + luggageTotalInfo + optionsTotal;
     }, [product, selectedCourseIdx, adultCount, childCount, infantCount, pickupHotel, selectedPickupOptionIdx, isPaidPickup, luggageCount, luggageSmall, luggageMedium, luggageLarge, selectedOptions]);
 
