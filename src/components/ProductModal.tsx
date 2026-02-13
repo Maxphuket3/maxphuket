@@ -292,7 +292,41 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             </div>
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', alignItems: 'flex-start', marginTop: '20px' }}>
+                        {/* 3. 코스 선택 (추가된 부분) */}
+                        {product.courses && product.courses.length > 0 && (
+                            <div className="input-group">
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>📍 코스 선택</label>
+                                <select
+                                    value={selectedCourseIdx}
+                                    onChange={(e) => setSelectedCourseIdx(Number(e.target.value))}
+                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
+                                >
+                                    {product.courses.map((course, idx) => (
+                                        <option key={idx} value={idx}>
+                                            {course.name} ({course.priceAdult})
+                                        </option>
+                                    ))}
+                                </select>
+
+                                {/* 선택된 코스의 상세 설명 및 주의사항 표시 */}
+                                {product.courses[selectedCourseIdx] && (
+                                    <div style={{ marginTop: '10px', padding: '12px', backgroundColor: '#fffbe6', borderRadius: '8px', border: '1px solid #ffe58f' }}>
+                                        {product.courses[selectedCourseIdx].description && (
+                                            <p style={{ fontSize: '0.85rem', color: '#856404', margin: '0 0 8px 0', lineHeight: '1.4' }}>
+                                                💡 {product.courses[selectedCourseIdx].description}
+                                            </p>
+                                        )}
+                                        {product.courses[selectedCourseIdx].caution && (
+                                            <p style={{ fontSize: '0.85rem', color: '#d9534f', margin: 0, fontWeight: 'bold', lineHeight: '1.4' }}>
+                                                ⚠️ 주의: {product.courses[selectedCourseIdx].caution}
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', alignItems: 'flex-start', marginTop: '10px' }}>
 
                             {/* 3. 호텔 정보 (픽업/드랍) */}
                             <div className="hotel-info-section" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '15px' }}>

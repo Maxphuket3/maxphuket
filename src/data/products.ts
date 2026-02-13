@@ -12,6 +12,8 @@ export interface Product {
         priceAdult: string;
         priceChild: string;
         features?: string[];
+        description?: string;
+        caution?: string;
     }[];
     pickupOptions?: {
         name: string;
@@ -62,21 +64,27 @@ export const MAIN_PRODUCTS: Product[] = [
         courses: [
             {
                 name: '프리미엄 코스',
-                priceAdult: '2,475 바트',
-                priceChild: '1,925 바트',
-                features: ['스노클링 1회', '점심 뷔페', '액티비티 1종 선택 (파라세일링/바나나보트 등)']
+                priceAdult: '2,500 바트',
+                priceChild: '2,200 바트',
+                features: ['스노클링 1회', '점심 뷔페', '액티비티 1종 선택 (파라세일링/바나나보트 등)'],
+                description: '푸켓의 숨겨진 보석, 바나나비치를 완벽하게 즐기는 풀패키지입니다. 럭셔리한 카타마란 요트 탑승과 프리미엄 라운지 이용, 그리고 모든 해양 액티비티를 여유롭게 즐길 수 있는 최고의 선택입니다.',
+                caution: '임산부, 심혈관 질환자, 65세 이상 노약자는 안전을 위해 참여가 제한될 수 있습니다. 수영복을 미리 착용하고 오시면 편리합니다.'
             },
             {
                 name: '스노클링 코스',
-                priceAdult: '1,925 바트',
-                priceChild: '1,675 바트',
-                features: ['스노클링 2회', '점심 뷔페']
+                priceAdult: '2,000 바트',
+                priceChild: '1,800 바트',
+                features: ['스노클링 2회', '점심 뷔페'],
+                description: '바다 속 열대어와 산호초를 가장 가까이에서 만나는 코스입니다. 맑은 시야를 자랑하는 포인트에서 스노클링을 즐기며 푸켓 바다의 아름다움을 만끽하세요. 가성비와 알찬 구성을 모두 잡았습니다.',
+                caution: '바다생물에게 먹이를 주거나 산호를 밟는 행위는 금지되어 있습니다. 개인 수건과 선크림을 지참해 주세요.'
             },
             {
-                name: '에브리데이 코스',
-                priceAdult: '1,475 바트',
-                priceChild: '1,250 바트',
-                features: ['가벼운 식사', '씨카약 체험', '비치 타월 불포함']
+                name: '에브리데이 코스 (오후 반일)',
+                priceAdult: '1,500 바트',
+                priceChild: '1,300 바트',
+                features: ['가벼운 식사', '씨카약 체험', '비치 타월 불포함'],
+                description: '늦잠을 자고 싶은 분들을 위한 오후 전용 힐링 코스입니다. 시원한 바닷바람을 맞으며 해변에서 자유시간을 갖고, 아름다운 일몰 전까지 여유롭게 휴양을 즐기기에 안성맞춤입니다.',
+                caution: '오후 투어 특성상 픽업 시간이 정확해야 하니 호텔 로비에 10분 전 대기 부탁드립니다.'
             }
         ],
         inclusions: [
@@ -647,4 +655,31 @@ export const MAIN_PRODUCTS: Product[] = [
         hasCarrierOption: true,
         importantNotes: ["임산부는 투어 참여가 제한됩니다.", "바나나비치에서는 비치체어 무료 제공"]
     },
+];
+
+export const bananaBeachTours = [
+    {
+        id: 'banana-premium',
+        name: '바나나비치 프리미엄 코스',
+        time: '09:00 - 17:00 (전일정)',
+        prices: { adult: 2500, child: 2200 },
+        description: '푸켓의 숨겨진 보석, 바나나비치를 완벽하게 즐기는 풀패키지입니다. 럭셔리한 카타마란 요트 탑승과 프리미엄 라운지 이용, 그리고 모든 해양 액티비티를 여유롭게 즐길 수 있는 최고의 선택입니다.',
+        caution: '임산부, 심혈관 질환자, 65세 이상 노약자는 안전을 위해 참여가 제한될 수 있습니다. 수영복을 미리 착용하고 오시면 편리합니다.'
+    },
+    {
+        id: 'banana-snorkeling',
+        name: '바나나비치 스노클링 코스',
+        time: '10:00 - 16:00',
+        prices: { adult: 2000, child: 1800 },
+        description: '바다 속 열대어와 산호초를 가장 가까이에서 만나는 코스입니다. 맑은 시야를 자랑하는 포인트에서 스노클링을 즐기며 푸켓 바다의 아름다움을 만끽하세요. 가성비와 알찬 구성을 모두 잡았습니다.',
+        caution: '바다생물에게 먹이를 주거나 산호를 밟는 행위는 금지되어 있습니다. 개인 수건과 선크림을 지참해 주세요.'
+    },
+    {
+        id: 'banana-everyday',
+        name: '바나나비치 에브리데이 코스 (오후 반일)',
+        time: '13:00 - 17:00',
+        prices: { adult: 1500, child: 1300 },
+        description: '늦잠을 자고 싶은 분들을 위한 오후 전용 힐링 코스입니다. 시원한 바닷바람을 맞으며 해변에서 자유시간을 갖고, 아름다운 일몰 전까지 여유롭게 휴양을 즐기기에 안성맞춤입니다.',
+        caution: '오후 투어 특성상 픽업 시간이 정확해야 하니 호텔 로비에 10분 전 대기 부탁드립니다.'
+    }
 ];
