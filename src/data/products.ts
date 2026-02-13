@@ -620,9 +620,9 @@ export const MAIN_PRODUCTS: Product[] = [
         id: "racha-banana-beach",
         name: "라차섬 + 바나나비치 투어",
         price: "2,000 THB ~",
-        thumbnail: "/images/racha-dolphin.jpg",
-        detailImage: "/images/racha-dolphin.jpg",
-        description: "라차섬의 맑은 바다와 바나나비치의 휴양을 동시에 즐기는 투어",
+        thumbnail: "/images/1000037627.jpg",
+        detailImage: "/images/1000037627.jpg",
+        description: "라차섬의 에메랄드빛 바다와 바나나비치의 프라이빗한 휴식을 동시에 즐기세요. 스노클링 장비와 점심 식사가 포함되어 있습니다.",
         category: "HIT",
         badges: ["인기 투어", "라차+바나나", "한국인 전용"],
         highlights: ["라차섬 스노클링", "바나나비치 휴양", "돌고래 출몰 지역"],
@@ -641,8 +641,8 @@ export const MAIN_PRODUCTS: Product[] = [
             { name: "바나나보트", price: 600 }
         ],
         vehicleInfo: "빠통, 카론, 카타 무료 픽업\n그 외 지역 추가 요금 발생 (100~300바트)\n08:00 호텔 픽업 -> 09:00 찰롱 부두 출발 -> 16:30 부두 도착",
-        inclusions: ["호텔 왕복 픽업", "스피드보트/요트", "점심식사", "스노클링 장비", "보험", "한국어/영어 가이드"],
-        exclusions: ["개인 경비", "매너팁", "해양 스포츠 (옵션)"],
+        inclusions: ["왕복 픽업", "스노클링 장비", "현지인 가이드", "점심 식사", "상해 보험"],
+        exclusions: ["개인 경비", "매너 팁", "주류 및 음료"],
         carrierFeePerUnit: 200,
         hasCarrierOption: true,
         importantNotes: ["임산부는 투어 참여가 제한됩니다.", "바나나비치에서는 비치체어 무료 제공"]

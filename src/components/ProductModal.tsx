@@ -294,6 +294,40 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', alignItems: 'flex-start', marginTop: '20px' }}>
 
+                            {/* 3. 호텔 정보 (픽업/드랍) */}
+                            <div className="hotel-info-section" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+                                    <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>🏨 픽업 호텔명</label>
+                                    <input
+                                        type="text"
+                                        value={pickupHotel}
+                                        onChange={(e) => setPickupHotel(e.target.value)}
+                                        placeholder="예: 그랜드 머큐어 푸켓 (로비)"
+                                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+                                    <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>🚗 드랍 호텔명</label>
+                                    <input
+                                        type="text"
+                                        value={dropoffHotel}
+                                        onChange={(e) => setDropoffHotel(e.target.value)}
+                                        placeholder="예: 푸켓 국제공항 또는 다음 호텔명"
+                                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* 4. 상품 상세 설명 표시란 */}
+                            {product.description && (
+                                <div className="product-description" style={{ width: '100%', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
+                                    <h4 style={{ margin: '0 0 10px 0', color: '#333', fontWeight: 'bold' }}>📝 상품 상세 설명</h4>
+                                    <p style={{ fontSize: '0.95rem', color: '#666', lineHeight: '1.5', textAlign: 'left', margin: 0 }}>
+                                        {product.description}
+                                    </p>
+                                </div>
+                            )}
+
                             {/* 1. 수하물/캐리어 입력 (왼쪽 밀착 및 상하 배치) */}
                             {['phi-phi', 'similan', 'racha', 'bamboo', 'khai'].some(id => product.id.includes(id)) && (
                                 <div className="input-group" style={{ width: '100%', textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
