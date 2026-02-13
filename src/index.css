@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 @theme {
   --color-navy-900: #0a192f;
@@ -565,4 +565,24 @@ section:has(h3:contains("견적 문의하기")) {
   justify-content: flex-start !important;
   gap: 15px;
   margin-top: 5px;
+}
+/* 1. ??? ? ?? ?? ?? ?? ?? */
+
+/* 1. 이미지 속 하단 상담 배너 완전 제거 */
+.product-detail-footer-contact, 
+.contact-banner-area, 
+section:has(button:contains('카카오톡으로 빠른 상담')) {
+    display: none !important;
+}
+
+/* 2. 모바일 히트상품 슬라이드 좌우 확장 */
+@media screen and (max-width: 768px) {
+    .hit-products-section {
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    .swiper-slide {
+        width: 85% !important; /* 양옆 상품이 살짝 보여 넘기기 좋게 설정 */
+        margin: 0 7.5% !important;
+    }
 }
