@@ -401,126 +401,83 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             )
                         )}
 
-                        {/* 4. 호텔 정보 (픽업/드랍) */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', alignItems: 'flex-start', textAlign: 'left', marginTop: '10px' }}>
+                            {/* 1. 호텔 정보 입력 (모든 상품 공통) */}
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                 <label style={{ fontWeight: 'bold' }}>🏨 픽업 호텔명 (로비 상세 기재)</label>
                                 <input
                                     type="text"
                                     value={pickupHotel}
                                     onChange={(e) => setPickupHotel(e.target.value)}
-                                    placeholder="예: 그랜드 머큐어 로비"
-                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', color: '#333', background: '#fff' }}
+                                    placeholder="예: 그랜드 머큐어 파통 로비"
+                                    style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '8px', color: '#333', background: '#fff' }}
                                 />
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                <label style={{ fontWeight: 'bold' }}>🚗 드랍 호텔명 (공항 또는 다음 숙소)</label>
+
+                                <label style={{ fontWeight: 'bold', marginTop: '10px' }}>🚗 드랍 호텔명 (공항 또는 차기 숙소)</label>
                                 <input
                                     type="text"
                                     value={dropoffHotel}
                                     onChange={(e) => setDropoffHotel(e.target.value)}
-                                    placeholder="예: 푸켓 공항 2층"
-                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', color: '#333', background: '#fff' }}
+                                    placeholder="예: 푸켓 국제공항"
+                                    style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '8px', color: '#333', background: '#fff' }}
                                 />
                             </div>
-                        </div>
 
-                        {/* 5. 상품 상세 및 주의사항 섹션 */}
-                        <div style={{ textAlign: 'left', width: '100%', marginTop: '10px' }}>
-                            <h4 style={{ color: product.category === 'HIT' ? '#005aab' : '#2c3e50', borderLeft: `4px solid ${product.category === 'HIT' ? '#005aab' : '#FEE500'}`, paddingLeft: '10px', fontWeight: 'bold', fontSize: '1rem' }}>
-                                {product.category === 'HIT' ? '🎪' : '✨'} 상품 상세 및 주의사항
-                            </h4>
-                            <div style={{ fontSize: '0.9rem', color: '#666', lineHeight: '1.6', backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '8px', marginTop: '10px' }}>
-                                <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                                    {['phuket-fantasea', 'siam-niramit'].includes(product.id) ? (
-                                        <>
-                                            <li>아동 기준: 신장 90cm ~ 140cm (90cm 미만 무료, 좌석 없음)</li>
-                                            <li>공연장 내 촬영 불가 (입구에서 휴대폰/카메라 보관 필요)</li>
-                                        </>
-                                    ) : (product.category === 'SIMILAN' || ['pp-khai', 'pp-khai-maithon', 'pp-bamboo', 'racha', 'khai'].some(id => product.id.includes(id))) ? (
-                                        <>
-                                            <li>준비물: 수영복, 아쿠아슈즈, 비치타월, 선크림, 개인 경비(팁 등)</li>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <li>준비물: 편안한 복장, 운동화, 개인 경비(팁 등)</li>
-                                        </>
-                                    )}
-                                    {product.caution && <li>{product.caution}</li>}
-                                </ul>
+                            {/* 2. 상품별 맞춤형 주의사항 */}
+                            <div style={{ width: '100%', marginTop: '20px', padding: '15px', backgroundColor: '#fff9e6', borderRadius: '10px' }}>
+                                <h4 style={{ margin: '0 0 10px 0', color: '#e67e22' }}>⚠️ 필독 주의사항</h4>
+                                <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: '#555', whiteSpace: 'pre-wrap' }}>
+                                    {['phuket-fantasea', 'siam-niramit'].includes(product.id)
+                                        ? "• 공연장 내 촬영 절대 금지 (입구 보관)\n• 에어컨이 강하니 얇은 겉옷 준비\n• 아동 기준: 신장 101~140cm (100cm 이하 무료)"
+                                        : "• 임산부 및 노약자 탑승 제한\n• 준비물: 수영복, 수건, 선크림\n• 아동 기준: 만 4세~11세 미만"
+                                    }
+                                    {product.caution && `\n• ${product.caution}`}
+                                </p>
                             </div>
-                        </div>
 
-                        {/* 6. 수하물/캐리어 입력 */}
-                        {['phi-phi', 'similan', 'racha', 'bamboo', 'khai'].some(id => product.id.includes(id)) && (
-                            <div className="input-group">
-                                <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>🧳 캐리어 보관 (개당 300바트)</label>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                    <button onClick={decreaseCarrier} style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #ddd', background: '#fff', cursor: 'pointer', fontSize: '1.2rem', color: '#333' }}>-</button>
-                                    <span style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '30px', textAlign: 'center', color: '#333' }}>{luggageCount}개</span>
-                                    <button onClick={increaseCarrier} style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #ddd', background: '#fff', cursor: 'pointer', fontSize: '1.2rem', color: '#333' }}>+</button>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* 7. 기타 옵션 (타이거 파크 등) */}
-                        {product.options && product.options.length > 0 && (
-                            <div className="options-container">
-                                <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>➕ 추가 옵션 선택</label>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    {product.options.map((option, idx) => (
-                                        <label key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontSize: '0.95rem' }}>
-                                            <input type="checkbox" style={{ width: '18px', height: '18px' }} checked={!!selectedOptions[idx]} onChange={(e) => setSelectedOptions(prev => ({ ...prev, [idx]: e.target.checked ? 1 : 0 }))} />
-                                            <span>{option.name} (+{option.price}바트)</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* 최종 합계 금액창 (하단 강조) */}
-                    <div style={{ width: '100%', marginTop: '30px', padding: '20px', backgroundColor: '#f8f8f8', borderRadius: '12px', textAlign: 'left', border: '1px solid #eee' }}>
-                        {/* 상세 내역 요약 */}
-                        <div style={{ fontSize: '0.85rem', color: '#888', marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span>인원 기본 요금 ({adultCount + childCount}인):</span>
-                                <span>{totalAmount.basePrice.toLocaleString()} THB</span>
-                            </div>
-                            {totalAmount.luggageTotalInfo > 0 && (
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span>캐리어 보관료:</span>
-                                    <span>+{totalAmount.luggageTotalInfo.toLocaleString()} THB</span>
+                            {/* 3. 수하물/캐리어 (데이터 기준 300바트 적용) */}
+                            {['phi-phi', 'similan', 'racha', 'bamboo', 'khai'].some(id => product.id.includes(id)) && (
+                                <div style={{ width: '100%', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+                                    <label style={{ fontWeight: 'bold' }}>🧳 캐리어 보관 수량 (개당 300바트)</label>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '10px' }}>
+                                        <button onClick={decreaseCarrier} style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #ddd', background: '#fff', cursor: 'pointer', fontSize: '1.2rem' }}>-</button>
+                                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem', minWidth: '30px', textAlign: 'center' }}>{luggageCount}개</span>
+                                        <button onClick={increaseCarrier} style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #ddd', background: '#fff', cursor: 'pointer', fontSize: '1.2rem' }}>+</button>
+                                    </div>
                                 </div>
                             )}
-                            {totalAmount.optionsTotal > 0 && (
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span>추가 옵션 합계:</span>
-                                    <span>+{totalAmount.optionsTotal.toLocaleString()} THB</span>
+
+                            {/* 4. 기타 옵션 (있을 경우 표시) */}
+                            {product.options && product.options.length > 0 && product.id !== 'phuket-fantasea' && product.id !== 'siam-niramit' && (
+                                <div style={{ width: '100%', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>➕ 추가 옵션 선택</label>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        {product.options.map((option, idx) => (
+                                            <label key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontSize: '0.95rem' }}>
+                                                <input type="checkbox" checked={!!selectedOptions[idx]} onChange={(e) => setSelectedOptions(prev => ({ ...prev, [idx]: e.target.checked ? 1 : 0 }))} />
+                                                <span>{option.name} (+{option.price}바트)</span>
+                                            </label>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
-                            {totalAmount.dinnerTotal > 0 && (
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span>디너 뷔페 추가:</span>
-                                    <span>+{totalAmount.dinnerTotal.toLocaleString()} THB</span>
+
+                            {/* 5. 최종 합계 (블랙 박스 강조) */}
+                            <div style={{ width: '100%', padding: '20px', background: '#333', color: '#fff', borderRadius: '12px', marginTop: '10px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                                    <span>최종 예약 금액</span>
+                                    <span style={{ color: '#FEE500' }}>{totalAmount.total.toLocaleString()} THB</span>
                                 </div>
-                            )}
-                            {totalAmount.pickupFee > 0 && (
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span>추가 픽업 요금:</span>
-                                    <span>+{totalAmount.pickupFee.toLocaleString()} THB</span>
+                                <div style={{ fontSize: '0.8rem', color: '#aaa', marginTop: '8px', textAlign: 'right' }}>
+                                    (성인 {adultCount}, 아동 {childCount}인 기준)
                                 </div>
-                            )}
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.3rem', fontWeight: 'bold', borderTop: '1px solid #ddd', paddingTop: '10px' }}>
-                            <span>최종 예약 총액</span>
-                            <span style={{ color: '#e67e22' }}>{totalAmount.total.toLocaleString()} THB</span>
+                            </div>
+
+                            <button className="kakao-btn" onClick={handleKakaoLink} style={{ width: '100%', padding: '18px', backgroundColor: '#FEE500', color: '#000', border: 'none', borderRadius: '12px', fontWeight: 'bold', fontSize: '1.2rem', cursor: 'pointer', marginTop: '5px' }}>
+                                카카오톡으로 견적 상담하기
+                            </button>
                         </div>
                     </div>
-
-                    <button className="kakao-btn" onClick={handleKakaoLink} style={{ width: '100%', padding: '18px', backgroundColor: '#FEE500', color: '#000', border: 'none', borderRadius: '12px', fontWeight: 'bold', fontSize: '1.2rem', cursor: 'pointer', marginTop: '15px' }}>
-                        카카오톡으로 견적 상담하기
-                    </button>
                 </div>
             </div>
         </div>,
