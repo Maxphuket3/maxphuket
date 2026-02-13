@@ -355,49 +355,44 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                 </div>
                             </div>
                         ) : product.id === 'siam-niramit' ? (
-                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '25px', textAlign: 'left', marginTop: '10px' }}>
-                                {/* 1. 좌석 등급 선택 (Siam Niramit) */}
-                                <div>
-                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '12px' }}>💺 좌석 등급 선택</label>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                        {product.courses?.map((course, idx) => (
-                                            <label key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: selectedCourseIdx === idx ? '#3498db' : '#ddd', backgroundColor: selectedCourseIdx === idx ? 'rgba(52, 152, 219, 0.05)' : '#fff' }}>
-                                                <input
-                                                    type="radio"
-                                                    name="seat-grade"
-                                                    checked={selectedCourseIdx === idx}
-                                                    onChange={() => setSelectedCourseIdx(idx)}
-                                                    style={{ width: '18px', height: '18px' }}
-                                                />
-                                                <span style={{ fontSize: '1rem' }}>{course.name} ({course.priceAdult})</span>
-                                            </label>
-                                        ))}
-                                    </div>
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px', textAlign: 'left', marginTop: '10px' }}>
+                                {/* 1. 좌석 선택 */}
+                                <div className="option-item" style={{ width: '100%' }}>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>💺 좌석 등급 선택</label>
+                                    <select
+                                        value={selectedCourseIdx}
+                                        onChange={(e) => setSelectedCourseIdx(Number(e.target.value))}
+                                        style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', backgroundColor: '#fff' }}
+                                    >
+                                        <option value={0}>실버 좌석 (기본 - 1,400 THB)</option>
+                                        <option value={1}>골드 좌석 (+200바트 - 1,600 THB)</option>
+                                        <option value={2}>플래티넘 좌석 (+350바트 - 1,750 THB)</option>
+                                    </select>
                                 </div>
 
-                                {/* 2. 디너 추가 여부 선택 */}
-                                <div>
-                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '12px' }}>🍽️ 디너 뷔페 추가</label>
+                                {/* 2. 식사 옵션 선택 */}
+                                <div className="option-item" style={{ width: '100%' }}>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>🍽️ 식사 옵션 선택</label>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: !selectedOptions[99] ? '#2c3e50' : '#ddd', backgroundColor: !selectedOptions[99] ? 'rgba(44, 62, 80, 0.05)' : '#fff' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '14px', borderRadius: '10px', border: '1px solid', borderColor: !selectedOptions[99] ? '#2c3e50' : '#eee', backgroundColor: !selectedOptions[99] ? 'rgba(44, 62, 80, 0.03)' : '#fff' }}>
                                             <input
                                                 type="radio"
-                                                name="dinner-opt"
+                                                name="dinner"
                                                 checked={!selectedOptions[99]}
                                                 onChange={() => setSelectedOptions(prev => ({ ...prev, [99]: 0 }))}
-                                                style={{ width: '18px', height: '18px' }}
+                                                style={{ width: '20px', height: '20px' }}
                                             />
-                                            <span style={{ fontSize: '1rem' }}>쇼 전용 관람 (식사 없음)</span>
+                                            <span style={{ fontSize: '1rem' }}>쇼 전용 (디너 미포함)</span>
                                         </label>
-                                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: selectedOptions[99] ? '#e67e22' : '#ddd', backgroundColor: selectedOptions[99] ? 'rgba(230, 126, 34, 0.05)' : '#fff' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '14px', borderRadius: '10px', border: '1px solid', borderColor: selectedOptions[99] ? '#e67e22' : '#eee', backgroundColor: selectedOptions[99] ? 'rgba(230, 126, 34, 0.03)' : '#fff' }}>
                                             <input
                                                 type="radio"
-                                                name="dinner-opt"
+                                                name="dinner"
                                                 checked={!!selectedOptions[99]}
                                                 onChange={() => setSelectedOptions(prev => ({ ...prev, [99]: 1 }))}
-                                                style={{ width: '18px', height: '18px' }}
+                                                style={{ width: '20px', height: '20px' }}
                                             />
-                                            <span style={{ fontSize: '1rem' }}>쇼 + 디너 뷔페 업그레이드 (성인+350 / 아동+200)</span>
+                                            <span style={{ fontSize: '1rem' }}>쇼 + 인터내셔널 뷔페 포함 (+350 THB)</span>
                                         </label>
                                     </div>
                                 </div>
