@@ -417,35 +417,35 @@ export const MAIN_PRODUCTS: Product[] = [
     {
         id: 'siam-niramit',
         name: '시암 니라밋 쇼 (Siam Niramit)',
-        price: '1,400 THB ~',
+        price: '1,350 THB ~',
         thumbnail: '/images/siam_niramit_new.jpg',
         detailImage: '/images/siam_niramit_new.jpg',
-        description: '태국 최대 규모의 무대 장치와 100명이 넘는 배우들이 펼치는 환상적인 역사 대서사시입니다. 공연장 내에 실제 강물이 흐르는 압도적인 스케일을 경험하세요.',
+        description: '태국 최대 규모의 무대 장치와 실제 강물이 흐르는 압도적인 스케일의 문화 공연입니다.',
         category: 'HIT',
         badges: ['기네스북 무대', '화요일 휴무', '태국 역사 테마'],
         highlights: ['100명 이상의 출연진과 500여 벌의 의상', '실제 강이 흐르는 무대 연출', '다양한 전통 마을 체험'],
         courses: [
             {
                 name: '실버석 (Silver Seat)',
-                priceAdult: '1,400 바트',
-                priceChild: '1,400 바트',
+                priceAdult: '1,350 바트',
+                priceChild: '1,350 바트',
                 features: ['쇼 관람권', '실버석', '사전 거리 공연 관람']
             },
             {
                 name: '골드석 (Gold Seat)',
-                priceAdult: '1,600 바트',
-                priceChild: '1,600 바트',
+                priceAdult: '1,550 바트',
+                priceChild: '1,550 바트',
                 features: ['쇼 관람권', '골드석(중앙)', '사전 거리 공연 관람']
             },
             {
                 name: '플래티넘석 (Platinum Seat)',
-                priceAdult: '1,750 바트',
-                priceChild: '1,750 바트',
+                priceAdult: '1,700 바트',
+                priceChild: '1,700 바트',
                 features: ['쇼 관람권', '플래티넘석(중앙 정면)', '사전 거리 공연 관람']
             }
         ],
         dinnerPricing: { adult: 350, child: 200 },
-        caution: '공연장 입장 시 카메라는 보관소에 맡겨야 하며, 에어컨이 강해 얇은 겉옷을 지참하시는 것이 좋습니다.',
+        caution: '공연 시작 전 전통 마을 체험을 위해 오후 7시까지 도착을 권장합니다.',
         pickupOptions: [
             { name: '왕복 픽업 서비스', price: 350 }
         ],

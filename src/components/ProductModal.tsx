@@ -364,9 +364,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         onChange={(e) => setSelectedCourseIdx(Number(e.target.value))}
                                         style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', backgroundColor: '#fff' }}
                                     >
-                                        <option value={0}>실버 좌석 (기본 - 1,400 THB)</option>
-                                        <option value={1}>골드 좌석 (+200바트 - 1,600 THB)</option>
-                                        <option value={2}>플래티넘 좌석 (+350바트 - 1,750 THB)</option>
+                                        <option value={0}>실버 좌석 (기본 - 1,350 THB)</option>
+                                        <option value={1}>골드 좌석 (+200바트 - 1,550 THB)</option>
+                                        <option value={2}>플래티넘 좌석 (+350바트 - 1,700 THB)</option>
                                     </select>
                                 </div>
 
