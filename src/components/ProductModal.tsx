@@ -432,14 +432,18 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             </h4>
                             <div style={{ fontSize: '0.9rem', color: '#666', lineHeight: '1.6', backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '8px', marginTop: '10px' }}>
                                 <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                                    {product.category === 'HIT' ? (
+                                    {['phuket-fantasea', 'siam-niramit'].includes(product.id) ? (
                                         <>
                                             <li>아동 기준: 신장 90cm ~ 140cm (90cm 미만 무료, 좌석 없음)</li>
                                             <li>공연장 내 촬영 불가 (입구에서 휴대폰/카메라 보관 필요)</li>
                                         </>
-                                    ) : (
+                                    ) : (product.category === 'SIMILAN' || ['pp-khai', 'pp-khai-maithon', 'pp-bamboo', 'racha', 'khai'].some(id => product.id.includes(id))) ? (
                                         <>
                                             <li>준비물: 수영복, 아쿠아슈즈, 비치타월, 선크림, 개인 경비(팁 등)</li>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <li>준비물: 편안한 복장, 운동화, 개인 경비(팁 등)</li>
                                         </>
                                     )}
                                     {product.caution && <li>{product.caution}</li>}
