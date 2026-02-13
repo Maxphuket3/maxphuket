@@ -293,38 +293,89 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             </div>
                         </div>
 
-                        {/* 3. 코스 선택 (추가된 부분) */}
-                        {product.courses && product.courses.length > 0 && (
-                            <div className="input-group">
-                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>📍 코스 선택</label>
-                                <select
-                                    value={selectedCourseIdx}
-                                    onChange={(e) => setSelectedCourseIdx(Number(e.target.value))}
-                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
-                                >
-                                    {product.courses.map((course, idx) => (
-                                        <option key={idx} value={idx}>
-                                            {course.name} ({course.priceAdult})
-                                        </option>
-                                    ))}
-                                </select>
-
-                                {/* 선택된 코스의 상세 설명 및 주의사항 표시 */}
-                                {product.courses[selectedCourseIdx] && (
-                                    <div style={{ marginTop: '10px', padding: '12px', backgroundColor: '#fffbe6', borderRadius: '8px', border: '1px solid #ffe58f' }}>
-                                        {product.courses[selectedCourseIdx].description && (
-                                            <p style={{ fontSize: '0.85rem', color: '#856404', margin: '0 0 8px 0', lineHeight: '1.4' }}>
-                                                💡 {product.courses[selectedCourseIdx].description}
-                                            </p>
-                                        )}
-                                        {product.courses[selectedCourseIdx].caution && (
-                                            <p style={{ fontSize: '0.85rem', color: '#d9534f', margin: 0, fontWeight: 'bold', lineHeight: '1.4' }}>
-                                                ⚠️ 주의: {product.courses[selectedCourseIdx].caution}
-                                            </p>
-                                        )}
+                        {/* 3. 코스 및 옵션 선택 (FantaSea 전용 레이아웃 분기) */}
+                        {product.id === 'phuket-fantasea' ? (
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '25px', textAlign: 'left', marginTop: '10px' }}>
+                                {/* 1. 디너 포함 여부 선택 */}
+                                <div>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '12px' }}>🍽️ 식사 옵션 선택</label>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                        {product.courses?.map((course, idx) => (
+                                            <label key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: selectedCourseIdx === idx ? '#FEE500' : '#ddd', backgroundColor: selectedCourseIdx === idx ? 'rgba(254, 229, 0, 0.05)' : '#fff' }}>
+                                                <input
+                                                    type="radio"
+                                                    name="dinner"
+                                                    checked={selectedCourseIdx === idx}
+                                                    onChange={() => setSelectedCourseIdx(idx)}
+                                                    style={{ width: '18px', height: '18px' }}
+                                                />
+                                                <span style={{ fontSize: '1rem' }}>{course.name} ({course.priceAdult})</span>
+                                            </label>
+                                        ))}
                                     </div>
-                                )}
+                                </div>
+
+                                {/* 2. 좌석 업그레이드 선택 */}
+                                <div>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '12px' }}>💺 좌석 등급</label>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: !selectedOptions[0] ? '#2c3e50' : '#ddd', backgroundColor: !selectedOptions[0] ? 'rgba(44, 62, 80, 0.05)' : '#fff' }}>
+                                            <input
+                                                type="radio"
+                                                name="seat"
+                                                checked={!selectedOptions[0]}
+                                                onChange={() => setSelectedOptions({})}
+                                                style={{ width: '18px', height: '18px' }}
+                                            />
+                                            <span style={{ fontSize: '1rem' }}>일반석 (기본)</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: selectedOptions[0] ? '#D4AF37' : '#ddd', backgroundColor: selectedOptions[0] ? 'rgba(212, 175, 55, 0.05)' : '#fff' }}>
+                                            <input
+                                                type="radio"
+                                                name="seat"
+                                                checked={!!selectedOptions[0]}
+                                                onChange={() => setSelectedOptions({ 0: 1 })}
+                                                style={{ width: '18px', height: '18px' }}
+                                            />
+                                            <span style={{ fontSize: '1rem' }}>골드 시트 업그레이드 (+350바트)</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
+                        ) : (
+                            /* 기존 일반 코스 선택 UI */
+                            product.courses && product.courses.length > 0 && (
+                                <div className="input-group">
+                                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>📍 코스 선택</label>
+                                    <select
+                                        value={selectedCourseIdx}
+                                        onChange={(e) => setSelectedCourseIdx(Number(e.target.value))}
+                                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
+                                    >
+                                        {product.courses.map((course, idx) => (
+                                            <option key={idx} value={idx}>
+                                                {course.name} ({course.priceAdult})
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    {/* 선택된 코스의 상세 설명 및 주의사항 표시 */}
+                                    {product.courses[selectedCourseIdx] && (
+                                        <div style={{ marginTop: '10px', padding: '12px', backgroundColor: '#fffbe6', borderRadius: '8px', border: '1px solid #ffe58f' }}>
+                                            {product.courses[selectedCourseIdx].description && (
+                                                <p style={{ fontSize: '0.85rem', color: '#856404', margin: '0 0 8px 0', lineHeight: '1.4' }}>
+                                                    💡 {product.courses[selectedCourseIdx].description}
+                                                </p>
+                                            )}
+                                            {product.courses[selectedCourseIdx].caution && (
+                                                <p style={{ fontSize: '0.85rem', color: '#d9534f', margin: 0, fontWeight: 'bold', lineHeight: '1.4' }}>
+                                                    ⚠️ 주의: {product.courses[selectedCourseIdx].caution}
+                                                </p>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )
                         )}
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', alignItems: 'flex-start', marginTop: '10px' }}>
