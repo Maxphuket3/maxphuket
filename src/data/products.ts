@@ -581,7 +581,9 @@ export const MAIN_PRODUCTS: Product[] = [
         vehicleInfo: "카타마란 보트 (워터 슬라이드 포함)\n08:00 호텔 픽업 → 12:00 피피섬 중식 → 14:30 피레 라군 → 17:00 마이톤섬 스노클링 → 18:30 귀환",
         inclusions: ["투명 카약", "패들 보트", "2층형 카타마란 이용", "국립공원 입장료 포함", "왕복 픽업", "점심 식사"],
         exclusions: ["개인 경비", "매너팁"],
-        importantNotes: ["날씨에 따라 마이톤섬 방문이 어려울 수 있습니다.", "수영복은 미리 착용하고 오세요."]
+        importantNotes: ["날씨에 따라 마이톤섬 방문이 어려울 수 있습니다.", "수영복은 미리 착용하고 오세요."],
+        carrierFeePerUnit: 200,
+        hasCarrierOption: true
     },
     {
         id: "pp-bamboo",
@@ -610,7 +612,9 @@ export const MAIN_PRODUCTS: Product[] = [
         vehicleInfo: "스피드보트 (카타마란 선택 시 2,700바트)\n07:30 호텔 픽업 → 09:30 피피섬 출발 → 13:30 피피섬 중식 → 14:40 뱀부섬 자유시간 → 17:30 귀환",
         inclusions: ["뱀부섬 국립공원 입장료 포함", "스노클링 장비 제공", "점심 식사", "왕복 픽업"],
         exclusions: ["개인 경비", "매너팁"],
-        importantNotes: ["국립공원 입장권은 투어비에 포함되어 있습니다.", "현지 사정에 따라 일정이 변경될 수 있습니다."]
+        importantNotes: ["국립공원 입장권은 투어비에 포함되어 있습니다.", "현지 사정에 따라 일정이 변경될 수 있습니다."],
+        carrierFeePerUnit: 200,
+        hasCarrierOption: true
     },
     {
         id: "racha-banana-beach",

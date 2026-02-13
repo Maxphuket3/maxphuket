@@ -352,3 +352,185 @@ section:has(h3:contains("견적 문의하기")) {
   margin: 0;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
+
+/* src/index.css - 견적서 세로 배열 스타일 */
+.estimate-container {
+  display: flex;
+  flex-direction: column;
+  /* 가로가 아닌 위아래로 배치 */
+  width: 100%;
+  padding: 15px;
+}
+
+.estimate-item {
+  display: flex;
+  justify-content: space-between;
+  /* 항목명과 내용을 양 끝으로 */
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  /* 칸 구분선 */
+  width: 100%;
+}
+
+.estimate-item label {
+  font-weight: bold;
+  color: #555;
+}
+
+.estimate-item span {
+  text-align: right;
+  color: #000;
+}
+
+/* 합계 금액 칸은 더 강조 */
+.estimate-total-box {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* Styling for specialized booking items like carrier storage */
+/* Extended Booking Section Vertical Layout - Logic from User Request, Colors Adapted for Dark Mode */
+
+.booking-section-container {
+  display: flex;
+  flex-direction: column;
+  /* Vertical alignment */
+  gap: 20px;
+  padding: 20px 0;
+  /* Adjusted padding */
+  width: 100%;
+}
+
+.booking-item-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+
+  /* User requested: border-bottom: 1px solid #f0f0f0; */
+  /* Adapted for Dark Mode: */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 20px;
+  background: transparent;
+  /* Clean look */
+  border-radius: 0;
+  /* Removing radius as it is a list item */
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.booking-item-vertical label {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  /* User requested: color: #333; */
+  /* Adapted for Dark Mode: */
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.carrier-counter-wrapper {
+  margin-top: 0;
+  /* Margin handled by label margin-bottom */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  /* Ensure input area takes space */
+}
+
+/* Notice text style */
+.item-notice {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #a0aec0;
+  line-height: 1.5;
+}
+
+.fee-notice {
+  width: 100%;
+  text-align: right;
+  margin-top: 10px;
+  color: #D4AF37;
+  /* Gold */
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+
+/* Final Price Display Box - High Contrast */
+.total-price-display {
+  /* User requested: background: #fff9e6; color: #e67e22; */
+  /* Adapted for Dark Mode to look Premium Gold */
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffcc00;
+  /* Bright Gold */
+  margin-top: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 1. Strict Vertical Layout for Booking & Estimate Forms */
+.booking-form-container,
+.estimate-input-area,
+.carrier-selection-section {
+  display: flex !important;
+  flex-direction: column !important;
+  /* Force top-down */
+  align-items: flex-start !important;
+  /* Align everything left */
+  width: 100% !important;
+  padding: 15px !important;
+  box-sizing: border-box;
+}
+
+/* 2. Individual Input Group Styles */
+.input-group,
+.booking-item,
+.carrier-counter-box {
+  width: 100% !important;
+  /* Full width */
+  display: flex !important;
+  flex-direction: column !important;
+  /* Label on top, input below */
+  align-items: flex-start !important;
+  /* Left aligned */
+  margin-bottom: 20px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  /* Dark mode separator */
+  padding-bottom: 10px;
+}
+
+/* 3. Counter Controls Left Alignment */
+.carrier-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  /* Align left */
+  margin-top: 10px;
+  gap: 15px;
+}
+
+/* 4. Label Styles */
+.booking-form-container label,
+.estimate-input-area label,
+.input-label {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+  text-align: left !important;
+  color: #e2e8f0 !important;
+  /* Dark mode text */
+  width: 100%;
+}

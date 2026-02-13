@@ -602,39 +602,44 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                                 {/* Baggage Input - Only if luggagePrice is set OR hasCarrierOption is true */}
                                                 {/* Baggage / Carrier Option Input */}
                                                 {(product.luggagePrice !== undefined || product.hasCarrierOption) && (
-                                                    <div className="carrier-option-box" style={{
-                                                        marginTop: '12px',
-                                                        background: 'rgba(255,255,255,0.05)',
+                                                    <div className="booking-item-vertical" style={{
+                                                        marginTop: '16px',
                                                         padding: '16px',
+                                                        background: 'rgba(255,255,255,0.05)',
                                                         borderRadius: '12px',
                                                         border: '1px solid rgba(255,255,255,0.1)'
                                                     }}>
-                                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                                                            <label style={{ color: '#cbd5e0', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem' }}>
-                                                                <Briefcase size={18} />
-                                                                {product.hasCarrierOption ? '캐리어 보관 (개당 200바트)' : `수하물 개수 (개당 ${product.luggagePrice}B)`}
-                                                            </label>
+                                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#cbd5e0', fontWeight: 'bold', fontSize: '0.95rem' }}>
+                                                            <Briefcase size={18} />
+                                                            {product.hasCarrierOption ? '캐리어 보관 서비스 (개당 200바트)' : `수하물 개수 (개당 ${product.luggagePrice}B)`}
+                                                        </label>
+
+                                                        <div className="carrier-counter-wrapper" style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                            <button
+                                                                onClick={() => setLuggageCount(Math.max(0, luggageCount - 1))}
+                                                                style={{ width: '40px', height: '40px', borderRadius: '8px', border: '1px solid #4a5568', background: '#2d3748', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                            >-</button>
+                                                            <input
+                                                                type="number"
+                                                                value={luggageCount}
+                                                                readOnly
+                                                                style={{ width: '60px', textAlign: 'center', background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', fontWeight: 'bold', outline: 'none' }}
+                                                            />
+                                                            <button
+                                                                onClick={() => setLuggageCount(luggageCount + 1)}
+                                                                style={{ width: '40px', height: '40px', borderRadius: '8px', border: '1px solid #D4AF37', background: '#D4AF37', color: '#000', fontSize: '1.2rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}
+                                                            >+</button>
                                                         </div>
 
-                                                        <div className="counter-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', background: '#2d3748', padding: '8px', borderRadius: '8px' }}>
-                                                            <button
-                                                                onClick={() => setLuggageCount(prev => Math.max(0, prev - 1))}
-                                                                style={{ width: '32px', height: '32px', borderRadius: '50%', border: '1px solid #4a5568', background: 'transparent', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}
-                                                            >
-                                                                -
-                                                            </button>
-                                                            <span style={{ fontSize: '1.1rem', fontWeight: 'bold', minWidth: '40px', textAlign: 'center', color: '#fff' }}>{luggageCount} 개</span>
-                                                            <button
-                                                                onClick={() => setLuggageCount(prev => prev + 1)}
-                                                                style={{ width: '32px', height: '32px', borderRadius: '50%', border: '1px solid #D4AF37', background: '#D4AF37', color: '#000', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', fontWeight: 'bold' }}
-                                                            >
-                                                                +
-                                                            </button>
-                                                        </div>
-
-                                                        <p className="fee-notice" style={{ textAlign: 'right', marginTop: '12px', color: '#D4AF37', fontSize: '0.9rem', margin: '12px 0 0 0' }}>
-                                                            추가 비용: {(luggageCount * (product.carrierFeePerUnit || product.luggagePrice || 0)).toLocaleString()} 바트
+                                                        <p className="item-notice" style={{ marginTop: '12px', fontSize: '0.85rem', color: '#a0aec0', lineHeight: '1.4' }}>
+                                                            ※ 투어 업체(씨스타/사와누 등) 규정에 따라 개당 비용이 발생합니다.
                                                         </p>
+
+                                                        {luggageCount > 0 && (
+                                                            <p className="fee-notice" style={{ textAlign: 'right', marginTop: '8px', color: '#D4AF37', fontSize: '1rem', fontWeight: 'bold' }}>
+                                                                +{(luggageCount * (product.carrierFeePerUnit || product.luggagePrice || 0)).toLocaleString()} 바트
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>
@@ -749,44 +754,37 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             <button
                                 onClick={() => {
                                     const total = calculateTotal();
-                                    const courseName = product.courses?.[selectedCourseIdx].name || '기본';
-                                    const pickupDisplay = product.category === 'SIMILAN'
-                                        ? (isMoveHotel ? `이동: ${pickupHotel} -> ${dropoffHotel}` : `왕복: ${pickupHotel}`)
-                                        : (selectedPickupOptionIdx >= 0 ? product.pickupOptions?.[selectedPickupOptionIdx].name : pickupHotel);
+                                    const tourName = `${product.name} (${product.courses?.[selectedCourseIdx].name || '기본'})`;
+                                    const date = timeSlot;
+                                    const adults = adultCount;
+                                    const children = childCount;
 
-                                    let optionsMsg = '';
-                                    if (product.options && Object.keys(selectedOptions).length > 0) {
-                                        const selectedOpts = Object.entries(selectedOptions)
-                                            .filter(([_, count]) => count > 0)
-                                            .map(([idx, count]) => {
-                                                const opt = product.options![parseInt(idx)];
-                                                return `- ${opt.name} x ${count}명`;
-                                            });
-                                        if (selectedOpts.length > 0) {
-                                            optionsMsg = `\n✨ 추가옵션:\n${selectedOpts.join('\n')}`;
-                                        }
+                                    let carrierCount = 0;
+                                    let carrierTotal = 0;
+
+                                    if (product.category === 'SIMILAN') {
+                                        carrierCount = luggageSmall + luggageMedium + luggageLarge;
+                                        // Logic from useMemo
+                                        const pricePerBag = product.luggagePrice || 200;
+                                        carrierTotal = (luggageMedium + luggageLarge) * pricePerBag;
+                                    } else {
+                                        carrierCount = luggageCount;
+                                        const carrierFee = product.carrierFeePerUnit || product.luggagePrice || 200;
+                                        carrierTotal = carrierCount * carrierFee;
                                     }
 
-                                    const message = `[푸켓 라스트데이 견적 문의]
-📍 투어명: ${product.name} (${courseName})
-📅 이용일/시간: ${timeSlot}
-👥 인원: 성인 ${adultCount}명 / 아동 ${childCount}명
-🚗 픽업: ${pickupDisplay || '미정'}
-🧳 캐리어: ${product.category === 'SIMILAN' ? `소${luggageSmall}/중${luggageMedium}/대${luggageLarge}` : luggageCount}개${optionsMsg}
--------------------------
-💰 총 합계: ${total} THB
--------------------------
-상담원님, 위 내용으로 예약 상담 부탁드립니다!`;
+                                    const totalPrice = total;
 
-                                    const encodedMessage = encodeURIComponent(message);
-                                    // Using the previously seen Kakao channel ID: _rxbHRX
-                                    // The URL format for starting a chat with text is usually: http://pf.kakao.com/_ID/chat?body=...
-                                    // However, user provided: `https://pf.kakao.com/_xxxxxx/chat?extra=${encodedMessage}`
-                                    // Standard deep link often used is `http://pf.kakao.com/_rxbHRX/chat` and pasting, but we can try to pre-fill if supported or just copy to clipboard as fallback.
-                                    // Given user request structure, let's try to simulate the intent. 
-                                    // Actually, the user asked to open a specific URL. Let's stick to the user's logic but with the correct ID.
-                                    // Note: KakaoTalk Channel chat links often don't support pre-filling message text via URL parameter in a standard way publicly documented for all account types, 
-                                    // but we will follow the requested format.
+                                    const message = `[푸켓 라스트데이 견적]
+────────────────
+📍 투어: ${tourName}
+📅 날짜: ${date}
+👥 인원: 성인${adults} / 아동${children}
+🧳 캐리어: ${carrierCount}개 (+${carrierTotal.toLocaleString()}바트)
+────────────────
+💰 총 합계: ${totalPrice} 바트
+────────────────
+상담원 연결을 시작합니다.`;
 
                                     // Fallback: Copy to clipboard first to be safe
                                     navigator.clipboard.writeText(message);

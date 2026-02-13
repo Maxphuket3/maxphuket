@@ -1,16 +1,7 @@
 @echo off
 echo [INFO] Auto-saving changes...
 git add .
-if %errorlevel% neq 0 (
-    echo [ERROR] Git add failed.
-    exit /b 1
-)
-
 git commit -m "Auto Update: %date% %time%"
-if %errorlevel% neq 0 (
-    echo [INFO] No changes to commit or commit failed.
-)
-
 echo [INFO] Pushing to GitHub...
 git push origin main
 if %errorlevel% neq 0 (
