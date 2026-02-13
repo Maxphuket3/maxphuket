@@ -375,39 +375,31 @@ export const MAIN_PRODUCTS: Product[] = [
     {
         id: 'phuket-fantasea',
         name: '푸켓 환타시 쇼 (Phuket FantaSea)',
-        price: '1,350 THB ~',
+        price: '1,800 THB ~',
         thumbnail: '/images/fantasea.jpg',
         detailImage: '/images/fantasea.jpg',
-        description: '푸켓 최대 규모의 문화 테마국! 웅장한 무대와 수십 마리의 코끼리가 출연하는 환상적인 쇼를 즐겨보세요. 화려한 뷔페 디너도 선택 가능합니다.',
+        description: '태국의 신화와 전통을 최첨단 조명과 화려한 퍼포먼스로 재현한 푸켓 최고의 쇼입니다. 수십 마리의 코끼리가 등장하는 웅장한 무대를 만나보세요.',
         category: 'HIT',
         badges: ['최대 규모 쇼', '코끼리 출연', '화/금/일 운영'],
         highlights: ['웅장한 스케일의 코끼리 공연', '다양한 볼거리의 테마파크', '세계 최대 규모 뷔페 식당'],
         courses: [
             {
                 name: '쇼 관람 (일반석)',
-                priceAdult: '1,350 바트',
-                priceChild: '1,350 바트',
+                priceAdult: '1,800 바트',
+                priceChild: '1,800 바트',
                 features: ['쇼 관람권', '일반석', '테마파크 입장']
             },
             {
                 name: '쇼 + 디너 (일반석)',
-                priceAdult: '1,550 바트',
-                priceChild: '1,400 바트',
+                priceAdult: '2,200 바트',
+                priceChild: '2,000 바트',
                 features: ['쇼 관람권', '인터내셔널 뷔페', '일반석']
-            },
-            {
-                name: '쇼 관람 (골드석)',
-                priceAdult: '1,600 바트',
-                priceChild: '1,600 바트',
-                features: ['쇼 관람권', '골드석(중앙)', '테마파크 입장']
-            },
-            {
-                name: '쇼 + 디너 (골드석)',
-                priceAdult: '1,800 바트',
-                priceChild: '1,650 바트',
-                features: ['쇼 관람권', '인터내셔널 뷔페', '골드석(중앙)']
             }
         ],
+        options: [
+            { name: '골드석 업그레이드 (인당)', price: 350 }
+        ],
+        caution: '공연장 내 사진 촬영은 엄격히 금지되어 있으며, 입구에서 카메라를 보관해야 합니다.',
         pickupOptions: [
             { name: '왕복 픽업 서비스 (조인 밴)', price: 350 }
         ],
