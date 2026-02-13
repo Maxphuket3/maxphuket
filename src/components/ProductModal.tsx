@@ -62,9 +62,10 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
     // Price Calculation
     const totalAmount = useMemo(() => {
-        if (!product || !product.courses) return 0;
+        const fallback = { total: 0, basePrice: 0, mandatoryFees: 0, pickupFee: 0, luggageTotalInfo: 0, optionsTotal: 0, dinnerTotal: 0 };
+        if (!product || !product.courses) return fallback;
         const course = product.courses[selectedCourseIdx];
-        if (!course) return 0;
+        if (!course) return fallback;
 
         const parsePrice = (str: string) => parseInt(str.replace(/[^0-9]/g, '')) || 0;
 
@@ -138,31 +139,38 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
         }
 
         // 최종 합계 계산 (Base + Carrier + Fees + Options + Dinner)
-        return basePrice + mandatoryFees + pickupFee + luggageTotalInfo + optionsTotal + dinnerTotal;
+        const total = basePrice + mandatoryFees + pickupFee + luggageTotalInfo + optionsTotal + dinnerTotal;
+        return {
+            total,
+            basePrice,
+            mandatoryFees,
+            pickupFee,
+            luggageTotalInfo,
+            optionsTotal,
+            dinnerTotal
+        };
     }, [product, selectedCourseIdx, adultCount, childCount, infantCount, pickupHotel, selectedPickupOptionIdx, isPaidPickup, luggageCount, luggageSmall, luggageMedium, luggageLarge, selectedOptions]);
 
-    const calculateTotal = () => totalAmount.toLocaleString();
+    const calculateTotal = () => totalAmount.total.toLocaleString();
 
     const generateQuote = () => {
         const total = calculateTotal();
-        const baseMsg = `[ë¼ìŠ¤íŠ¸í…Œì´ ê²¬ì  ë¬¸ì˜]\nìƒí’ˆëª…: ${product.name}\nì¼ì •: ${timeSlot}\nì¸ì›: ì„±ì¸${adultCount} ì•„ë™${childCount} ìœ ì•„${infantCount}`;
+        const baseMsg = `[라스트테이 견적 문의]\n상품명: ${product.name}\n일정: ${timeSlot}\n인원: 성인${adultCount} 아동${childCount} 유아${infantCount}`;
 
         // Pickup Info
-        let pickupMsg = `\ní”½ì—…: ${pickupHotel || 'ë¯¸ì •'}\nìƒŒë”©: ${dropoffHotel || pickupHotel || '(ë™ì¼)'}`;
+        let pickupMsg = `\n픽업: ${pickupHotel || '미정'}\n샌딩: ${dropoffHotel || pickupHotel || '(동일)'}`;
 
         // Similan Logic
         if (product.category === 'SIMILAN') {
-            const luggMsg = `ìˆ˜í•˜ë¬¼: ì†Œ${luggageSmall} ì¤‘${luggageMedium} ëŒ€${luggageLarge}`;
-            return `${baseMsg}${pickupMsg}\n${luggMsg}\n----------------\nì˜ˆìƒ ê²¬ì : ${total} THB\n*ì§€ì—­ì— ë”°ë¼ ë‹¨ë…ì°¨ëŸ‰ ë¹„ìš©ì´ ì¶”ê°€ë  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.`;
+            const luggMsg = `수하물: 소${luggageSmall} 중${luggageMedium} 대${luggageLarge}`;
+            return `${baseMsg}${pickupMsg}\n${luggMsg}\n----------------\n예상 견적: ${total} THB\n*지역에 따라 단독차량 비용이 추가될 수 있습니다.`;
         }
 
         // Standard Logic
         let extraMsg = '';
-        if (product.onSiteFees) extraMsg += '\n(í˜„ìž¥ì§€ë¶ˆê¸ˆ/ìž…ìž¥ë£Œ í¬í•¨)';
-        if (product.pickupZones && pickupHotel) extraMsg += '\n(ì§€ì—­ë³„ í”½ì—…ì¶”ê°€ê¸ˆ ì ìš©ë¨)';
-        const standardLuggMsg = ((product.luggagePrice || product.hasCarrierOption) && luggageCount > 0) ? `\nìˆ˜í•˜ë¬¼: ${luggageCount}ê°œ` : '';
+        if (luggageCount > 0) extraMsg += `\n캐리어 보관: ${luggageCount}개`;
 
-        return `${baseMsg}${pickupMsg}${standardLuggMsg}${extraMsg}\n----------------\nì˜ˆìƒ ê²¬ì : ${total} THB`;
+        return `${baseMsg}${pickupMsg}${extraMsg}\n----------------\n예상 견적: ${total} THB`;
     };
 
 
@@ -266,18 +274,23 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                 </button>
 
                 <div style={{ padding: '20px', width: '100%' }}>
-                    {/* 상품 제목 및 가격 */}
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '10px', color: '#000' }}>{product.name}</h2>
+                    {/* 1. 상품명 및 가격 상세 내역 (상단) */}
+                    <div style={{ textAlign: 'left', borderBottom: '2px solid #FEE500', paddingBottom: '15px', width: '100%', marginBottom: '20px' }}>
+                        <h3 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '8px', color: '#000' }}>{product.name}</h3>
+                        <p style={{ color: '#666', fontSize: '0.95rem' }}>
+                            성인 {product.courses?.[selectedCourseIdx]?.priceAdult || (product as any).priceAdult || (product as any).prices?.adult || product.price} |
+                            아동 {product.courses?.[selectedCourseIdx]?.priceChild || (product as any).priceChild || (product as any).prices?.child || '별도문의'}
+                        </p>
+                    </div>
 
-                    {/* 예약 입력란 섹션: 모두 왼쪽 정렬 및 상하 배치 */}
-                    <div className="booking-form" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    {/* 입력창 순서: 날짜 -> 인원 -> 호텔(픽업/드랍) -> 수하물 */}
+                    <div className="vertical-input-group" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
                         {/* 1. 날짜 선택 */}
                         <div className="input-group">
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>📅 여행 날짜</label>
                             <input
                                 type="date"
-                                className="full-width-input"
                                 value={bookingDate}
                                 onChange={(e) => setBookingDate(e.target.value)}
                                 style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
@@ -286,78 +299,60 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
                         {/* 2. 인원 선택 */}
                         <div className="input-group">
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>👥 인원 (성인/아동)</label>
+                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>👥 인원 선택 (성인/아동)</label>
                             <div style={{ display: 'flex', gap: '10px' }}>
-                                <input
-                                    type="number"
-                                    placeholder="성인"
-                                    value={adultCount}
-                                    onChange={(e) => setAdultCount(Math.max(0, parseInt(e.target.value) || 0))}
-                                    style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
-                                />
-                                <input
-                                    type="number"
-                                    placeholder="아동"
-                                    value={childCount}
-                                    onChange={(e) => setChildCount(Math.max(0, parseInt(e.target.value) || 0))}
-                                    style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
-                                />
+                                <div style={{ flex: 1, position: 'relative' }}>
+                                    <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.8rem', color: '#999' }}>성인</span>
+                                    <input
+                                        type="number"
+                                        value={adultCount}
+                                        onChange={(e) => setAdultCount(Math.max(0, parseInt(e.target.value) || 0))}
+                                        style={{ width: '100%', padding: '12px 12px 12px 40px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem' }}
+                                    />
+                                </div>
+                                <div style={{ flex: 1, position: 'relative' }}>
+                                    <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.8rem', color: '#999' }}>아동</span>
+                                    <input
+                                        type="number"
+                                        value={childCount}
+                                        onChange={(e) => setChildCount(Math.max(0, parseInt(e.target.value) || 0))}
+                                        style={{ width: '100%', padding: '12px 12px 12px 40px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem' }}
+                                    />
+                                </div>
                             </div>
                         </div>
 
                         {/* 3. 코스 및 옵션 선택 (FantaSea/SiamNiramit 전용 레이아웃 분기) */}
                         {product.id === 'phuket-fantasea' ? (
-                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '25px', textAlign: 'left', marginTop: '10px' }}>
-                                {/* 1. 디너 포함 여부 선택 */}
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                 <div>
-                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '12px' }}>🍽️ 식사 옵션 선택</label>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>🍽️ 식사 옵션 선택</label>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {product.courses?.map((course, idx) => (
                                             <label key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: selectedCourseIdx === idx ? '#FEE500' : '#ddd', backgroundColor: selectedCourseIdx === idx ? 'rgba(254, 229, 0, 0.05)' : '#fff' }}>
-                                                <input
-                                                    type="radio"
-                                                    name="dinner"
-                                                    checked={selectedCourseIdx === idx}
-                                                    onChange={() => setSelectedCourseIdx(idx)}
-                                                    style={{ width: '18px', height: '18px' }}
-                                                />
-                                                <span style={{ fontSize: '1rem' }}>{course.name} ({course.priceAdult})</span>
+                                                <input type="radio" name="dinner" checked={selectedCourseIdx === idx} onChange={() => setSelectedCourseIdx(idx)} />
+                                                <span>{course.name} ({course.priceAdult})</span>
                                             </label>
                                         ))}
                                     </div>
                                 </div>
-
-                                {/* 2. 좌석 업그레이드 선택 */}
                                 <div>
-                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '12px' }}>💺 좌석 등급</label>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>💺 좌석 등급</label>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: !selectedOptions[0] ? '#2c3e50' : '#ddd', backgroundColor: !selectedOptions[0] ? 'rgba(44, 62, 80, 0.05)' : '#fff' }}>
-                                            <input
-                                                type="radio"
-                                                name="seat"
-                                                checked={!selectedOptions[0]}
-                                                onChange={() => setSelectedOptions({})}
-                                                style={{ width: '18px', height: '18px' }}
-                                            />
-                                            <span style={{ fontSize: '1rem' }}>일반석 (기본)</span>
+                                            <input type="radio" name="seat" checked={!selectedOptions[0]} onChange={() => setSelectedOptions({})} />
+                                            <span>일반석 (기본)</span>
                                         </label>
                                         <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: selectedOptions[0] ? '#D4AF37' : '#ddd', backgroundColor: selectedOptions[0] ? 'rgba(212, 175, 55, 0.05)' : '#fff' }}>
-                                            <input
-                                                type="radio"
-                                                name="seat"
-                                                checked={!!selectedOptions[0]}
-                                                onChange={() => setSelectedOptions({ 0: 1 })}
-                                                style={{ width: '18px', height: '18px' }}
-                                            />
-                                            <span style={{ fontSize: '1rem' }}>골드 시트 업그레이드 (+350바트)</span>
+                                            <input type="radio" name="seat" checked={!!selectedOptions[0]} onChange={() => setSelectedOptions({ 0: 1 })} />
+                                            <span>골드 시트 업그레이드 (+350바트)</span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         ) : product.id === 'siam-niramit' ? (
-                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px', textAlign: 'left', marginTop: '10px' }}>
-                                {/* 1. 좌석 선택 */}
-                                <div className="option-item" style={{ width: '100%' }}>
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div className="option-item">
                                     <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>💺 좌석 등급 선택</label>
                                     <select
                                         value={selectedCourseIdx}
@@ -369,36 +364,21 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         <option value={2}>플래티넘 좌석 (+350바트 - 1,700 THB)</option>
                                     </select>
                                 </div>
-
-                                {/* 2. 식사 옵션 선택 */}
-                                <div className="option-item" style={{ width: '100%' }}>
+                                <div className="option-item">
                                     <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>🍽️ 식사 옵션 선택</label>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '14px', borderRadius: '10px', border: '1px solid', borderColor: !selectedOptions[99] ? '#2c3e50' : '#eee', backgroundColor: !selectedOptions[99] ? 'rgba(44, 62, 80, 0.03)' : '#fff' }}>
-                                            <input
-                                                type="radio"
-                                                name="dinner"
-                                                checked={!selectedOptions[99]}
-                                                onChange={() => setSelectedOptions(prev => ({ ...prev, [99]: 0 }))}
-                                                style={{ width: '20px', height: '20px' }}
-                                            />
-                                            <span style={{ fontSize: '1rem' }}>쇼 전용 (디너 미포함)</span>
+                                            <input type="radio" name="dinner" checked={!selectedOptions[99]} onChange={() => setSelectedOptions(prev => ({ ...prev, [99]: 0 }))} style={{ width: '20px', height: '20px' }} />
+                                            <span>쇼 전용 (디너 미포함)</span>
                                         </label>
                                         <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', padding: '14px', borderRadius: '10px', border: '1px solid', borderColor: selectedOptions[99] ? '#e67e22' : '#eee', backgroundColor: selectedOptions[99] ? 'rgba(230, 126, 34, 0.03)' : '#fff' }}>
-                                            <input
-                                                type="radio"
-                                                name="dinner"
-                                                checked={!!selectedOptions[99]}
-                                                onChange={() => setSelectedOptions(prev => ({ ...prev, [99]: 1 }))}
-                                                style={{ width: '20px', height: '20px' }}
-                                            />
-                                            <span style={{ fontSize: '1rem' }}>쇼 + 인터내셔널 뷔페 포함 (+350 THB)</span>
+                                            <input type="radio" name="dinner" checked={!!selectedOptions[99]} onChange={() => setSelectedOptions(prev => ({ ...prev, [99]: 1 }))} style={{ width: '20px', height: '20px' }} />
+                                            <span>쇼 + 인터내셔널 뷔페 포함 (+350 THB)</span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            /* 기존 일반 코스 선택 UI */
                             product.courses && product.courses.length > 0 && (
                                 <div className="input-group">
                                     <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>📍 코스 선택</label>
@@ -408,68 +388,50 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                         style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
                                     >
                                         {product.courses.map((course, idx) => (
-                                            <option key={idx} value={idx}>
-                                                {course.name} ({course.priceAdult})
-                                            </option>
+                                            <option key={idx} value={idx}>{course.name} ({course.priceAdult})</option>
                                         ))}
                                     </select>
-
-                                    {/* 선택된 코스의 상세 설명 및 주의사항 표시 */}
                                     {product.courses[selectedCourseIdx] && (
                                         <div style={{ marginTop: '10px', padding: '12px', backgroundColor: '#fffbe6', borderRadius: '8px', border: '1px solid #ffe58f' }}>
-                                            {product.courses[selectedCourseIdx].description && (
-                                                <p style={{ fontSize: '0.85rem', color: '#856404', margin: '0 0 8px 0', lineHeight: '1.4' }}>
-                                                    💡 {product.courses[selectedCourseIdx].description}
-                                                </p>
-                                            )}
-                                            {product.courses[selectedCourseIdx].caution && (
-                                                <p style={{ fontSize: '0.85rem', color: '#d9534f', margin: 0, fontWeight: 'bold', lineHeight: '1.4' }}>
-                                                    ⚠️ 주의: {product.courses[selectedCourseIdx].caution}
-                                                </p>
-                                            )}
+                                            {product.courses[selectedCourseIdx].description && <p style={{ fontSize: '0.85rem', color: '#856404', margin: '0 0 8px 0', lineHeight: '1.4' }}>💡 {product.courses[selectedCourseIdx].description}</p>}
+                                            {product.courses[selectedCourseIdx].caution && <p style={{ fontSize: '0.85rem', color: '#d9534f', margin: 0, fontWeight: 'bold', lineHeight: '1.4' }}>⚠️ 주의: {product.courses[selectedCourseIdx].caution}</p>}
                                         </div>
                                     )}
                                 </div>
                             )
                         )}
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', alignItems: 'flex-start', marginTop: '10px' }}>
-
-                            {/* 3. 호텔 정보 (픽업/드랍) */}
-                            <div className="hotel-info-section" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'flex-start' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
-                                    <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>🏨 픽업 호텔명 (로비 상세 기재)</label>
-                                    <input
-                                        type="text"
-                                        value={pickupHotel}
-                                        onChange={(e) => setPickupHotel(e.target.value)}
-                                        placeholder="예: 그랜드 머큐어 로비"
-                                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
-                                    />
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
-                                    <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>🚗 드랍 호텔명 (공항 또는 다음 숙소)</label>
-                                    <input
-                                        type="text"
-                                        value={dropoffHotel}
-                                        onChange={(e) => setDropoffHotel(e.target.value)}
-                                        placeholder="예: 푸켓 공항 2층"
-                                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', color: '#333', background: '#fff' }}
-                                    />
-                                </div>
+                        {/* 4. 호텔 정보 (픽업/드랍) */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                <label style={{ fontWeight: 'bold' }}>🏨 픽업 호텔명 (로비 상세 기재)</label>
+                                <input
+                                    type="text"
+                                    value={pickupHotel}
+                                    onChange={(e) => setPickupHotel(e.target.value)}
+                                    placeholder="예: 그랜드 머큐어 로비"
+                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', color: '#333', background: '#fff' }}
+                                />
                             </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                <label style={{ fontWeight: 'bold' }}>🚗 드랍 호텔명 (공항 또는 다음 숙소)</label>
+                                <input
+                                    type="text"
+                                    value={dropoffHotel}
+                                    onChange={(e) => setDropoffHotel(e.target.value)}
+                                    placeholder="예: 푸켓 공항 2층"
+                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', color: '#333', background: '#fff' }}
+                                />
+                            </div>
+                        </div>
 
-                            {/* 4. 상품 상세 및 주의사항 섹션 */}
-                            <div style={{ textAlign: 'left', width: '100%', marginTop: '20px' }}>
-                                <h4 style={{ color: product.category === 'HIT' ? '#005aab' : '#2c3e50', borderLeft: `4px solid ${product.category === 'HIT' ? '#005aab' : '#FEE500'}`, paddingLeft: '10px', fontWeight: 'bold' }}>
-                                    {product.category === 'HIT' ? '🎪' : '✨'} 상품 상세 설명
-                                </h4>
-                                <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: '#555', backgroundColor: product.category === 'HIT' ? '#f0f4f8' : '#f9f9f9', padding: '15px', borderRadius: '8px', margin: '10px 0 20px 0' }}>
-                                    {product.description}
-                                </p>
-
-                                <h4 style={{ color: product.category === 'HIT' ? '#d35400' : '#e74c3c', borderLeft: `4px solid ${product.category === 'HIT' ? '#d35400' : '#e74c3c'}`, paddingLeft: '10px', fontWeight: 'bold', marginTop: '20px' }}>⚠️ 주의 사항</h4>
-                                <ul style={{ fontSize: '0.9rem', color: '#666', paddingLeft: '20px', lineHeight: '1.8', marginTop: '10px' }}>
+                        {/* 5. 상품 상세 및 주의사항 섹션 */}
+                        <div style={{ textAlign: 'left', width: '100%', marginTop: '10px' }}>
+                            <h4 style={{ color: product.category === 'HIT' ? '#005aab' : '#2c3e50', borderLeft: `4px solid ${product.category === 'HIT' ? '#005aab' : '#FEE500'}`, paddingLeft: '10px', fontWeight: 'bold', fontSize: '1rem' }}>
+                                {product.category === 'HIT' ? '🎪' : '✨'} 상품 상세 및 주의사항
+                            </h4>
+                            <div style={{ fontSize: '0.9rem', color: '#666', lineHeight: '1.6', backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '8px', marginTop: '10px' }}>
+                                <ul style={{ paddingLeft: '20px', margin: 0 }}>
                                     {product.category === 'HIT' ? (
                                         <>
                                             <li>아동 기준: 신장 90cm ~ 140cm (90cm 미만 무료, 좌석 없음)</li>
@@ -478,126 +440,81 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                     ) : (
                                         <>
                                             <li>준비물: 수영복, 아쿠아슈즈, 비치타월, 선크림, 개인 경비(팁 등)</li>
-                                            <li>바우처에 기재된 픽업 시간 10분 전 로비 대기 부탁드립니다.</li>
                                         </>
                                     )}
                                     {product.caution && <li>{product.caution}</li>}
                                 </ul>
                             </div>
-
-                            {/* 1. 수하물/캐리어 입력 (왼쪽 밀착 및 상하 배치) */}
-                            {['phi-phi', 'similan', 'racha', 'bamboo', 'khai'].some(id => product.id.includes(id)) && (
-                                <div className="input-group" style={{ width: '100%', textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                                    <label style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '8px' }}>
-                                        🧳 캐리어 보관 (개당 300바트)
-                                    </label>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                        <button
-                                            onClick={() => setLuggageCount(Math.max(0, luggageCount - 1))}
-                                            style={{ width: '40px', height: '40px', borderRadius: '8px', border: '1px solid #ddd', backgroundColor: '#fff', cursor: 'pointer', fontSize: '1.2rem', color: '#333' }}
-                                        >
-                                            -
-                                        </button>
-                                        <span style={{ fontSize: '1.2rem', fontWeight: 'bold', minWidth: '30px', textAlign: 'center', color: '#333' }}>
-                                            {luggageCount}개
-                                        </span>
-                                        <button
-                                            onClick={() => setLuggageCount(luggageCount + 1)}
-                                            style={{ width: '40px', height: '40px', borderRadius: '8px', border: '1px solid #ddd', backgroundColor: '#fff', cursor: 'pointer', fontSize: '1.2rem', color: '#333' }}
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* 2. 타이거 파크 및 기타 옵션 선택 */}
-                            {product.options && product.options.length > 0 && (
-                                <div className="options-container" style={{ width: '100%', marginTop: '20px', textAlign: 'left' }}>
-                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>
-                                        ➕ 추가 옵션 선택
-                                    </label>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                        {product.options.map((option, idx) => (
-                                            <label key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                                                <input
-                                                    type="checkbox"
-                                                    style={{ width: '18px', height: '18px' }}
-                                                    checked={!!selectedOptions[idx]}
-                                                    onChange={(e) => {
-                                                        const isChecked = e.target.checked;
-                                                        setSelectedOptions(prev => ({
-                                                            ...prev,
-                                                            [idx]: isChecked ? 1 : 0
-                                                        }));
-                                                    }}
-                                                />
-                                                <span>{option.name} (+{option.price}바트)</span>
-                                            </label>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                {/* 최종 견적 및 카톡 연결 (위아래 배열) */}
-                <div className="total-box" style={{ width: '100%', marginTop: '30px', padding: '20px', backgroundColor: '#f9f9f9', borderTop: '1px solid #eee' }}>
-
-                    {/* 금액 상세 내역 추가 */}
-                    <div style={{ width: '100%', textAlign: 'left', marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px dashed #ddd' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '0.95rem' }}>
-                            <span>인원 기본 요금:</span>
-                            <span>{(() => {
-                                const course = product.courses?.[selectedCourseIdx];
-                                if (!course) return 0;
-                                const p = (s: string) => parseInt(s.replace(/[^0-9]/g, '')) || 0;
-                                return (p(course.priceAdult) * adultCount + p(course.priceChild) * childCount).toLocaleString();
-                            })()} THB</span>
                         </div>
 
-                        {/* 캐리어 비용 상세 */}
-                        {((product.category === 'SIMILAN' ? (luggageMedium + luggageLarge) : luggageCount) > 0) && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '0.95rem', color: '#e67e22' }}>
-                                <span>캐리어 추가 요금 ({product.category === 'SIMILAN' ? (luggageMedium + luggageLarge) : luggageCount}개):</span>
-                                <span>+{(() => {
-                                    const carriers = product.category === 'SIMILAN' ? (luggageMedium + luggageLarge) : luggageCount;
-                                    const pricePerBag = product.category === 'SIMILAN' ? (product.luggagePrice || 300) : (product.carrierFeePerUnit || product.luggagePrice || 300);
-                                    return (carriers * pricePerBag).toLocaleString();
-                                })()} THB</span>
+                        {/* 6. 수하물/캐리어 입력 */}
+                        {['phi-phi', 'similan', 'racha', 'bamboo', 'khai'].some(id => product.id.includes(id)) && (
+                            <div className="input-group">
+                                <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>🧳 캐리어 보관 (개당 300바트)</label>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                    <button onClick={decreaseCarrier} style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #ddd', background: '#fff', cursor: 'pointer', fontSize: '1.2rem', color: '#333' }}>-</button>
+                                    <span style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '30px', textAlign: 'center', color: '#333' }}>{luggageCount}개</span>
+                                    <button onClick={increaseCarrier} style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #ddd', background: '#fff', cursor: 'pointer', fontSize: '1.2rem', color: '#333' }}>+</button>
+                                </div>
                             </div>
                         )}
 
-                        {/* 옵션 비용 상세 (있을 경우) */}
-                        {Object.values(selectedOptions).some(v => v > 0) && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '0.95rem', color: '#27ae60' }}>
-                                <span>추가 옵션 합계:</span>
-                                <span>+{(() => {
-                                    let total = 0;
-                                    Object.entries(selectedOptions).forEach(([idx, count]) => {
-                                        const opt = product.options?.[parseInt(idx)];
-                                        if (opt) total += opt.price * count;
-                                    });
-                                    return total.toLocaleString();
-                                })()} THB</span>
-                            </div>
-                        )}
-
-                        {/* 디너 추가 요금 상세 (Siam Niramit 등) */}
-                        {product.dinnerPricing && selectedOptions[99] && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '0.95rem', color: '#e67e22' }}>
-                                <span>디너 뷔페 추가 요금:</span>
-                                <span>+{(product.dinnerPricing.adult * adultCount + product.dinnerPricing.child * childCount).toLocaleString()} THB</span>
+                        {/* 7. 기타 옵션 (타이거 파크 등) */}
+                        {product.options && product.options.length > 0 && (
+                            <div className="options-container">
+                                <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>➕ 추가 옵션 선택</label>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    {product.options.map((option, idx) => (
+                                        <label key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontSize: '0.95rem' }}>
+                                            <input type="checkbox" style={{ width: '18px', height: '18px' }} checked={!!selectedOptions[idx]} onChange={(e) => setSelectedOptions(prev => ({ ...prev, [idx]: e.target.checked ? 1 : 0 }))} />
+                                            <span>{option.name} (+{option.price}바트)</span>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>
 
-                    <p style={{ fontSize: '1.4rem', fontWeight: 'bold', marginBottom: '15px', color: '#000', textAlign: 'center' }}>
-                        총 합계: <span style={{ color: '#e74c3c' }}>{totalPrice}</span> 바트
-                    </p>
+                    {/* 최종 합계 금액창 (하단 강조) */}
+                    <div style={{ width: '100%', marginTop: '30px', padding: '20px', backgroundColor: '#f8f8f8', borderRadius: '12px', textAlign: 'left', border: '1px solid #eee' }}>
+                        {/* 상세 내역 요약 */}
+                        <div style={{ fontSize: '0.85rem', color: '#888', marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span>인원 기본 요금 ({adultCount + childCount}인):</span>
+                                <span>{totalAmount.basePrice.toLocaleString()} THB</span>
+                            </div>
+                            {totalAmount.luggageTotalInfo > 0 && (
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>캐리어 보관료:</span>
+                                    <span>+{totalAmount.luggageTotalInfo.toLocaleString()} THB</span>
+                                </div>
+                            )}
+                            {totalAmount.optionsTotal > 0 && (
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>추가 옵션 합계:</span>
+                                    <span>+{totalAmount.optionsTotal.toLocaleString()} THB</span>
+                                </div>
+                            )}
+                            {totalAmount.dinnerTotal > 0 && (
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>디너 뷔페 추가:</span>
+                                    <span>+{totalAmount.dinnerTotal.toLocaleString()} THB</span>
+                                </div>
+                            )}
+                            {totalAmount.pickupFee > 0 && (
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>추가 픽업 요금:</span>
+                                    <span>+{totalAmount.pickupFee.toLocaleString()} THB</span>
+                                </div>
+                            )}
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.3rem', fontWeight: 'bold', borderTop: '1px solid #ddd', paddingTop: '10px' }}>
+                            <span>최종 예약 총액</span>
+                            <span style={{ color: '#e67e22' }}>{totalAmount.total.toLocaleString()} THB</span>
+                        </div>
+                    </div>
 
-                    <button className="kakao-btn" onClick={handleKakaoLink} style={{ width: '100%', padding: '16px', backgroundColor: '#FEE500', color: '#000', border: 'none', borderRadius: '12px', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', transition: 'transform 0.1s' }} onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'} onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+                    <button className="kakao-btn" onClick={handleKakaoLink} style={{ width: '100%', padding: '18px', backgroundColor: '#FEE500', color: '#000', border: 'none', borderRadius: '12px', fontWeight: 'bold', fontSize: '1.2rem', cursor: 'pointer', marginTop: '15px' }}>
                         카카오톡으로 견적 상담하기
                     </button>
                 </div>
