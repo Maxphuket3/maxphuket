@@ -427,11 +427,14 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             <div style={{ width: '100%', marginTop: '20px', padding: '15px', backgroundColor: '#fff9e6', borderRadius: '10px' }}>
                                 <h4 style={{ margin: '0 0 10px 0', color: '#e67e22' }}>⚠️ 필독 주의사항</h4>
                                 <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: '#555', whiteSpace: 'pre-wrap' }}>
-                                    {['phuket-fantasea', 'siam-niramit'].includes(product.id)
-                                        ? "• 공연장 내 촬영 절대 금지 (입구 보관)\n• 에어컨이 강하니 얇은 겉옷 준비\n• 아동 기준: 신장 101~140cm (100cm 이하 무료)"
-                                        : "• 임산부 및 노약자 탑승 제한\n• 준비물: 수영복, 수건, 선크림\n• 아동 기준: 만 4세~11세 미만"
+                                    {product.id === 'tiger-park'
+                                        ? "• 본 상품은 픽업 서비스가 없는 '현장 집결' 상품입니다.\n• 신장 160cm 미만 고객은 'Smallest Tiger'만 이용 가능합니다.\n• 만 15세 미만은 보호자 동반 필수입니다."
+                                        : ['phuket-fantasea', 'siam-niramit'].includes(product.id)
+                                            ? "• 공연장 내 촬영 절대 금지 (입구 보관)\n• 에어컨이 강하니 얇은 겉옷 준비\n• 아동 기준: 신장 101~140cm (100cm 이하 무료)"
+                                            : "• 임산부 및 노약자 탑승 제한\n• 준비물: 수영복, 수건, 선크림\n• 아동 기준: 만 4세~11세 미만"
                                     }
                                     {product.caution && `\n• ${product.caution}`}
+                                    {product.importantNotes && product.importantNotes.map((note, i) => `\n${note}`).join('')}
                                 </p>
                             </div>
 

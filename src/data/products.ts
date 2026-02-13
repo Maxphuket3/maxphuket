@@ -636,6 +636,37 @@ export const MAIN_PRODUCTS: Product[] = [
         hasCarrierOption: true,
         importantNotes: ["임산부는 투어 참여가 제한됩니다.", "바나나비치에서는 비치체어 무료 제공"]
     },
+    {
+        id: 'tiger-park',
+        name: '푸켓 타이거 파크 (Tiger Park) - [개별 이동]',
+        price: '700 THB ~',
+        thumbnail: '/images/tiger-park.jpg',
+        detailImage: '/images/tiger-park.jpg',
+        description: "본 상품은 전용 픽업이 포함되지 않은 '현장 집결' 상품입니다. 호랑이와 직접 교감하며 잊지 못할 사진을 남겨보세요. 전 세계 유일하게 호랑이와 함께 시간을 보낼 수 있는 특별한 체험입니다.",
+        category: 'TICKET',
+        courses: [
+            {
+                name: '현장 입장권 및 호랑이 선택',
+                priceAdult: '0 바트',
+                priceChild: '0 바트',
+                features: ['호랑이 파크 입장', '원격 결제 후 바우처 제시', '현장 추가 선택 가능']
+            }
+        ],
+        options: [
+            { name: "싱글: Big Tiger", price: 1000 },
+            { name: "싱글: Medium Tiger", price: 900 },
+            { name: "싱글: Small Tiger", price: 800 },
+            { name: "싱글: Smallest Tiger", price: 700 },
+            { name: "패키지: 2가지 선택 (Any 2)", price: 1500 }
+        ],
+        importantNotes: [
+            "📍 본 상품은 픽업 서비스가 없으며, 직접 개별 이동하셔야 합니다.",
+            "⚠️ 신장 160cm 미만 고객은 'Smallest Tiger'만 이용 가능합니다.",
+            "⚠️ 만 15세 미만은 보호자 없이 단독 입장이 불가합니다.",
+            "🚫 수하물 보관 및 이동 서비스는 제공되지 않습니다."
+        ],
+        caution: "임산부, 거동이 불편하신 분은 안전을 위해 입장이 제한될 수 있습니다."
+    }
 ];
 
 export const bananaBeachTours = [
