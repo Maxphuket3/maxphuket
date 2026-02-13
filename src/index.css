@@ -599,3 +599,50 @@ section:has(button:contains('카카오톡으로 빠른 상담')) {
     white-space: pre-wrap; /* 줄바꿈 유지 */
 }
 
+
+/* 히트상품 리스트 레이아웃 */
+.hit-products-grid {
+    display: flex;
+    flex-direction: column; /* 세로로 나열 */
+    gap: 25px; /* 상품 간 간격 */
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.hit-product-card-new {
+    width: 100%;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 모든 내용 왼쪽 정렬 */
+}
+
+.hit-product-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.hit-product-info {
+    padding: 20px;
+    text-align: left;
+    width: 100%;
+}
+
+.hit-product-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.hit-product-price {
+    font-size: 1.2rem;
+    color: #e67e22;
+    font-weight: 700;
+}
+
