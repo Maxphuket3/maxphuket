@@ -45,6 +45,7 @@ export interface Product {
         price: number;
     }[];
     maxOptionSelection?: number;
+    caution?: string;
 }
 
 export const MAIN_PRODUCTS: Product[] = [

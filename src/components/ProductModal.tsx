@@ -352,15 +352,20 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                 </div>
                             </div>
 
-                            {/* 4. 상품 상세 설명 표시란 */}
-                            {product.description && (
-                                <div className="product-description" style={{ width: '100%', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
-                                    <h4 style={{ margin: '0 0 10px 0', color: '#333', fontWeight: 'bold' }}>📝 상품 상세 설명</h4>
-                                    <p style={{ fontSize: '0.95rem', color: '#666', lineHeight: '1.5', textAlign: 'left', margin: 0 }}>
-                                        {product.description}
-                                    </p>
-                                </div>
-                            )}
+                            {/* 4. 상품 상세 및 주의사항 섹션 */}
+                            <div style={{ textAlign: 'left', width: '100%', marginTop: '20px' }}>
+                                <h4 style={{ color: '#2c3e50', borderLeft: '4px solid #FEE500', paddingLeft: '10px', fontWeight: 'bold' }}>✨ 상품 상세 설명</h4>
+                                <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: '#555', backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '8px', margin: '10px 0 20px 0' }}>
+                                    {product.description}
+                                </p>
+
+                                <h4 style={{ color: '#e74c3c', borderLeft: '4px solid #e74c3c', paddingLeft: '10px', fontWeight: 'bold' }}>⚠️ 주의 사항</h4>
+                                <ul style={{ fontSize: '0.9rem', color: '#666', paddingLeft: '20px', lineHeight: '1.6', marginTop: '10px' }}>
+                                    <li>준비물: 수영복, 아쿠아슈즈, 비치타월, 선크림, 개인 경비(팁 등)</li>
+                                    <li>바우처에 기재된 픽업 시간 10분 전 로비 대기 부탁드립니다.</li>
+                                    {product.caution && <li>{product.caution}</li>}
+                                </ul>
+                            </div>
 
                             {/* 1. 수하물/캐리어 입력 (왼쪽 밀착 및 상하 배치) */}
                             {['phi-phi', 'similan', 'racha', 'bamboo', 'khai'].some(id => product.id.includes(id)) && (
