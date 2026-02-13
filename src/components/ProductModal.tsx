@@ -130,8 +130,15 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
             });
         }
 
-        // 최종 합계 계산 (Base + Carrier + Fees + Options)
-        return basePrice + mandatoryFees + pickupFee + luggageTotalInfo + optionsTotal;
+        // 5. Special Dinner Pricing (Siam Niramit 등)
+        let dinnerTotal = 0;
+        if (product.dinnerPricing && selectedOptions[99]) {
+            dinnerTotal += product.dinnerPricing.adult * adultCount;
+            dinnerTotal += product.dinnerPricing.child * childCount;
+        }
+
+        // 최종 합계 계산 (Base + Carrier + Fees + Options + Dinner)
+        return basePrice + mandatoryFees + pickupFee + luggageTotalInfo + optionsTotal + dinnerTotal;
     }, [product, selectedCourseIdx, adultCount, childCount, infantCount, pickupHotel, selectedPickupOptionIdx, isPaidPickup, luggageCount, luggageSmall, luggageMedium, luggageLarge, selectedOptions]);
 
     const calculateTotal = () => totalAmount.toLocaleString();
@@ -183,16 +190,21 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 
         // Options Msg
         let optionsMsg = '';
+        if (product.id === 'siam-niramit' && selectedOptions[99]) {
+            optionsMsg += '\n🍽️ 디너: 인터내셔널 뷔페 포함';
+        }
+
         if (product.options && Object.keys(selectedOptions).length > 0) {
             const selectedList = Object.entries(selectedOptions)
                 .map(([idx, count]) => {
+                    if (idx === '99') return null; // Skip dinner since it's handled above
                     const opt = product.options![parseInt(idx)];
                     return count > 0 ? `${opt.name} x${count}` : null;
                 })
                 .filter(Boolean);
 
             if (selectedList.length > 0) {
-                optionsMsg = `\n🐯 추가옵션: ${selectedList.join(', ')}`;
+                optionsMsg += `\n🐯 추가옵션: ${selectedList.join(', ')}`;
             }
         }
 
@@ -293,7 +305,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                             </div>
                         </div>
 
-                        {/* 3. 코스 및 옵션 선택 (FantaSea 전용 레이아웃 분기) */}
+                        {/* 3. 코스 및 옵션 선택 (FantaSea/SiamNiramit 전용 레이아웃 분기) */}
                         {product.id === 'phuket-fantasea' ? (
                             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '25px', textAlign: 'left', marginTop: '10px' }}>
                                 {/* 1. 디너 포함 여부 선택 */}
@@ -338,6 +350,54 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                                 style={{ width: '18px', height: '18px' }}
                                             />
                                             <span style={{ fontSize: '1rem' }}>골드 시트 업그레이드 (+350바트)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : product.id === 'siam-niramit' ? (
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '25px', textAlign: 'left', marginTop: '10px' }}>
+                                {/* 1. 좌석 등급 선택 (Siam Niramit) */}
+                                <div>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '12px' }}>💺 좌석 등급 선택</label>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                        {product.courses?.map((course, idx) => (
+                                            <label key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: selectedCourseIdx === idx ? '#3498db' : '#ddd', backgroundColor: selectedCourseIdx === idx ? 'rgba(52, 152, 219, 0.05)' : '#fff' }}>
+                                                <input
+                                                    type="radio"
+                                                    name="seat-grade"
+                                                    checked={selectedCourseIdx === idx}
+                                                    onChange={() => setSelectedCourseIdx(idx)}
+                                                    style={{ width: '18px', height: '18px' }}
+                                                />
+                                                <span style={{ fontSize: '1rem' }}>{course.name} ({course.priceAdult})</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* 2. 디너 추가 여부 선택 */}
+                                <div>
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '12px' }}>🍽️ 디너 뷔페 추가</label>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: !selectedOptions[99] ? '#2c3e50' : '#ddd', backgroundColor: !selectedOptions[99] ? 'rgba(44, 62, 80, 0.05)' : '#fff' }}>
+                                            <input
+                                                type="radio"
+                                                name="dinner-opt"
+                                                checked={!selectedOptions[99]}
+                                                onChange={() => setSelectedOptions(prev => ({ ...prev, [99]: 0 }))}
+                                                style={{ width: '18px', height: '18px' }}
+                                            />
+                                            <span style={{ fontSize: '1rem' }}>쇼 전용 관람 (식사 없음)</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: selectedOptions[99] ? '#e67e22' : '#ddd', backgroundColor: selectedOptions[99] ? 'rgba(230, 126, 34, 0.05)' : '#fff' }}>
+                                            <input
+                                                type="radio"
+                                                name="dinner-opt"
+                                                checked={!!selectedOptions[99]}
+                                                onChange={() => setSelectedOptions(prev => ({ ...prev, [99]: 1 }))}
+                                                style={{ width: '18px', height: '18px' }}
+                                            />
+                                            <span style={{ fontSize: '1rem' }}>쇼 + 디너 뷔페 업그레이드 (성인+350 / 아동+200)</span>
                                         </label>
                                     </div>
                                 </div>
@@ -515,6 +575,14 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
                                     });
                                     return total.toLocaleString();
                                 })()} THB</span>
+                            </div>
+                        )}
+
+                        {/* 디너 추가 요금 상세 (Siam Niramit 등) */}
+                        {product.dinnerPricing && selectedOptions[99] && (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '0.95rem', color: '#e67e22' }}>
+                                <span>디너 뷔페 추가 요금:</span>
+                                <span>+{(product.dinnerPricing.adult * adultCount + product.dinnerPricing.child * childCount).toLocaleString()} THB</span>
                             </div>
                         )}
                     </div>

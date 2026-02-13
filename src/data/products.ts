@@ -46,6 +46,10 @@ export interface Product {
     }[];
     maxOptionSelection?: number;
     caution?: string;
+    dinnerPricing?: {
+        adult: number;
+        child: number;
+    };
 }
 
 export const MAIN_PRODUCTS: Product[] = [
@@ -411,53 +415,37 @@ export const MAIN_PRODUCTS: Product[] = [
         importantNotes: ['공연장 내 촬영 금지 (휴대폰 보관 필수)', '화/금/일 주 3회 운영', '좌석은 당일 현장에서 배정됩니다.']
     },
     {
-        id: 'siam-niramit-phuket',
-        name: '시암 니라밋 (Siam Niramit)',
-        price: '1,530 THB ~',
+        id: 'siam-niramit',
+        name: '시암 니라밋 쇼 (Siam Niramit)',
+        price: '1,400 THB ~',
         thumbnail: '/images/siam_niramit_new.jpg',
         detailImage: '/images/siam_niramit_new.jpg',
-        description: '기네스북에 등재된 세계 최대 규모의 무대! 태국의 역사와 문화를 웅장한 스케일로 풀어낸 대서사시를 경험하세요.',
+        description: '태국 최대 규모의 무대 장치와 100명이 넘는 배우들이 펼치는 환상적인 역사 대서사시입니다. 공연장 내에 실제 강물이 흐르는 압도적인 스케일을 경험하세요.',
         category: 'HIT',
         badges: ['기네스북 무대', '화요일 휴무', '태국 역사 테마'],
         highlights: ['100명 이상의 출연진과 500여 벌의 의상', '실제 강이 흐르는 무대 연출', '다양한 전통 마을 체험'],
         courses: [
             {
-                name: '실버석 (Show Only)',
-                priceAdult: '1,530 바트',
-                priceChild: '1,360 바트',
-                features: ['쇼 관람권', '실버석(사이드)', '사전거리 공연 관람']
+                name: '실버석 (Silver Seat)',
+                priceAdult: '1,400 바트',
+                priceChild: '1,400 바트',
+                features: ['쇼 관람권', '실버석', '사전 거리 공연 관람']
             },
             {
-                name: '실버석 + 디너 뷔페',
-                priceAdult: '1,870 바트',
-                priceChild: '1,530 바트',
-                features: ['쇼 관람권', '실버석', '인터내셔널 뷔페 포함']
+                name: '골드석 (Gold Seat)',
+                priceAdult: '1,600 바트',
+                priceChild: '1,600 바트',
+                features: ['쇼 관람권', '골드석(중앙)', '사전 거리 공연 관람']
             },
             {
-                name: '골드석 (Show Only)',
-                priceAdult: '1,700 바트',
-                priceChild: '1,530 바트',
-                features: ['쇼 관람권', '골드석(중앙 사이드)', '좋은 시야']
-            },
-            {
-                name: '골드석 + 디너 뷔페',
-                priceAdult: '2,040 바트',
-                priceChild: '1,700 바트',
-                features: ['쇼 관람권', '골드석', '인터내셔널 뷔페 포함']
-            },
-            {
-                name: '플래티넘석 (Show Only)',
-                priceAdult: '1,870 바트',
-                priceChild: '1,700 바트',
-                features: ['쇼 관람권', '플래티넘석(중앙)', '최고의 시야']
-            },
-            {
-                name: '플래티넘석 + 디너 뷔페',
-                priceAdult: '2,210 바트',
-                priceChild: '1,870 바트',
-                features: ['쇼 관람권', '플래티넘석', '인터내셔널 뷔페 포함']
+                name: '플래티넘석 (Platinum Seat)',
+                priceAdult: '1,750 바트',
+                priceChild: '1,750 바트',
+                features: ['쇼 관람권', '플래티넘석(중앙 정면)', '사전 거리 공연 관람']
             }
         ],
+        dinnerPricing: { adult: 350, child: 200 },
+        caution: '공연장 입장 시 카메라는 보관소에 맡겨야 하며, 에어컨이 강해 얇은 겉옷을 지참하시는 것이 좋습니다.',
         pickupOptions: [
             { name: '왕복 픽업 서비스', price: 350 }
         ],
@@ -465,7 +453,7 @@ export const MAIN_PRODUCTS: Product[] = [
         inclusions: ['선택한 좌석 쇼 관람권', '테마파크 입장 및 사전 공연', '디너 포함 시 뷔페 식사'],
         exclusions: ['개인 경비', '매너팁', '전통 의상 대여 (250바트)', '이동 서비스 (옵션 구매)'],
         vehicleInfo: '픽업 서비스 신청 시 호텔 로비 픽업\n운영일: 수, 목, 금, 토, 일, 월 (화요일 휴무)\n게이트 오픈: 17:30 / 쇼 시작: 20:30',
-        pricePolicy: '성인: 키 141cm 이상\n아동: 만 4세~11세 & 키 100cm~140cm\n유아: 만 4세 미만 & 키 100cm 미만 무료 (좌석 없음)\n디너 뷔페 추가 시 성인 +340 / 아동 +170',
+        pricePolicy: '성인: 키 141cm 이상\n아동: 만 4세~11세 & 키 100cm~140cm\n유아: 만 4세 미만 & 키 100cm 미만 무료 (좌석 없음)\n디너 뷔페 추가 시 성인 +350 / 아동 +200',
         cancellationPolicy: '공연 당일 환불 불가',
         importantNotes: ['공연장 내 촬영 금지 (카메라 보관)', '디너 시간: 18:00 - 20:00', '쇼 시작 30분 전 입장 권장']
     },
