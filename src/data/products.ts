@@ -282,6 +282,137 @@ export const MAIN_PRODUCTS: Product[] = [
             { name: '푸켓 공항 ↔ 카오락 (봉고차)', priceAdult: '2,500 바트', priceChild: '2,500 바트' }
         ],
         luggagePrice: 0
+    },
+    {
+        id: 'p_surin_seastar',
+        name: '수린섬 스노클링 (씨스타)',
+        price: '3,000 THB ~',
+        thumbnail: '/images/surin_seastar.jpg',
+        detailImage: '/images/surin_seastar.jpg',
+        description: '가장 때묻지 않은 바다와 모켄족 마을! 씨스타의 프리미엄 서비스로 수린섬을 만나보세요.',
+        category: 'TOUR',
+        badges: ['스노클링 성지', '모켄족 마을'],
+        courses: [
+            { name: '스피드보트', priceAdult: '3,000 바트', priceChild: '2,300 바트' },
+            { name: '카타마란', priceAdult: '3,300 바트', priceChild: '2,600 바트' },
+            { name: '수린섬 숙박 (1박 2일)', priceAdult: '5,750 바트', priceChild: '4,500 바트' }
+        ],
+        notices: '⚠️ 임산부 탑승 절대 불가. 3일 전 50% 환불, 2일 전 환불 불가.',
+        luggagePrice: 300
+    },
+    {
+        id: 'p_similan_sawanu',
+        name: '시밀란 사와누 (Sawanu)',
+        price: '3,500 THB ~',
+        thumbnail: '/images/sawanu_travel.jpg',
+        detailImage: '/images/sawanu_travel.jpg',
+        description: '최상급 2층 카타마란으로 즐기는 시밀란 럭셔리 투어. 인파를 피해 쾌적한 여행을 제공합니다.',
+        category: 'SIMILAN',
+        badges: ['2층형 카타마란', '최고급 서비스'],
+        courses: [
+            { name: '카타마란 2층 요트', priceAdult: '3,500 바트', priceChild: '3,100 바트' }
+        ],
+        notices: '⚠️ 운영 기간: 10월 15일 ~ 5월 15일. 임산부 탑승 절대 불가.',
+        luggagePrice: 300
+    },
+    {
+        id: 'p_hype_yacht',
+        name: '하이프 클럽 요트 (Hype Yacht)',
+        price: '3,900 THB',
+        thumbnail: '/images/hype_yacht.jpg',
+        detailImage: '/images/hype_yacht.jpg',
+        description: 'DJ 파티, 칵테일, 프리미엄 뷔페! 안다만해 위에서 펼쳐지는 푸켓 최고의 파티.',
+        category: 'HIT',
+        badges: ['DJ 파티', '럭셔리 뷔페'],
+        courses: [
+            { name: '성인 (Adult)', priceAdult: '3,900 바트', priceChild: '3,900 바트' },
+            { name: '아동 (Child)', priceAdult: '2,900 바트', priceChild: '2,900 바트' }
+        ],
+        notices: '⚠️ 임산부 탑승 권장하지 않음. 선상 파티 분위기로 인해 고령자/유아는 주의가 필요합니다.',
+        luggagePrice: 300
+    },
+    {
+        id: 'p_deflora',
+        name: '드 플로라 스파 (De Flora Spa)',
+        price: '540 THB ~',
+        thumbnail: '/images/deflora_spa.jpg',
+        detailImage: '/images/deflora_spa.jpg',
+        description: '자연 친화적인 고급 시설에서 즐기는 최고의 가성비 스파.',
+        category: 'SPA',
+        courses: [
+            { name: '발/타이 마사지 (60분)', priceAdult: '540 바트', priceChild: '540 바트' },
+            { name: '발/타이 마사지 (90분)', priceAdult: '810 바트', priceChild: '810 바트' },
+            { name: '따뜻한 오일 (90분)', priceAdult: '1,485 바트', priceChild: '1,485 바트' }
+        ],
+        notices: '⚠️ 픽업 서비스 불포함. 개별 이동 필수. 임산부 이용 불가.',
+        luggagePrice: 300
+    },
+    {
+        id: 'p_orientara',
+        name: '오리엔타라 스파 (Orientara Spa)',
+        price: '560 THB ~',
+        thumbnail: '/images/orientara_spa.jpg',
+        detailImage: '/images/orientara_spa.jpg',
+        description: '오랜 전통의 베테랑 실력을 자랑하는 푸켓 대표 로컬 스파.',
+        category: 'SPA',
+        courses: [
+            { name: '타이/발 마사지 (60분)', priceAdult: '560 바트', priceChild: '560 바트' },
+            { name: '타이/발 마사지 (120분)', priceAdult: '1,000 바트', priceChild: '1,000 바트' }
+        ],
+        notices: '⚠️ 픽업 불포함 상품입니다. 파통 지역 위치.',
+        luggagePrice: 300
+    },
+    {
+        id: 'p_deeprelax',
+        name: '라구나 딥 릴렉스 (Deep Relax)',
+        price: '720 THB ~',
+        thumbnail: '/images/deep_relax.jpg',
+        detailImage: '/images/deep_relax.jpg',
+        description: '방타오/라구나 지역 무료 픽업이 포함된 프리미엄 스파 서비스.',
+        category: 'SPA',
+        courses: [
+            { name: '타이 마사지 (60분)', priceAdult: '720 바트', priceChild: '720 바트' },
+            { name: '아로마 오일 (90분)', priceAdult: '1,170 바트', priceChild: '1,170 바트' }
+        ],
+        notices: '✅ 방타오/라구나 지역 무료 왕복 픽업 서비스가 포함되어 있습니다.',
+        luggagePrice: 300
+    },
+    {
+        id: 'p_samaonsen',
+        name: '사마 온센 마사지 (Sama Onsen)',
+        price: '350 THB ~',
+        thumbnail: '/images/sama_onsen.jpg',
+        detailImage: '/images/sama_onsen.jpg',
+        description: '푸켓 타운에서 즐기는 일본식 분위기의 청결하고 실속 있는 마사지.',
+        category: 'SPA',
+        courses: [
+            { name: '타이 마사지 (60분)', priceAdult: '350 바트', priceChild: '350 바트' },
+            { name: '아로마 오일 (60분)', priceAdult: '550 바트', priceChild: '550 바트' }
+        ],
+        notices: '⚠️ 픽업 불포함. 푸켓 타운에 위치한 로컬 인기 명소입니다.',
+        luggagePrice: 300
+    },
+    {
+        id: 'p_oasis',
+        name: '오아시스 스파 (Oasis Spa)',
+        price: '2,500 THB ~',
+        thumbnail: '/images/oasis_spa.jpg',
+        detailImage: '/images/oasis_spa.jpg',
+        description: '태국 최고의 럭셔리 스파 브랜드. 품격 있는 조경과 최상의 가치를 선사합니다.',
+        category: 'SPA',
+        badges: ['최고급 럭셔리', '픽업 포함'],
+        options: [
+            { id: 'oasis_kamala', name: '카말라 지점', price: 0 },
+            { id: 'oasis_bangtao', name: '라구나 지점', price: 0 },
+            { id: 'oasis_kata', name: '카타 지점', price: 0 }
+        ],
+        maxOptionSelection: 1,
+        courses: [
+            { name: '오아시스 팸퍼링 (120분)', priceAdult: '2,500 바트', priceChild: '2,500 바트' },
+            { name: '킹 오브 오아시스 (120분)', priceAdult: '3,900 바트', priceChild: '3,900 바트' }
+        ],
+        notices: '⚠️ 지점별 무료 픽업 가능 구역이 상이하므로 예약 시 지점을 선택해 주세요.',
+        luggagePrice: 300
     }
 ];
 

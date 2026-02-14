@@ -78,11 +78,11 @@ const JourneyStartScreen: React.FC = () => {
 
     const handleProductClick = (product: Product) => {
         // 1. Check path (console log)
-        console.log("이동할 상품 ID:", product.id);
+        console.log("선택된 상품:", product.name);
 
-        // 2. Navigate
-        if (product.id) {
-            navigate(`/tour-detail/${product.id}`);
+        // 2. Open Modal Directly (Navigation보다 직접 모달이 안정적임)
+        if (product && product.id) {
+            setSelectedProduct(product);
         } else {
             alert("상품 정보를 불러올 수 없습니다.");
         }

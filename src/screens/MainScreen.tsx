@@ -237,7 +237,7 @@ const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
             <ProductCarousel
               title="🌊 시밀란 투어 비교 예약 🌊"
               products={MAIN_PRODUCTS.filter(p => p.category === 'SIMILAN')}
-              onProductClick={(product) => navigate(`/tour-detail/${product.id}`)}
+              onProductClick={(product) => setSelectedProduct(product)}
             />
           </div>
 
@@ -259,7 +259,7 @@ const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
             </div>
             <ProductCarousel
               products={MAIN_PRODUCTS.filter(p => p.category !== 'SIMILAN')}
-              onProductClick={(product) => navigate(`/tour-detail/${product.id}`)}
+              onProductClick={(product) => setSelectedProduct(product)}
             />
           </div>
 

@@ -168,10 +168,8 @@ input {
 }
 
 /* 5. 상품 상세 페이지 하단의 '견적 문의하기' 노란 배너 제거 */
-/* 5. 상품 상세 페이지 하단의 '견적 문의하기' 노란 배너 제거 */
 .product-detail-footer-contact,
-section:has(h3:contains("견적 문의하기")),
-div:has(> button:contains("카카오톡으로 빠른 상담")) {
+.fast-consult-banner {
   display: none !important;
   height: 0 !important;
   margin: 0 !important;
@@ -198,7 +196,7 @@ div:has(> button:contains("카카오톡으로 빠른 상담")) {
   /* 왼쪽 정렬로 깔끔하게 배치 */
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  /* 제목이 너무 길면 최대 2줄까지만 표시 */
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -287,18 +285,14 @@ div:has(> button:contains("카카오톡으로 빠른 상담")) {
 }
 
 /* 10. 시암니라밋 쇼 전용 사진 강제 지정 */
-/* 클래스명을 확인하여 배경이나 이미지 태그에 강제 적용 */
-div[data-id="siam-niramit-phuket"] .product-image,
-.product-card[data-id="siam-niramit-phuket"] .product-image,
-#siam-niramit-img {
+div[data-id="p_siam_niramit"] .product-image,
+.product-card[data-id="p_siam_niramit"] .product-image {
   content: url('/images/1000037627.jpg') !important;
 }
 
-/* 11. 상품 상세페이지 하단 '노란색 상담 배너'만 콕 집어서 제거 */
-/* 견적 입력란(Booking Form)은 건드리지 않고, 상담 문구와 버튼이 있는 섹션만 숨깁니다. */
+/* 11. 상품 상세페이지 하운 '노란색 상담 배너' 제거 (안정화) */
 .product-detail-footer-contact,
-section:has(p:contains("합리적인 가격")),
-section:has(h3:contains("견적 문의하기")) {
+.footer-consult-banner {
   display: none !important;
 }
 
@@ -566,83 +560,91 @@ section:has(h3:contains("견적 문의하기")) {
   gap: 15px;
   margin-top: 5px;
 }
+
 /* 1. ??? ? ?? ?? ?? ?? ?? */
 
 /* 1. 이미지 속 하단 상담 배너 완전 제거 */
-.product-detail-footer-contact, 
-.contact-banner-area, 
+.product-detail-footer-contact,
+.contact-banner-area,
 section:has(button:contains('카카오톡으로 빠른 상담')) {
-    display: none !important;
+  display: none !important;
 }
 
 /* 2. 모바일 히트상품 슬라이드 좌우 확장 */
 @media screen and (max-width: 768px) {
-    .hit-products-section {
-        padding: 0 !important;
-        width: 100% !important;
-    }
-    .swiper-slide {
-        width: 85% !important; /* 양옆 상품이 살짝 보여 넘기기 좋게 설정 */
-        margin: 0 7.5% !important;
-    }
+  .hit-products-section {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .swiper-slide {
+    width: 85% !important;
+    /* 양옆 상품이 살짝 보여 넘기기 좋게 설정 */
+    margin: 0 7.5% !important;
+  }
 }
 
 /* 모든 예약 입력 요소 왼쪽 정렬 및 가로폭 고정 */
 .hotel-info-section input {
-    box-sizing: border-box; /* 패딩이 너비를 넘지 않게 함 */
-    font-size: 16px; /* 모바일에서 줌 현상 방지 */
+  box-sizing: border-box;
+  /* 패딩이 너비를 넘지 않게 함 */
+  font-size: 16px;
+  /* 모바일에서 줌 현상 방지 */
 }
 
 /* 상세 설명 텍스트 정렬 */
 .product-description p {
-    word-break: keep-all;
-    white-space: pre-wrap; /* 줄바꿈 유지 */
+  word-break: keep-all;
+  white-space: pre-wrap;
+  /* 줄바꿈 유지 */
 }
 
 
 /* 히트상품 리스트 레이아웃 */
 .hit-products-grid {
-    display: flex;
-    flex-direction: column; /* 세로로 나열 */
-    gap: 25px; /* 상품 간 간격 */
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  /* 세로로 나열 */
+  gap: 25px;
+  /* 상품 간 간격 */
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hit-product-card-new {
-    width: 100%;
-    background: #fff;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* 모든 내용 왼쪽 정렬 */
+  width: 100%;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* 모든 내용 왼쪽 정렬 */
 }
 
 .hit-product-image {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
 }
 
 .hit-product-info {
-    padding: 20px;
-    text-align: left;
-    width: 100%;
+  padding: 20px;
+  text-align: left;
+  width: 100%;
 }
 
 .hit-product-name {
-    font-size: 1.4rem;
-    font-weight: 800;
-    margin-bottom: 8px;
-    color: #333;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #333;
 }
 
 .hit-product-price {
-    font-size: 1.2rem;
-    color: #e67e22;
-    font-weight: 700;
+  font-size: 1.2rem;
+  color: #e67e22;
+  font-weight: 700;
 }
-
