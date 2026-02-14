@@ -23,7 +23,7 @@ const App: React.FC = () => {
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
 
-          {/* 상품 상세 모달 - 이 위치에 있어야 클릭이 먹힙니다 */}
+          {/* 이 줄이 있어야 클릭했을 때 상세 팝업이 뜹니다 */}
           <ProductModal product={null} isOpen={false} onClose={() => { }} />
         </div>
       </BrowserRouter>
