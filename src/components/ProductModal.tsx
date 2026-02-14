@@ -9,11 +9,13 @@ interface ProductModalProps {
 
 const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen = true, onClose }) => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [carriers, setCarriers] = useState(0);
 
   useEffect(() => {
     if (product) {
       setSelectedOptions([]);
+      setSelectedCourse(product.courses && product.courses.length > 0 ? product.courses[0] : null);
       setCarriers(0);
     }
   }, [product?.id]);
@@ -28,16 +30,22 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen = true, onC
     product.name?.includes('라이언');
 
   const feePerCarrier = useMemo(() => {
+    if (product.luggagePrice !== undefined) return product.luggagePrice;
     if (product.id === 'siam-niramit') return 100;
     if (isExcludedTour) return 0;
     return 300;
-  }, [product.id, isExcludedTour]);
+  }, [product.id, product.luggagePrice, isExcludedTour]);
 
   // 2. 실시간 합계 금액 계산
   const currentTotalPrice = useMemo(() => {
-    const basePrice = typeof product.price === 'string'
-      ? parseInt(product.price.replace(/[^0-9]/g, '')) || 0
-      : product.price || 0;
+    let basePrice = 0;
+    if (selectedCourse) {
+      basePrice = parseInt(selectedCourse.priceAdult.replace(/[^0-9]/g, '')) || 0;
+    } else {
+      basePrice = typeof product.price === 'string'
+        ? parseInt(product.price.replace(/[^0-9]/g, '')) || 0
+        : product.price || 0;
+    }
 
     const optionsPrice = (product.options || [])
       .filter((opt: any) => selectedOptions.includes(opt.id || opt.name))
@@ -53,6 +61,12 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen = true, onC
     if (selectedOptions.includes(optionId)) {
       setSelectedOptions(selectedOptions.filter(id => id !== optionId));
     } else {
+      // 단일 선택 옵션 (지점 선택 등) 처리
+      if (product.maxOptionSelection === 1) {
+        setSelectedOptions([optionId]);
+        return;
+      }
+
       if (product.maxOptionSelection && selectedOptions.length >= product.maxOptionSelection) {
         alert(`최대 ${product.maxOptionSelection}개까지 선택 가능합니다.`);
         return;
@@ -203,6 +217,46 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen = true, onC
             </div>
           )}
 
+          {/* 코스 선택 (좌석 등급 등) - 드롭다운 스타일 */}
+          {product.courses && product.courses.length > 0 && (
+            <div style={{ marginBottom: '28px' }}>
+              <label style={{ fontWeight: '950', fontSize: '1.2rem', display: 'block', marginBottom: '18px', color: '#111' }}>
+                {product.category === 'SHOW' ? '🎭 좌석 등급 선택' : '⏰ 시간/코스 선택'}
+              </label>
+              <div style={{ position: 'relative' }}>
+                <select
+                  value={selectedCourse?.name || ''}
+                  onChange={(e) => {
+                    const course = product.courses.find((c: any) => c.name === e.target.value);
+                    if (course) setSelectedCourse(course);
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '18px 24px',
+                    borderRadius: '20px',
+                    border: '2.5px solid #D4AF37',
+                    backgroundColor: '#FFFEF5',
+                    fontSize: '1.1rem',
+                    fontWeight: '800',
+                    color: '#000',
+                    appearance: 'none',
+                    cursor: 'pointer',
+                    outline: 'none',
+                    boxShadow: '0 4px 12px rgba(212, 175, 55, 0.1)'
+                  }}
+                >
+                  <option value="" disabled>등급을 선택해 주세요</option>
+                  {product.courses.map((course: any, idx: number) => (
+                    <option key={idx} value={course.name}>
+                      {course.name} ({course.priceAdult})
+                    </option>
+                  ))}
+                </select>
+                <div style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', fontSize: '1.2rem' }}>▼</div>
+              </div>
+            </div>
+          )}
+
           {/* 주의사항 및 취소 규정 */}
           <div style={{ marginBottom: '28px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {product.notices && (
@@ -229,25 +283,27 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen = true, onC
             )}
           </div>
 
-          {/* 옵션 선택 */}
+          {/* 옵션 선택 (디너 등) - 드롭다운 스타일 (카테고리별 분화 가능) */}
           {product.options && product.options.length > 0 && (
-            <div style={{ width: '100%', marginBottom: '28px' }}>
-              <label style={{ fontWeight: '950', fontSize: '1.2rem', display: 'block', marginBottom: '18px', color: '#111' }}>🐯 선택 옵션</label>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ marginBottom: '28px' }}>
+              <label style={{ fontWeight: '950', fontSize: '1.2rem', display: 'block', marginBottom: '18px', color: '#111' }}>
+                {product.category === 'SHOW' ? '🍽️ 디너/업그레이드 옵션' : '➕ 추가 옵션'}
+              </label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 {product.options.map((option: any, idx: number) => {
                   const isSelected = selectedOptions.includes(option.id || option.name);
                   return (
                     <label
                       key={idx}
                       style={{
+                        padding: '18px 24px',
+                        borderRadius: '20px',
+                        border: isSelected ? '2.5px solid #D4AF37' : '1px solid #eee',
+                        backgroundColor: isSelected ? '#FFFEF5' : '#fff',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '14px',
+                        gap: '15px',
                         cursor: 'pointer',
-                        padding: '18px',
-                        border: isSelected ? '2.5px solid #D4AF37' : '1px solid #eee',
-                        borderRadius: '18px',
-                        backgroundColor: isSelected ? '#FFFEF5' : '#fff',
                         transition: 'all 0.2s',
                         WebkitTapHighlightColor: 'transparent',
                         boxShadow: isSelected ? '0 4px 12px rgba(212, 175, 55, 0.1)' : 'none'
@@ -256,12 +312,16 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen = true, onC
                       <input
                         type="checkbox"
                         checked={isSelected}
-                        style={{ width: '22px', height: '22px', accentColor: '#D4AF37' }}
                         onChange={() => handleOptionToggle(option)}
+                        style={{ width: '22px', height: '22px', accentColor: '#D4AF37' }}
                       />
                       <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: '800', fontSize: '1rem', color: '#111' }}>{option.name}</div>
-                        {option.price > 0 && <div style={{ color: '#D4AF37', fontSize: '0.9rem', marginTop: '4px', fontWeight: '700' }}>+ {option.price.toLocaleString()} THB</div>}
+                        {option.price > 0 && (
+                          <div style={{ color: '#D4AF37', fontSize: '0.95rem', marginTop: '4px', fontWeight: '900' }}>
+                            + {option.price.toLocaleString()} THB
+                          </div>
+                        )}
                       </div>
                     </label>
                   );
@@ -292,8 +352,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen = true, onC
             </div>
             <button
               onClick={() => {
-                const message = `[예약 문의]\n상품: ${product.name}\n금액: ${currentTotalPrice.toLocaleString()} THB\n캐리어: ${carriers}개\n선택옵션: ${selectedOptions.join(', ') || '없음'}`;
-                window.open(`https://pf.kakao.com/_rxbHRX`, '_blank');
+                const message = `[예약 문의]\n상품: ${product.name}\n코스: ${selectedCourse ? selectedCourse.name : '기본'}\n금액: ${currentTotalPrice.toLocaleString()} THB\n캐리어: ${carriers}개\n선택옵션: ${selectedOptions.join(', ') || '없음'}`;
+                const encodedMsg = encodeURIComponent(message);
+                window.open(`https://pf.kakao.com/_rxbHRX?message=${encodedMsg}`, '_blank');
               }}
               style={{
                 width: '100%',
