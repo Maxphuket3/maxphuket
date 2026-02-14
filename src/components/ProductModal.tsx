@@ -17,7 +17,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
       setSelectedOptions([]);
       setCarriers(0);
     }
-  }, [product]);
+  }, [product, isOpen]);
 
   const handleOptionToggle = (optionId: string, optionPrice: number) => {
     if (selectedOptions.includes(optionId)) {
@@ -31,10 +31,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
 
   if (!isOpen || !product) return null;
 
-  // 1. 직접 방문하는 투어는 캐리어 섹션 제외
-  const isDirectVisit = product.id === 'tiger-park' || product.id === 'lion-land';
-  // 2. 투어별 캐리어 비용 설정
-  const carrierFee = product.id === 'siam-niramit' ? 100 : 300;
+  // 캐리어 비용 설정 (직접 방문지는 0으로 처리)
+  const isDirect = product.id === 'tiger-park' || product.id === 'lion-land';
+  const feePerCarrier = product.id === 'siam-niramit' ? 100 : 300;
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '20px' }}>
@@ -45,10 +44,10 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
         <h2 style={{ marginBottom: '10px' }}>{product.title}</h2>
         <p style={{ color: '#666', marginBottom: '20px' }}>{product.description}</p>
 
-        {/* 🧳 캐리어 섹션: 직접 방문(타이거/라이언)이 아닐 때만 노출 */}
-        {!isDirectVisit && (
+        {/* 직접 방문 투어가 아닐 때만 캐리어 조절창 노출 */}
+        {!isDirect && (
           <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-            <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>🧳 캐리어 보관 신청 (개당 {carrierFee} THB)</label>
+            <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>🧳 캐리어 보관 신청 (개당 {feePerCarrier} THB)</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               <button onClick={() => setCarriers(Math.max(0, carriers - 1))} style={{ width: '35px', height: '35px', borderRadius: '50%', border: '1px solid #ccc', cursor: 'pointer', backgroundColor: '#fff' }}>-</button>
               <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{carriers}개</span>
@@ -57,7 +56,6 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
           </div>
         )}
 
-        {/* 투어 옵션 섹션 */}
         {product.options && product.options.length > 0 && (
           <div style={{ width: '100%', marginTop: '20px' }}>
             <label style={{ fontWeight: 'bold' }}>🐯 추가 선택 옵션</label>
@@ -72,12 +70,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
           </div>
         )}
 
-        {/* 최종 금액 박스 */}
         <div style={{ width: '100%', padding: '20px', background: '#333', color: '#fff', borderRadius: '12px', marginTop: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold' }}>
             <span>최종 예약 금액</span>
             <span style={{ color: '#FEE500' }}>
-              {(totalPrice + (carriers * carrierFee)).toLocaleString()} THB
+              {(totalPrice + (carriers * (isDirect ? 0 : feePerCarrier))).toLocaleString()} THB
             </span>
           </div>
         </div>

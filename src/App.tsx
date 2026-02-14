@@ -1,18 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { JourneyProvider } from './context/JourneyContext';
-import JourneyStartScreen from './screens/JourneyStartScreen';
-import JourneySelectScreen from './screens/JourneySelectScreen';
-import LastDayScreen from './screens/LastDayScreen';
-
-// Legacy screens (kept for reference if needed, but hidden from main flow)
 import MainScreen from './screens/MainScreen';
-import DashboardScreen from './screens/DashboardScreen';
-import AdminDashboard from './screens/AdminDashboard';
-import DriverRegistration from './screens/DriverRegistration';
-
 import TourDetailScreen from './screens/TourDetailScreen';
-import FloatingKakaoButton from './components/FloatingKakaoButton';
+import ReservationScreen from './screens/ReservationScreen';
+import ConfirmationScreen from './screens/ConfirmationScreen';
+import AdminDashboard from './screens/AdminDashboard';
+import ProductModal from './components/ProductModal';
 
 const App: React.FC = () => {
   return (
@@ -20,21 +14,15 @@ const App: React.FC = () => {
       <BrowserRouter>
         <div className="App">
           <Routes>
-            {/* 3-Step Journey Flow */}
-            <Route path="/" element={<JourneyStartScreen />} />
-            <Route path="/select" element={<JourneySelectScreen />} />
-            <Route path="/result" element={<LastDayScreen />} />
-            <Route path="/tour-detail/:id" element={<TourDetailScreen />} />
-
-            {/* Legacy Routes / Hidden */}
-            <Route path="/old-main" element={<MainScreen onNext={() => { }} />} />
-            <Route path="/admin" element={<AdminDashboard onBack={() => { }} />} />
-            <Route path="/driver-register" element={<DriverRegistration onBack={() => window.history.back()} />} />
-
-            {/* Catch all - Redirect to Start */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/" element={<MainScreen />} />
+            <Route path="/tour/:id" element={<TourDetailScreen />} />
+            <Route path="/reservation" element={<ReservationScreen />} />
+            <Route path="/confirmation" element={<ConfirmationScreen />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
-          {/* <FloatingKakaoButton /> */}
+
+          {/* 상품 상세 모달 연결 - 이 줄이 있어야 클릭 시 팝업이 뜹니다 */}
+          <ProductModal product={null} isOpen={false} onClose={() => { }} />
         </div>
       </BrowserRouter>
     </JourneyProvider>
