@@ -15,18 +15,16 @@ const App: React.FC = () => {
       <BrowserRouter>
         <div className="App">
           <Routes>
-            {/* 메인 여정 흐름 */}
+            {/* 현재 프로젝트에 실제로 존재하는 화면들만 연결 */}
             <Route path="/" element={<JourneyStartScreen />} />
             <Route path="/select" element={<JourneySelectScreen />} />
             <Route path="/result" element={<LastDayScreen />} />
             <Route path="/tour-detail/:id" element={<TourDetailScreen />} />
-
-            {/* 기타 화면 */}
             <Route path="/old-main" element={<MainScreen />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
 
-          {/* 상품 상세 모달 - 여기서 관리되어야 클릭 시 정상 작동합니다 */}
+          {/* 상품 상세 모달 - 이 위치가 정확해야 상품 클릭이 작동합니다 */}
           <ProductModal product={null} isOpen={false} onClose={() => { }} />
         </div>
       </BrowserRouter>
