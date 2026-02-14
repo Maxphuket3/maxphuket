@@ -1,4 +1,4 @@
-import { Spot, Partner } from './types';
+import { Spot, Partner } from '../types';
 
 export const MOCK_SPOTS: Spot[] = [
     {
