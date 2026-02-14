@@ -15,7 +15,6 @@ const App: React.FC = () => {
       <BrowserRouter>
         <div className="App">
           <Routes>
-            {/* 현재 프로젝트에 실제로 존재하는 화면들만 연결 */}
             <Route path="/" element={<JourneyStartScreen />} />
             <Route path="/select" element={<JourneySelectScreen />} />
             <Route path="/result" element={<LastDayScreen />} />
@@ -24,7 +23,7 @@ const App: React.FC = () => {
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
 
-          {/* 상품 상세 모달 - 이 위치가 정확해야 상품 클릭이 작동합니다 */}
+          {/* 상품 상세 모달 - 이 위치에 있어야 클릭이 먹힙니다 */}
           <ProductModal product={null} isOpen={false} onClose={() => { }} />
         </div>
       </BrowserRouter>
