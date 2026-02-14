@@ -51,16 +51,20 @@ export interface Product {
         adult: number;
         child: number;
     };
+    details?: string;
+    notices?: string;
 }
 
 export const MAIN_PRODUCTS: Product[] = [
     {
         id: 'p_banana',
         name: '바나나비치 반일 투어 (오전/오후)',
-        price: '1,475 THB ~',
+        price: '2,475 THB ~',
         thumbnail: '/images/banana_beach.jpg',
         detailImage: '/images/banana_beach.jpg',
         description: '푸켓의 숨겨진 보석, 바나나 비치에서 즐기는 반일(오전/오후) 투어입니다. 맑은 바다에서의 스노클링과 다양한 해양 액티비티를 취향에 맞는 코스로 즐겨보세요.',
+        details: '안티 그래피티가 추천하는 럭셔리 카타마란 요트 투어입니다. 수정처럼 맑은 바다에서의 스노클링과 프라이빗 비치 라운지 이용이 포함되어 있습니다. 투명 카약 체험과 비치 스윙에서의 인생샷을 놓치지 마세요!',
+        notices: '안티 그래피티 필독: 수영복은 옷 안에 미리 착용하고 오시는 것이 좋습니다. 해양 생물 보호를 위해 개인 오리발 반입은 금지되어 있으니 현장 렌탈을 이용해 주세요.',
         highlights: [
             '짧은 이동 시간 (스피드보트 15분)',
             '프라이빗한 전용 비치 시설 이용',
@@ -115,7 +119,7 @@ export const MAIN_PRODUCTS: Product[] = [
             '기상 악화 시 투어가 취소될 수 있으며 이 경우 전액 환불됩니다.'
         ],
         provider: 'GODIVE',
-        luggagePrice: 100,
+        luggagePrice: 300,
         onSiteFees: {
             entranceAdult: 100,
             entranceChild: 50,
@@ -155,7 +159,7 @@ export const MAIN_PRODUCTS: Product[] = [
         cancellationPolicy: '투어 2일 전 전액 환불 가능',
         importantNotes: ['멀미약을 준비하시면 좋습니다.'],
         provider: 'GODIVE',
-        luggagePrice: 100
+        luggagePrice: 300
     },
     {
         id: 'p_simon',
@@ -461,10 +465,12 @@ export const MAIN_PRODUCTS: Product[] = [
     {
         id: 'p_hanuman_world',
         name: '하누만 월드 짚라인 투어 (Hanuman World)',
-        price: '1,325 THB ~',
+        price: '2,917 THB ~',
         thumbnail: '/images/hanuman_world.jpg',
         detailImage: '/images/hanuman_world.jpg',
         description: '푸켓의 열대우림을 날아다니는 짜릿한 경험! 최신 안전 장비와 함께 즐기는 다이내믹한 짚라인 어드벤처입니다. 다양한 코스와 롤러 짚라인을 즐겨보세요.',
+        details: '안티 그래피티 액티비티 1위! 푸켓의 울창한 정글 사이를 날아다니는 짚라인의 정수입니다. 74세까지 보험 적용이 가능한 최신식 안전 장비와 스카이워크를 포함한 알찬 패키지로 구성되어 있습니다.',
+        notices: '안티 그래피티 주의사항: 슬리퍼나 샌들은 절대 금지입니다. 반드시 앞코가 막힌 운동화를 착용해 주세요. 또한 현장의 조련사 지시를 따르지 않을 경우 안전을 위해 체험이 중단될 수 있습니다.',
         category: 'TOUR',
         badges: ['액티비티', '스릴 만점', '숲속 힐링'],
         highlights: ['다양한 난이도의 짚라인 코스', '스릴 넘치는 롤러 짚라인', '숲속 스카이워크 산책'],
@@ -517,7 +523,7 @@ export const MAIN_PRODUCTS: Product[] = [
             '건강 상태에 따라 탑승이 제한될 수 있습니다.'
         ],
         provider: 'HANUMAN',
-        luggagePrice: 0 // No luggage info provided, assume 0 or handle manually
+        luggagePrice: 300 // General tour rate
     },
     {
         id: "pp-khai",
