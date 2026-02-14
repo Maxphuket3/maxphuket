@@ -15,6 +15,7 @@ const App: React.FC = () => {
       <BrowserRouter>
         <div className="App">
           <Routes>
+            {/* 실제로 존재하는 화면들만 연결 */}
             <Route path="/" element={<JourneyStartScreen />} />
             <Route path="/select" element={<JourneySelectScreen />} />
             <Route path="/result" element={<LastDayScreen />} />
@@ -22,7 +23,8 @@ const App: React.FC = () => {
             <Route path="/old-main" element={<MainScreen />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
-          {/* 상품 클릭 시 나타날 모달 연결 */}
+
+          {/* 상품 상세 팝업창(모달) */}
           <ProductModal product={null} isOpen={false} onClose={() => { }} />
         </div>
       </BrowserRouter>
