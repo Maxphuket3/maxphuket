@@ -2,18 +2,22 @@
 
 interface ProductModalProps {
   product: any;
-  isOpen: boolean;
+  isOpen?: boolean;
   onClose: () => void;
 }
 
-const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose }) => {
+const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen = true, onClose }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [carriers, setCarriers] = useState(0);
 
   useEffect(() => {
     if (product) {
-      setTotalPrice(product.price || 0);
+      // 숫자만 추출하여 가격 설정
+      const basePrice = typeof product.price === 'string'
+        ? parseInt(product.price.replace(/[^0-9]/g, '')) || 0
+        : product.price || 0;
+      setTotalPrice(basePrice);
       setSelectedOptions([]);
       setCarriers(0);
     }
@@ -32,7 +36,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
   if (!isOpen || !product) return null;
 
   // 캐리어 비용 설정 (직접 방문지는 0으로 처리)
-  const isDirect = product.id === 'tiger-park' || product.id === 'lion-land';
+  const isDirect = product.id === 'tiger-park' || product.id === 'p_tiger_park' || product.id === 'lion-land';
   const feePerCarrier = product.id === 'siam-niramit' ? 100 : 300;
 
   return (
@@ -40,8 +44,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
       <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '20px', width: '100%', maxWidth: '500px', maxHeight: '90vh', overflowY: 'auto', position: 'relative' }}>
         <button onClick={onClose} style={{ position: 'absolute', top: '20px', right: '20px', border: 'none', background: 'none', fontSize: '24px', cursor: 'pointer' }}>✕</button>
 
-        <img src={product.image} alt={product.title} style={{ width: '100%', borderRadius: '15px', marginBottom: '20px' }} />
-        <h2 style={{ marginBottom: '10px' }}>{product.title}</h2>
+        <img src={product.detailImage || product.thumbnail || product.image} alt={product.name || product.title} style={{ width: '100%', borderRadius: '15px', marginBottom: '20px' }} />
+        <h2 style={{ marginBottom: '10px' }}>{product.name || product.title}</h2>
         <p style={{ color: '#666', marginBottom: '20px' }}>{product.description}</p>
 
         {/* 직접 방문 투어가 아닐 때만 캐리어 조절창 노출 */}
@@ -78,6 +82,17 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose })
             </span>
           </div>
         </div>
+
+        {/* 예약 버튼 추가 */}
+        <button
+          onClick={() => {
+            const message = `[예약 문의]\n상품: ${product.name || product.title}\n최종 금액: ${(totalPrice + (carriers * (isDirect ? 0 : feePerCarrier))).toLocaleString()} THB`;
+            window.open(`https://pf.kakao.com/_rxbHRX`, '_blank');
+          }}
+          style={{ width: '100%', marginTop: '15px', padding: '15px', background: '#FEE500', border: 'none', borderRadius: '12px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1.1rem' }}
+        >
+          🟡 카카오톡으로 예약 문의하기
+        </button>
       </div>
     </div>
   );

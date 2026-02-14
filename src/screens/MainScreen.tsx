@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { User } from '../types';
+import { useNavigate } from 'react-router-dom';
 import ProductCarousel from '../components/ProductCarousel';
 import ProductModal from '../components/ProductModal';
 import { Product, MAIN_PRODUCTS } from '../data/products';
 import { Sparkles, MessageCircle } from 'lucide-react';
 
 const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     party: 2,
@@ -235,7 +237,7 @@ const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
             <ProductCarousel
               title="🌊 시밀란 투어 비교 예약 🌊"
               products={MAIN_PRODUCTS.filter(p => p.category === 'SIMILAN')}
-              onProductClick={(product) => setSelectedProduct(product)}
+              onProductClick={(product) => navigate(`/tour-detail/${product.id}`)}
             />
           </div>
 
@@ -257,7 +259,7 @@ const MainScreen: React.FC<{ onNext: (user: User) => void }> = ({ onNext }) => {
             </div>
             <ProductCarousel
               products={MAIN_PRODUCTS.filter(p => p.category !== 'SIMILAN')}
-              onProductClick={(product) => setSelectedProduct(product)}
+              onProductClick={(product) => navigate(`/tour-detail/${product.id}`)}
             />
           </div>
 

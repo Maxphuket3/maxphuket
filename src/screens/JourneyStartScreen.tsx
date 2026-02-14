@@ -438,7 +438,7 @@ const JourneyStartScreen: React.FC = () => {
                         <div
                             key={product.id}
                             className="hit-product-card-new"
-                            onClick={() => setSelectedProduct(product)}
+                            onClick={() => handleProductClick(product)}
                             style={{ cursor: 'pointer' }}
                         >
                             <img
