@@ -15,7 +15,6 @@ const App: React.FC = () => {
       <BrowserRouter>
         <div className="App">
           <Routes>
-            {/* 현재 screens 폴더에 실제 존재하는 파일들만 연결했습니다 */}
             <Route path="/" element={<JourneyStartScreen />} />
             <Route path="/select" element={<JourneySelectScreen />} />
             <Route path="/result" element={<LastDayScreen />} />
@@ -23,8 +22,7 @@ const App: React.FC = () => {
             <Route path="/old-main" element={<MainScreen />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
-
-          {/* 상품 상세 모달: 이 위치에 있어야 클릭 시 정상적으로 팝업이 뜹니다 */}
+          {/* 상품 클릭 시 나타날 모달 연결 */}
           <ProductModal product={null} isOpen={false} onClose={() => { }} />
         </div>
       </BrowserRouter>
